@@ -1,22 +1,25 @@
-# NestJs / React / Prisma Template
+# Nest / React / Prisma Template
 
 ## Setup
 
 `npm install`
+
 `npm run docker:up`
+
 `npm run db:reset`
 
 ## Environment
 
 `cp .env.local .env`
-Modify `.env` as needed
+
+Now modify `.env` as needed
 
 ## Development
 
 `npm run dev`
 
-- app: http://localhost:5173/
-- api: http://localhost:3000/api
+- React App: http://localhost:5173/
+- Nest Api: http://localhost:3000/api
 
 ## Build
 
@@ -25,6 +28,7 @@ Modify `.env` as needed
 ## Production
 
 `npm run build`
+
 `npm run start`
 
 ## Test
