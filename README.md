@@ -10,7 +10,7 @@
 
 ## Environment
 
-`cp .env.local .env`
+`cp .env.example .env`
 
 Now modify `.env` as needed
 
