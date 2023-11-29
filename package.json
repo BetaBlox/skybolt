@@ -1,0 +1,28 @@
+{
+  "devDependencies": {
+    "turbo": "^1.10.16"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "node apps/api/dist/main",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "db:generate": "npm run db:generate --workspace=database",
+    "db:push": "npm run db:push --workspace=database",
+    "db:studio": "npm run db:studio --workspace=database",
+    "db:seed": "npm run db:seed --workspace=database",
+    "db:reset": "npm run db:reset --workspace=database",
+    "migrate:dev": "npm run migrate:dev --workspace=database",
+    "migrate:resolve": "npm run migrate:resolve --workspace=database",
+    "migrate:status": "npm run migrate:status --workspace=database",
+    "migrate:diff": "npm run migrate:diff --workspace=database"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "typescript": "^5.3.2"
+  }
+}

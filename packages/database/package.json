@@ -1,0 +1,28 @@
+{
+  "name": "database",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "npm run build -- --watch",
+    "build": "tsc --build",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:studio": "prisma studio",
+    "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:resolve": "prisma migrate resolve",
+    "migrate:status": "prisma migrate status",
+    "migrate:diff": "prisma migrate diff"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.6.0",
+    "typescript": "5.3.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.6.0"
+  }
+}
