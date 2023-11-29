@@ -2,9 +2,14 @@
 
 ## Setup
 
-`npm install`
-`npm run docker:up`
-`npm run db:reset`
+- `npm install`
+- `npm run docker:up`
+- `npm run db:reset`
+
+## Environment
+
+- `cp .env.local .env`
+- Modify `.env` as needed
 
 ## Development
 
