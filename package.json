@@ -8,21 +8,22 @@
     "start": "node apps/api/dist/main",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "db:generate": "npm run db:generate --workspace=database",
-    "db:push": "npm run db:push --workspace=database",
-    "db:studio": "npm run db:studio --workspace=database",
-    "db:seed": "npm run db:seed --workspace=database",
-    "db:reset": "npm run db:reset --workspace=database",
-    "migrate:dev": "npm run migrate:dev --workspace=database",
-    "migrate:resolve": "npm run migrate:resolve --workspace=database",
-    "migrate:status": "npm run migrate:status --workspace=database",
-    "migrate:diff": "npm run migrate:diff --workspace=database"
+    "db:generate": "dotenv -- npm run db:generate --workspace=database",
+    "db:push": "dotenv -- npm run db:push --workspace=database",
+    "db:studio": "dotenv -- npm run db:studio --workspace=database",
+    "db:seed": "dotenv -- npm run db:seed --workspace=database",
+    "db:reset": "dotenv -- npm run db:reset --workspace=database",
+    "migrate:dev": "dotenv -- npm run migrate:dev --workspace=database",
+    "migrate:resolve": "dotenv -- npm run migrate:resolve --workspace=database",
+    "migrate:status": "dotenv -- npm run migrate:status --workspace=database",
+    "migrate:diff": "dotenv -- npm run migrate:diff --workspace=database"
   },
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "dependencies": {
+    "dotenv-cli": "^7.3.0",
     "typescript": "^5.3.2"
   }
 }

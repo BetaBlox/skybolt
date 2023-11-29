@@ -1,10 +1,13 @@
 # NestJs / React / Prisma Template
 
-## Development
+## Setup
 
 `npm install`
 `npm run docker:up`
 `npm run db:reset`
+
+## Development
+
 `npm run dev`
 
 - app: http://localhost:5173/
@@ -22,3 +25,7 @@
 ## Test
 
 `npm run test`
+
+## Inspiration
+
+Heavily inspired by this YouTube video https://www.youtube.com/watch?v=nY0R7pslbCI
