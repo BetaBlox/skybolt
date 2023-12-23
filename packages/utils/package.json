@@ -5,10 +5,16 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "npm run build -- --watch",
-    "build": "tsup src/index.ts --format cjs,esm --dts"
+    "build": "tsc --build",
+    "test": "jest"
   },
   "dependencies": {
     "tsup": "^8.0.1",
     "typescript": "5.3.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.10",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1"
   }
 }
