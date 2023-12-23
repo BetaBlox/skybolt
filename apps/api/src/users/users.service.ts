@@ -3,7 +3,6 @@ import { User } from '@prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateUserDto } from '@/users/dto/create-user.dto';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
-import { UserRole } from 'database';
 
 @Injectable()
 export class UsersService {
@@ -26,9 +25,7 @@ export class UsersService {
   }
 
   async create(data: CreateUserDto): Promise<User> {
-    return this.prisma.user.create({
-      data: { ...data, role: UserRole.VIEW_ONLY },
-    });
+    return this.prisma.user.create({ data });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
@@ -54,65 +51,5 @@ export class UsersService {
         refreshToken,
       },
     });
-  }
-
-  isFlyGoNoGo(user: User) {
-    const requiredTrainings = [
-      'LL01XC',
-      'LL02XC',
-      'LL07XC',
-      'SS01XC',
-      'SS06XC',
-      'GS03XC',
-      'GS06XC',
-      'GA06XC',
-      'PP11XC',
-      'PP10XC',
-    ];
-  }
-
-  isCMRGoNoGo(user: User) {
-    const requiredTrainings = [
-      'LL01XC',
-      'LL02XC',
-      'LL06XC',
-      'LL07XC',
-      'SS01XC',
-      'SS02XC',
-      'SS03XC',
-      'SS05XC',
-      'SS06XC',
-      'GS03XC',
-      'GA39XC',
-      'GS47XC',
-      'GS06XC',
-      'GA06XC',
-      'PP11XC',
-      'PP10XC',
-    ];
-  }
-
-  isBMCGoNoGo(user: User) {
-    const requiredTrainings = [
-      'LL01XC',
-      'LL02XC',
-      'LL06XC',
-      'LL07XC',
-      'SS01XC',
-      'SS02XC',
-      'SS03XC',
-      'SS05XC',
-      'SS06XC',
-      'GS03XC',
-      'GA39XC',
-      'GS06XC',
-      'GA06XC',
-      'PP11XC',
-      'PP10XC',
-    ];
-  }
-
-  isAlertGoNoGo(user: User) {
-    const requiredTrainings = [];
   }
 }

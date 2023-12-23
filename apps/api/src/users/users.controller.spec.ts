@@ -7,6 +7,11 @@ describe('UsersController', () => {
   let controller: UsersController;
   let prisma: PrismaService;
 
+  beforeAll(async () => {
+    prisma = new PrismaService();
+    await prisma.truncateDatabase();
+  });
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [PrismaModule],
@@ -14,8 +19,6 @@ describe('UsersController', () => {
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
-    prisma = new PrismaService();
-    await prisma.truncateDatabase();
   });
 
   afterAll(async () => {

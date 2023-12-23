@@ -1,4 +1,10 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 
@@ -14,24 +20,11 @@ export class UsersController {
 
   @UseGuards(AccessTokenGuard)
   @Get(':id')
-  async findOne(@Param() params: any) {
-    const user = await this.prisma.user.findUnique({
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.prisma.user.findUnique({
       where: {
-        id: parseInt(params.id),
+        id,
       },
     });
-    const trainings = await this.prisma.userTraining.findMany({
-      where: {
-        userId: user.id,
-      },
-      include: {
-        training: true,
-      },
-    });
-
-    return {
-      user,
-      trainings,
-    };
   }
 }
