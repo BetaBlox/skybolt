@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import * as argon2 from "argon2";
 
 const prisma = new PrismaClient();
 
@@ -11,8 +12,11 @@ const prisma = new PrismaClient();
       },
       update: {},
       create: {
-        name: "John Rake",
+        firstName: "John",
+        lastName: "Rake",
         email: "john@betablox.com",
+        password: await argon2.hash("password"),
+        isAdmin: true,
       },
     });
   } catch (e) {
