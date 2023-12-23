@@ -5,12 +5,16 @@
   "scripts": {
     "dev": "npm run build -- --watch",
     "build": "tsc --build",
+    "postbuild": "npm run db:generate",
+    "test": "echo 'No tests specificed'",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
     "db:reset": "prisma migrate reset",
+    "prisma:format": "prisma format",
     "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
     "migrate:resolve": "prisma migrate resolve",
     "migrate:status": "prisma migrate status",
     "migrate:diff": "prisma migrate diff"

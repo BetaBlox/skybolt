@@ -1,22 +1,31 @@
 {
-  "devDependencies": {
-    "turbo": "^1.11.2"
-  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "build:api": "npm run build --workspace=api",
+    "build:utils": "npm run build --workspace=utils",
+    "build:database": "npm run build --workspace=database",
+    "build:client": "npm run build --workspace=client",
+    "build:types": "npm run build --workspace=types",
+    "build:paginator": "npm run build --workspace=paginator",
     "start": "node apps/api/dist/main",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "db:generate": "dotenv -- npm run db:generate --workspace=database",
     "db:push": "dotenv -- npm run db:push --workspace=database",
-    "db:studio": "dotenv -- npm run db:studio --workspace=database",
     "db:seed": "dotenv -- npm run db:seed --workspace=database",
     "db:reset": "dotenv -- npm run db:reset --workspace=database",
+    "prisma:format": "dotenv -- npm run prisma:format --workspace=database",
     "migrate:dev": "dotenv -- npm run migrate:dev --workspace=database",
+    "migrate:deploy": "dotenv -- npm run migrate:deploy --workspace=database",
     "migrate:resolve": "dotenv -- npm run migrate:resolve --workspace=database",
     "migrate:status": "dotenv -- npm run migrate:status --workspace=database",
-    "migrate:diff": "dotenv -- npm run migrate:diff --workspace=database"
+    "migrate:diff": "dotenv -- npm run migrate:diff --workspace=database",
+    "pretest:api": "dotenv -e .env.test -- npm run migrate:deploy --workspace=database",
+    "test:api": "dotenv -e .env.test -- npm run test --workspace=api",
+    "test:utils": "dotenv -e .env.test -- npm run test --workspace=utils",
+    "test:database": "dotenv -e .env.test -- npm run test --workspace=database",
+    "test:client": "dotenv -e .env.test -- npm run test --workspace=client"
   },
   "workspaces": [
     "apps/*",
@@ -24,6 +33,10 @@
   ],
   "dependencies": {
     "dotenv-cli": "^7.3.0",
+    "jwt-decode": "^4.0.0",
     "typescript": "^5.3.2"
+  },
+  "devDependencies": {
+    "turbo": "^1.11.2"
   }
 }
