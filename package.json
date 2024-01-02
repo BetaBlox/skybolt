@@ -1,6 +1,7 @@
 {
   "scripts": {
     "dev": "turbo run dev",
+    "dev:admin": "turbo run dev --filter=admin-api --filter=admin-client",
     "build": "turbo run build",
     "build:client": "npm run build --workspace=client",
     "build:api": "npm run build --workspace=api",
