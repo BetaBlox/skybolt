@@ -18,8 +18,13 @@ Now modify `.env` as needed
 
 `npm run dev`
 
-- React App: http://localhost:5173/
-- Nest Api: http://localhost:3000/api
+### App
+- Client: http://localhost:5173/
+- Api: http://localhost:3000/api
+
+### Admin
+- Client: http://localhost:8080/
+- Api: http://localhost:8081/api
 
 ## Build
 

@@ -5,7 +5,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "npm run build -- --watch",
-    "build": "tsc --build",
+    "build": "tsup src/index.ts --format cjs,esm --dts",
     "test": "jest"
   },
   "dependencies": {
