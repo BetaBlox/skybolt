@@ -3,6 +3,7 @@ import protectedLoader from "@/auth/protectedLoader";
 import RootLayout from "@/layout/RootLayout";
 import Dashboard from "@/features/dashboard/Dashboard";
 import { HOME } from "@/common/routes";
+import ModelPage from "./features/models/ModelPage";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,11 @@ const router = createBrowserRouter([
         path: HOME,
         loader: protectedLoader,
         element: <Dashboard />,
+      },
+      {
+        path: "/models/:modelName",
+        loader: protectedLoader,
+        element: <ModelPage />,
       },
     ],
   },
