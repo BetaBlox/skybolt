@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.13.0]
+        node-version: [20.11.0]
 
     services:
       postgres:
@@ -50,3 +50,5 @@ jobs:
       - run: npm run test:database
       - run: npm run test:client
       - run: npm run test:api
+      - run: npm run test:admin-client
+      - run: npm run test:admin-api

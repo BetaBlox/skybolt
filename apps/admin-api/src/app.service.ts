@@ -12,7 +12,7 @@ export class AppService {
   }
 
   getModels(): DMMF.Model[] {
-    return Prisma.dmmf.datamodel.models;
+    return Prisma.dmmf.datamodel.models as DMMF.Model[];
   }
 
   async getModel(modelName: string): Promise<{

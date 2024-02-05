@@ -35,12 +35,18 @@ export default function Breadcrumbs({ links }: Props) {
           </span>
         ) : (
           <>
-            <Link
-              to={link.href}
-              className="font-medium text-gray-500 hover:text-gray-900"
-            >
-              {link.text}
-            </Link>
+            {link.href ? (
+              <Link
+                to={link.href}
+                className="font-medium text-gray-500 hover:text-gray-900"
+              >
+                {link.text}
+              </Link>
+            ) : (
+              <span className="font-medium text-gray-500 hover:text-gray-900">
+                {link.text}
+              </span>
+            )}
             <Spacer />
           </>
         )

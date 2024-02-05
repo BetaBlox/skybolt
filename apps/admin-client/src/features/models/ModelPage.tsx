@@ -17,6 +17,9 @@ export default function ModelPage() {
     collectionAttributes: string[];
     showAttributes: string[];
     formAttributes: string[];
+    count: number;
+    // Ignoring for now because we don't have a type for this API payload
+    records: any[]; // eslint-disable-line
   }>();
 
   useEffect(() => {
@@ -30,10 +33,10 @@ export default function ModelPage() {
   if (!data || !modelName) return null;
 
   const {
-    attributeTypes,
+    // attributeTypes,
     collectionAttributes,
-    showAttributes,
-    formAttributes,
+    // showAttributes,
+    // formAttributes,
     records,
     count,
   } = data;
