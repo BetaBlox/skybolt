@@ -20,6 +20,10 @@ This is our base project template for web applications, APIs, and administrative
 
 - [Turborepo](https://turbo.build/) - A monorepo infrastructure incremental bundler and build system optimized for JavaScript and TypeScript.
 
+### Miscellaneous
+
+- [Git Patch Stack](https://git-ps.sh/) - Git Patch Stack is a command line tool that facilitates a Patch Stack based workflow with Git. Git Patch Stack helps you think in terms of a stack of patches instead of a series of isolated branches.
+
 ## Setup
 
 `npm install`
@@ -39,10 +43,12 @@ Now modify `.env` as needed
 `npm run dev`
 
 ### App
+
 - Client: http://localhost:5173/
 - Api: http://localhost:3000/api
 
 ### Admin
+
 - Client: http://localhost:8080/
 - Api: http://localhost:8081/api
 
@@ -61,9 +67,11 @@ Now modify `.env` as needed
 `npm run test`
 
 ## Making Improvements
+
 As you build your project out from this template, please remember to pay it forward and improve the template. Even a seemingly simple change such as a new util method is helpful.
 
 You can either:
+
 1. Create an issue - https://github.com/BetaBlox/nestjs-react-template/issues
 2. Submit a PR - https://github.com/BetaBlox/nestjs-react-template/pulls
 
