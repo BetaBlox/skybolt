@@ -6,6 +6,8 @@ export function modelDisplayName(modelName: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+export type SelectOption = { label: string; value: string };
+
 // export function getRecordDisplayName(modelName: string, record: any): string {
 //   const model = getModel(modelName);
 //   return model.getDisplayName(record) as string;

@@ -1,5 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { AppService } from './app.service';
+import { AdminAttributeType } from '@/config/admin';
+import { DMMF } from 'database';
 
 @Controller()
 export class AppController {
@@ -11,12 +13,20 @@ export class AppController {
   }
 
   @Get('/models')
-  getModels() {
+  getModels(): DMMF.Model[] {
     return this.appService.getModels();
   }
 
   @Get('/models/:modelName')
-  getModel(@Param('modelName') modelName: string) {
+  getModel(@Param('modelName') modelName: string): Promise<{
+    prismaModelConfig: DMMF.Model;
+    attributeTypes: AdminAttributeType[];
+    collectionAttributes: string[];
+    showAttributes: string[];
+    formAttributes: string[];
+    count: number;
+    records: any[];
+  }> {
     return this.appService.getModel(modelName);
   }
 }

@@ -1,4 +1,4 @@
-FROM node:18.18 as production
+FROM node:20.11 as production
 ENV NODE_ENV="production"
 WORKDIR /app
 
