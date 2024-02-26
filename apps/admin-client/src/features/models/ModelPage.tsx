@@ -1,17 +1,32 @@
-import Breadcrumbs from "@/components/Breadcrumbs";
-import { createUrl, editUrl, modelDisplayName, showUrl } from "@/config/admin";
-import { DMMF } from "database";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { captilalize } from "utils";
+import { createUrl, editUrl, modelDisplayName, showUrl } from '@/config/admin';
+import { DMMF } from 'database';
+import { Link, useParams } from 'react-router-dom';
+import { captilalize } from 'utils';
 import {
   AdminAttributeType,
   renderFieldInCollectionView,
-} from "../../../../admin-api/src/config/admin";
+} from '../../../../admin-api/src/config/admin';
+import { useQuery } from '@tanstack/react-query';
+import PageHeader from '@/components/PageHeader';
 
 export default function ModelPage() {
   const { modelName } = useParams();
-  const [data, setData] = useState<{
+
+  const model = useQuery({
+    queryKey: ['model'],
+    queryFn: async () => {
+      const url = `/api/models/${modelName}`;
+      const res = await fetch(url, {
+        method: 'GET',
+      });
+      return res.json();
+    },
+  });
+
+  if (model.isPending) return 'Loading...';
+  if (model.isError || !modelName) return 'Error loading data';
+
+  const data = model.data as {
     prismaModelConfig: DMMF.Model;
     attributeTypes: AdminAttributeType[];
     collectionAttributes: string[];
@@ -20,17 +35,7 @@ export default function ModelPage() {
     count: number;
     // Ignoring for now because we don't have a type for this API payload
     records: any[]; // eslint-disable-line
-  }>();
-
-  useEffect(() => {
-    fetch(`/api/models/${modelName}`, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then(setData);
-  }, []);
-
-  if (!data || !modelName) return null;
+  };
 
   const {
     // attributeTypes,
@@ -41,25 +46,24 @@ export default function ModelPage() {
     count,
   } = data;
 
+  const title = `${modelDisplayName(modelName)} (${count})`;
+
   return (
     <div>
-      <Breadcrumbs
-        links={[
-          { href: "/admin", text: "Admin" },
-          { text: modelDisplayName(modelName) },
+      <PageHeader
+        heading={title}
+        breadcrumbs={[
+          { href: '#', text: modelDisplayName(modelName), current: true },
         ]}
+        actions={
+          <Link
+            to={createUrl(modelName)}
+            className="rounded bg-green-600 px-3 py-2 font-medium text-white"
+          >
+            Add New
+          </Link>
+        }
       />
-      <div className="flex flex-row items-center justify-between">
-        <h1 className="mb-4 text-3xl font-bold">
-          {modelDisplayName(modelName)} ({count})
-        </h1>
-        <Link
-          to={createUrl(modelName)}
-          className="rounded bg-green-600 px-3 py-2 font-medium text-white"
-        >
-          Add New
-        </Link>
-      </div>
       <div className="relative overflow-x-auto bg-white shadow-md sm:rounded-lg">
         <table className="w-full text-left text-sm text-gray-50">
           <thead className="bg-gray-100 text-xs text-gray-700">

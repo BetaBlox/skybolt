@@ -4,6 +4,7 @@
  * @see https://administrate-demo.herokuapp.com
  */
 import {
+  Post,
   User,
   // DMMF,
   // getPrismaModel,
@@ -18,6 +19,7 @@ export enum Field {
   SELECT = 'select',
   JSON = 'json',
   RELATIONSHIP_HAS_ONE = 'relationship_has_one',
+  DATETIME = 'datetime',
 }
 
 export type SelectOption = { label: string; value: string };
@@ -52,10 +54,31 @@ export const AdmingConfig: AdminConfig = {
         { name: 'email', type: Field.STRING },
         { name: 'isAdmin', type: Field.BOOLEAN },
         { name: 'acceptsPromotionalNotifications', type: Field.BOOLEAN },
+        { name: 'createdAt', type: Field.DATETIME },
+        { name: 'updatedAt', type: Field.DATETIME },
       ],
       collectionAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
       showAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
       formAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
+    },
+    post: {
+      getDisplayName: (record: Post) => record.title,
+      attributeTypes: [
+        { name: 'title', type: Field.STRING },
+        { name: 'content', type: Field.TEXT },
+        { name: 'authorId', type: Field.INTEGER },
+        { name: 'createdAt', type: Field.DATETIME },
+        { name: 'updatedAt', type: Field.DATETIME },
+      ],
+      collectionAttributes: ['title', 'authorId', 'createdAt', 'updatedAt'],
+      showAttributes: [
+        'title',
+        'authorId',
+        'content',
+        'createdAt',
+        'updatedAt',
+      ],
+      formAttributes: ['title', 'content'],
     },
   },
 };

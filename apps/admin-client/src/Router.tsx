@@ -1,13 +1,13 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import protectedLoader from "@/auth/protectedLoader";
-import RootLayout from "@/layout/RootLayout";
-import Dashboard from "@/features/dashboard/Dashboard";
-import { HOME } from "@/common/routes";
-import ModelPage from "./features/models/ModelPage";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import protectedLoader from '@/auth/protectedLoader';
+import RootLayout from '@/layout/RootLayout';
+import { HOME, MODEL } from '@/common/routes';
+import HomePage from '@/features/home/HomePage';
+import ModelPage from './features/models/ModelPage';
 
 const router = createBrowserRouter([
   {
-    id: "root",
+    id: 'root',
     path: HOME,
     Component: RootLayout,
     children: [
@@ -15,10 +15,10 @@ const router = createBrowserRouter([
         index: true,
         path: HOME,
         loader: protectedLoader,
-        element: <Dashboard />,
+        element: <HomePage />,
       },
       {
-        path: "/models/:modelName",
+        path: MODEL,
         loader: protectedLoader,
         element: <ModelPage />,
       },

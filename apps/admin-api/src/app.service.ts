@@ -28,7 +28,15 @@ export class AppService {
       (model) => model.name.toLowerCase() === modelName.toLowerCase(),
     );
 
+    if (!prismaModelConfig) {
+      throw new Error(`Unable to find Prisma config for model: ${modelName}`);
+    }
+
     const adminModelConfig = admin.getModel(modelName);
+
+    if (!adminModelConfig) {
+      throw new Error(`Unable to find Admin config for model: ${modelName}`);
+    }
 
     const count = await this.prisma[modelName].count();
     const records = await this.prisma[modelName].findMany();
