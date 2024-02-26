@@ -7,7 +7,6 @@ type JwtPayload = {
   username: string;
 };
 
-console.log(process.env);
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor() {

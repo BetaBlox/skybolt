@@ -12,6 +12,7 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: join(__dirname, '../../../../.env'),
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../../..', 'admin-client', 'dist'),
