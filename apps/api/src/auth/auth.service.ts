@@ -9,6 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from '@/users/dto/create-user.dto';
 import { AuthDto } from '@/auth/dto/auth.dto';
 import { UsersService } from '@/users/users.service';
+import { PrismaService } from '@/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly prisma: PrismaService,
   ) {}
 
   async signUp(createUserDto: CreateUserDto): Promise<any> {
@@ -107,5 +109,17 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  async changePassword(userId: number, password: string): Promise<void> {
+    const hash = await this.hashData(password);
+    await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: hash,
+      },
+    });
   }
 }

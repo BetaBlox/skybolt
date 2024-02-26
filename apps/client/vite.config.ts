@@ -12,7 +12,6 @@ export default defineConfig({
         changeOrigin: true,
       },
     },
-    port: 5173,
   },
   resolve: {
     alias: [{ find: "@", replacement: resolve(__dirname, "./src") }],

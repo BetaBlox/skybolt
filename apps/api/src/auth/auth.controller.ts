@@ -7,6 +7,7 @@ import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 import { RefreshTokenGuard } from '@/common/guards/refreshToken.guard';
 import { UsersService } from '@/users/users.service';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
+import { ChangePasswordDto } from '@/auth/dto/change-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -61,5 +62,15 @@ export class AuthController {
       updateUserDto,
     );
     return user;
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('change-password')
+  async changePassword(
+    @Body() changePasswordDto: ChangePasswordDto,
+    @Req() req: Request,
+  ) {
+    const user = await this.userService.findByEmail(req.user['email']);
+    await this.authService.changePassword(user.id, changePasswordDto.password);
   }
 }
