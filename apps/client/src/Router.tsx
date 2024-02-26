@@ -10,8 +10,10 @@ import {
   HOME,
   LOGIN,
   LOGOUT,
+  PROFILE,
 } from "@/common/routes";
 import SidebarLayout from "@/layouts/SidebarLayout";
+import UserProfilePage from "./features/user-profile/UserProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,11 @@ const router = createBrowserRouter([
         path: HOME,
         loader: protectedLoader,
         element: <HomePage />,
+      },
+      {
+        path: PROFILE,
+        loader: protectedLoader,
+        element: <UserProfilePage />,
       },
     ],
   },
