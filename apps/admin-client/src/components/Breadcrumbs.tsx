@@ -23,6 +23,7 @@ interface Props {
 }
 export default function Breadcrumbs({ links }: Props) {
   const lastIndex = links.length - 1;
+  
   return (
     <nav className="mb-8 md:flex md:items-center">
       {links.map((link, index) =>
