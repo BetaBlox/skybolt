@@ -2,7 +2,7 @@
  * @see https://stackoverflow.com/questions/7225407/convert-camelcasetext-to-title-case-text
  */
 export function modelDisplayName(modelName: string): string {
-  const text = modelName.replace(/([A-Z])/g, " $1");
+  const text = modelName.replace(/([A-Z])/g, ' $1');
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
@@ -14,28 +14,28 @@ export type SelectOption = { label: string; value: string };
 // }
 
 export function collectionUrl(modelName: string) {
-  return `/admin/models/${modelName}`;
+  return `/models/${modelName}`;
 }
 
 export function showUrl(modelName: string, record: any) {
-  return `/admin/models/${modelName}/${record.id}`;
+  return `/models/${modelName}/${record.id}`;
 }
 
 export function createUrl(modelName: string) {
-  return `/admin/models/${modelName}/new`;
+  return `/models/${modelName}/new`;
 }
 
 export function editUrl(modelName: string, record: any) {
-  return `/admin/models/${modelName}/${record.id}/edit`;
+  return `/models/${modelName}/${record.id}/edit`;
 }
 
 export function deleteUrl(modelName: string, record: any) {
-  return `/admin/models/${modelName}/${record.id}/delete`;
+  return `/models/${modelName}/${record.id}/delete`;
 }
 
 export function deleteRecord(modelName: string, record: any) {
-  fetch("/admin/api/delete", {
-    method: "POST",
+  fetch('/admin/api/delete', {
+    method: 'POST',
     body: JSON.stringify({
       modelName,
       id: record.id,

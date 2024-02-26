@@ -1,21 +1,26 @@
 import { createUrl, editUrl, modelDisplayName, showUrl } from '@/config/admin';
 import { DMMF } from 'database';
 import { Link, useParams } from 'react-router-dom';
-import { captilalize } from 'utils';
+import { captilalize, routeWithParams } from 'utils';
 import {
   AdminAttributeType,
   renderFieldInCollectionView,
 } from '../../../../admin-api/src/config/admin';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '@/components/PageHeader';
+import {
+  MODEL_RECORD,
+  MODEL_RECORD_CREATE,
+  MODEL_RECORD_EDIT,
+} from '@/common/routes';
 
 export default function ModelPage() {
   const { modelName } = useParams();
 
-  const model = useQuery({
-    queryKey: ['model'],
+  const modelQuery = useQuery({
+    queryKey: [`model/${modelName}`],
     queryFn: async () => {
-      const url = `/api/models/${modelName}`;
+      const url = routeWithParams('/api/models/:modelName', { modelName });
       const res = await fetch(url, {
         method: 'GET',
       });
@@ -23,10 +28,10 @@ export default function ModelPage() {
     },
   });
 
-  if (model.isPending) return 'Loading...';
-  if (model.isError || !modelName) return 'Error loading data';
+  if (modelQuery.isPending) return 'Loading...';
+  if (modelQuery.isError || !modelName) return 'Error loading data';
 
-  const data = model.data as {
+  const data = modelQuery.data as {
     prismaModelConfig: DMMF.Model;
     attributeTypes: AdminAttributeType[];
     collectionAttributes: string[];
@@ -57,7 +62,9 @@ export default function ModelPage() {
         ]}
         actions={
           <Link
-            to={createUrl(modelName)}
+            to={routeWithParams(MODEL_RECORD_CREATE, {
+              modelName,
+            })}
             className="rounded bg-green-600 px-3 py-2 font-medium text-white"
           >
             Add New
@@ -99,13 +106,19 @@ export default function ModelPage() {
                 ))}
                 <td className="flex flex-row gap-2 px-6 py-4 text-gray-900">
                   <Link
-                    to={showUrl(modelName, record)}
+                    to={routeWithParams(MODEL_RECORD, {
+                      modelName,
+                      id: record.id,
+                    })}
                     className="rounded px-3 py-2 font-medium text-slate-500 hover:bg-slate-500 hover:text-white"
                   >
                     Show
                   </Link>
                   <Link
-                    to={editUrl(modelName, record)}
+                    to={routeWithParams(MODEL_RECORD_EDIT, {
+                      modelName,
+                      id: record.id,
+                    })}
                     className="rounded px-3 py-2 font-medium text-indigo-500 hover:bg-indigo-500 hover:text-white"
                   >
                     Edit
