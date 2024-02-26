@@ -5,8 +5,7 @@ const prisma = new PrismaClient();
 
 (async function main() {
   try {
-    // User
-    const user = await prisma.user.upsert({
+    await prisma.user.upsert({
       where: {
         id: 1,
       },
@@ -15,6 +14,20 @@ const prisma = new PrismaClient();
         firstName: "John",
         lastName: "Rake",
         email: "john@betablox.com",
+        password: await argon2.hash("password"),
+        isAdmin: true,
+      },
+    });
+    
+    await prisma.user.upsert({
+      where: {
+        id: 2,
+      },
+      update: {},
+      create: {
+        firstName: "Admin",
+        lastName: "User",
+        email: "admin@betablox.com",
         password: await argon2.hash("password"),
         isAdmin: true,
       },

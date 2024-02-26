@@ -24,23 +24,22 @@ This is our base project template for web applications, APIs, and administrative
 
 - [Git Patch Stack](https://git-ps.sh/) - Git Patch Stack is a command line tool that facilitates a Patch Stack based workflow with Git. Git Patch Stack helps you think in terms of a stack of patches instead of a series of isolated branches.
 
-## Setup
-
-`npm install`
-
-`npm run docker:up`
-
-`npm run db:reset`
-
 ## Environment
 
 `cp .env.example .env`
 
 Now modify `.env` as needed
 
+## Setup
+
+- Install your deps: `npm install`
+- Run docker services: `npm run docker:up`
+- Reset and seed your database: `npm run db:reset`
+- Run build once for turbo cache: `npm run build`
+
 ## Development
 
-`npm run dev`
+- Start dev: `npm run dev`
 
 ### App
 
