@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { AuthService } from '@/auth/auth.service';
 import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaModule } from '@/prisma/prisma.module';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -18,11 +19,12 @@ describe('AuthController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        UsersModule,
-        JwtModule.register({}),
         ConfigModule.forRoot({
           isGlobal: true,
         }),
+        UsersModule,
+        JwtModule.register({}),
+        PrismaModule,
       ],
       controllers: [AuthController],
       providers: [AuthService],

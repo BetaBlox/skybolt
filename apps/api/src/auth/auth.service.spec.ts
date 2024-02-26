@@ -3,6 +3,7 @@ import { AuthService } from '@/auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '@/users/users.module';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from '@/prisma/prisma.module';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -10,11 +11,12 @@ describe('AuthService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        UsersModule,
-        JwtModule.register({}),
         ConfigModule.forRoot({
           isGlobal: true,
         }),
+        UsersModule,
+        JwtModule.register({}),
+        PrismaModule,
       ],
       providers: [AuthService],
     }).compile();

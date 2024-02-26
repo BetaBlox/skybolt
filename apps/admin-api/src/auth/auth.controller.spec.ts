@@ -18,11 +18,11 @@ describe('AuthController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        UsersModule,
-        JwtModule.register({}),
         ConfigModule.forRoot({
           isGlobal: true,
         }),
+        UsersModule,
+        JwtModule.register({}),
       ],
       controllers: [AuthController],
       providers: [AuthService],

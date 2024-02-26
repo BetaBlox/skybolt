@@ -7,9 +7,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { AccessTokenStrategy } from '@/auth/accessToken.strategy';
 import { RefreshTokenStrategy } from '@/auth/refreshToken.strategy';
 import { UsersModule } from '@/users/users.module';
+import { PrismaModule } from '@/prisma/prisma.module';
 
 @Module({
-  imports: [UsersModule, JwtModule.register({})],
+  imports: [UsersModule, JwtModule.register({}), PrismaModule],
   controllers: [AuthController],
   providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
   exports: [AuthService],
