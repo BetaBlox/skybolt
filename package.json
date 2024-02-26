@@ -42,11 +42,12 @@
   "dependencies": {
     "dotenv-cli": "^7.3.0",
     "jwt-decode": "^4.0.0",
-    "prettier": "^3.1.1",
     "typescript": "^5.3.2",
     "utils": "*"
   },
   "devDependencies": {
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.11",
     "turbo": "^1.11.2"
   }
 }
