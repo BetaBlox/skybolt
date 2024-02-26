@@ -12,7 +12,10 @@ export default defineConfig({
         changeOrigin: true,
       },
     },
+    host: "localhost",
     port: 8080,
+    strictPort: true,
+    open: true,
   },
   resolve: {
     alias: [{ find: "@", replacement: resolve(__dirname, "./src") }],
