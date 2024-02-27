@@ -2,7 +2,7 @@ import { DMMF } from '@repo/database';
 import { ChangeEvent } from 'react';
 import FieldLabel from '../FieldLabel';
 import { useQuery } from '@tanstack/react-query';
-import { routeWithParams } from 'utils';
+import { routeWithParams } from '@repo/utils';
 import { AdminAttributeType, SelectOption } from '@repo/types';
 
 interface Props {

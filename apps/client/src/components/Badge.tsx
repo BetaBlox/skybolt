@@ -1,5 +1,5 @@
-import { BadgeColor } from "@/common/badge-color.constants";
-import { classNames } from "utils";
+import { BadgeColor } from '@/common/badge-color.constants';
+import { classNames } from '@repo/utils';
 
 interface Props {
   children: JSX.Element | string | number;
@@ -10,7 +10,7 @@ interface Props {
 export default function Badge({
   children: text,
   color = BadgeColor.Gray,
-  className = "",
+  className = '',
 }: Props) {
   const cssClasses = `inline-flex items-center px-2 py-1 text-xs ring-1 ring-inset ${className}`;
 
@@ -20,7 +20,7 @@ export default function Badge({
         <span
           className={classNames(
             cssClasses,
-            "bg-gray-50 text-gray-600 ring-gray-500/10",
+            'bg-gray-50 text-gray-600 ring-gray-500/10',
           )}
         >
           {text}
@@ -30,7 +30,7 @@ export default function Badge({
         <span
           className={classNames(
             cssClasses,
-            "bg-red-50 text-red-700 ring-red-700/10",
+            'bg-red-50 text-red-700 ring-red-700/10',
           )}
         >
           {text}
@@ -40,7 +40,7 @@ export default function Badge({
         <span
           className={classNames(
             cssClasses,
-            "bg-orange-50 text-orange-700 ring-orange-600/20",
+            'bg-orange-50 text-orange-700 ring-orange-600/20',
           )}
         >
           {text}
@@ -50,7 +50,7 @@ export default function Badge({
         <span
           className={classNames(
             cssClasses,
-            "bg-yellow-50 text-yellow-800 ring-yellow-600/20",
+            'bg-yellow-50 text-yellow-800 ring-yellow-600/20',
           )}
         >
           {text}
@@ -60,7 +60,7 @@ export default function Badge({
         <span
           className={classNames(
             cssClasses,
-            "bg-green-50 text-green-700 ring-green-600/20",
+            'bg-green-50 text-green-700 ring-green-600/20',
           )}
         >
           {text}
@@ -70,7 +70,7 @@ export default function Badge({
         <span
           className={classNames(
             cssClasses,
-            "bg-blue-50 text-blue-700 ring-blue-700/10",
+            'bg-blue-50 text-blue-700 ring-blue-700/10',
           )}
         >
           {text}
@@ -80,7 +80,7 @@ export default function Badge({
         <span
           className={classNames(
             cssClasses,
-            "bg-indigo-50 text-indigo-700 ring-indigo-700/10",
+            'bg-indigo-50 text-indigo-700 ring-indigo-700/10',
           )}
         >
           {text}
@@ -90,7 +90,7 @@ export default function Badge({
         <span
           className={classNames(
             cssClasses,
-            "bg-purple-50 text-purple-700 ring-purple-700/10",
+            'bg-purple-50 text-purple-700 ring-purple-700/10',
           )}
         >
           {text}
@@ -100,7 +100,7 @@ export default function Badge({
         <span
           className={classNames(
             cssClasses,
-            "bg-pink-50 text-pink-700 ring-pink-700/10",
+            'bg-pink-50 text-pink-700 ring-pink-700/10',
           )}
         >
           {text}

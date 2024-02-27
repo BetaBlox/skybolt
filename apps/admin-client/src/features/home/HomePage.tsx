@@ -2,7 +2,7 @@ import PageHeader from '@/components/PageHeader';
 import { modelDisplayName } from '@/config/admin';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { routeWithParams } from 'utils';
+import { routeWithParams } from '@repo/utils';
 import { MODEL, MODEL_RECORD } from '@/common/routes';
 import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import { AdminModelPayload } from '@repo/types';

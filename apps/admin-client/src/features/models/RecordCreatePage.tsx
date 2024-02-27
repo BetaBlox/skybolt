@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import PageHeader from '@/components/PageHeader';
 import { modelDisplayName } from '@/config/admin';
 import { useParams } from 'react-router-dom';
-import { routeWithParams } from 'utils';
+import { routeWithParams } from '@repo/utils';
 import { MODEL } from '@/common/routes';
 import CreateForm from '@/components/CreateForm';
 import { AdminRecordPayload } from '@repo/types';

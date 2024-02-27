@@ -1,21 +1,17 @@
-import { Fragment, useState } from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import { Fragment, useState } from 'react';
+import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   Bars3Icon,
   BellIcon,
   Cog6ToothIcon,
   HomeIcon,
   XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import { classNames } from "utils";
-import AuthProvider from "../auth/AuthProvider";
-import {
-  HOME,
-  LOGOUT,
-  PROFILE,
-} from "../common/routes";
+} from '@heroicons/react/24/outline';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { classNames } from '@repo/utils';
+import AuthProvider from '../auth/AuthProvider';
+import { HOME, LOGOUT, PROFILE } from '../common/routes';
 
 type NavItem = {
   name: string;
@@ -26,12 +22,10 @@ type NavItem = {
   initial?: string;
 };
 
-const navigation: NavItem[] = [
-  { name: "Home", href: HOME, icon: HomeIcon },
-];
+const navigation: NavItem[] = [{ name: 'Home', href: HOME, icon: HomeIcon }];
 const userNavigation: NavItem[] = [
-  { name: "Your profile", href: PROFILE },
-  { name: "Sign out", href: LOGOUT },
+  { name: 'Your profile', href: PROFILE },
+  { name: 'Sign out', href: LOGOUT },
 ];
 
 export default function SidebarLayout() {
@@ -39,7 +33,7 @@ export default function SidebarLayout() {
   const location = useLocation();
   const user = AuthProvider.user!;
   const imageUrl =
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80";
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
 
   const isCurrentNavItem = (navItem: NavItem): boolean =>
     location.pathname === navItem.href;
@@ -118,9 +112,9 @@ export default function SidebarLayout() {
                                   to={item.href}
                                   className={classNames(
                                     isCurrentNavItem(item)
-                                      ? "bg-gray-800 text-white"
-                                      : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                                    "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                                      ? 'bg-gray-800 text-white'
+                                      : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                                    'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                                   )}
                                 >
                                   <item.icon
@@ -175,9 +169,9 @@ export default function SidebarLayout() {
                           to={item.href}
                           className={classNames(
                             isCurrentNavItem(item)
-                              ? "bg-gray-800 text-white"
-                              : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                            "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                              ? 'bg-gray-800 text-white'
+                              : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                            'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                           )}
                         >
                           <item.icon
@@ -294,8 +288,8 @@ export default function SidebarLayout() {
                             <Link
                               to={item.href}
                               className={classNames(
-                                active ? "bg-gray-50" : "",
-                                "block px-3 py-1 text-sm leading-6 text-gray-900",
+                                active ? 'bg-gray-50' : '',
+                                'block px-3 py-1 text-sm leading-6 text-gray-900',
                               )}
                             >
                               {item.name}

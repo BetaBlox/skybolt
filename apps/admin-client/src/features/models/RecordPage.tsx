@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { captilalize, routeWithParams } from 'utils';
+import { captilalize, routeWithParams } from '@repo/utils';
 import {
   getAttributeType,
   renderFieldInShowView,

@@ -10,7 +10,7 @@ import {
   AdminFieldType,
   AdminModel,
 } from '@repo/types';
-import { camelize } from 'utils';
+import { camelize } from '@repo/utils';
 
 export const AdmingConfig: AdminConfig = {
   models: {

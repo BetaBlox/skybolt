@@ -1,6 +1,6 @@
 import { modelDisplayName } from '@/config/admin';
 import { Link, useParams } from 'react-router-dom';
-import { captilalize, routeWithParams } from 'utils';
+import { captilalize, routeWithParams } from '@repo/utils';
 import { renderFieldInCollectionView } from '../../../../admin-api/src/config/admin';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '@/components/PageHeader';
