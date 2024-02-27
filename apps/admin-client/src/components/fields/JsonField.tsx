@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-import JSONEditor, {JSONEditorMode} from "jsoneditor";
-import "jsoneditor/dist/jsoneditor.css";
-import { DMMF } from "database";
-import FieldLabel from "../FieldLabel";
+import JSONEditor, { JSONEditorMode } from 'jsoneditor';
+import 'jsoneditor/dist/jsoneditor.css';
+import { DMMF } from '@repo/database';
+import FieldLabel from '../FieldLabel';
 
 interface Props {
   field: DMMF.Field;
@@ -23,7 +23,7 @@ export default function JsonField({ field, value, onChange }: Props) {
       if (container.current) {
         // @see https://github.com/josdejong/jsoneditor/blob/master/docs/api.md
         const options = {
-          mode: "tree" as JSONEditorMode,
+          mode: 'tree' as JSONEditorMode,
           onChangeJSON: handleChange,
           sortObjectKeys: false,
           enableSort: false,
@@ -34,7 +34,7 @@ export default function JsonField({ field, value, onChange }: Props) {
           mainMenuBar: false,
           navigationBar: false,
           statusBar: false,
-          language: "en",
+          language: 'en',
         };
 
         const jsoneditor = new JSONEditor(container.current, options, value);

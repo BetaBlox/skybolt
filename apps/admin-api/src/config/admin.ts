@@ -3,7 +3,7 @@
  *
  * @see https://administrate-demo.herokuapp.com
  */
-import { Post, User } from 'database';
+import { Post, User } from '@repo/database';
 import {
   AdminAttributeType,
   AdminConfig,

@@ -1,4 +1,4 @@
-import { DMMF } from 'database';
+import { DMMF } from '@repo/database';
 import { captilalize } from 'utils';
 
 interface Props {

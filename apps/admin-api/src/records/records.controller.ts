@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { RecordsService } from './records.service';
-import { DMMF } from 'database';
+import { DMMF } from '@repo/database';
 import { AdminRecordPayload, AdminRecordsPayload } from '@repo/types';
 
 @Controller('records')

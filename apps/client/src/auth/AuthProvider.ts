@@ -1,6 +1,6 @@
-import { User } from "database";
-import { JwtPayload, jwtDecode } from "jwt-decode";
-import { HTTP_METHOD, customFetch } from "../common/custom-fetcher";
+import { User } from '@repo/database';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { HTTP_METHOD, customFetch } from '../common/custom-fetcher';
 
 interface AuthProvider {
   loaded: boolean;
@@ -24,7 +24,7 @@ interface AuthProvider {
   changePassword(password: string): Promise<Response>;
 }
 
-export const AUTH_TOKENS = "authTokens";
+export const AUTH_TOKENS = 'authTokens';
 
 const AuthProvider: AuthProvider = {
   // indicates that the auth provider has full initialized
@@ -48,10 +48,10 @@ const AuthProvider: AuthProvider = {
     });
   },
   async signin(email: string, password: string): Promise<Response> {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         email,
@@ -74,23 +74,23 @@ const AuthProvider: AuthProvider = {
     return response;
   },
   async loadUserProfile(): Promise<void> {
-    const { data } = await customFetch("/api/auth/profile");
+    const { data } = await customFetch('/api/auth/profile');
     this.user = data;
     this.email = data.email;
   },
   async updateUserProfile(updates: object): Promise<void> {
-    const { data } = await customFetch("/api/auth/profile", {
-      method: "POST",
+    const { data } = await customFetch('/api/auth/profile', {
+      method: 'POST',
       body: JSON.stringify(updates),
     });
     this.user = data;
     this.email = data.email;
   },
   async signout() {
-    await fetch("/api/auth/logout", {
-      method: "GET",
+    await fetch('/api/auth/logout', {
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${this.authTokens.accessToken}`,
       },
     });
@@ -104,16 +104,16 @@ const AuthProvider: AuthProvider = {
   },
   async refreshToken(): Promise<void> {
     const token = this.getRefreshTokenFromStorage();
-    console.log("user token is expired. Attempting to refresh.");
-    const response = await fetch("/api/auth/refresh", {
+    console.log('user token is expired. Attempting to refresh.');
+    const response = await fetch('/api/auth/refresh', {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     });
 
     if (response.ok) {
-      console.log("user token successfully refreshed");
+      console.log('user token successfully refreshed');
       const { accessToken, refreshToken } = await response.json();
       this.authTokens.accessToken = accessToken;
       this.authTokens.refreshToken = refreshToken;
@@ -135,14 +135,14 @@ const AuthProvider: AuthProvider = {
   },
 
   async loadFromStorage() {
-    console.log("loading user authentication from storage");
+    console.log('loading user authentication from storage');
     const accessToken = this.getAccessTokenFromStorage();
     const refreshToken = this.getRefreshTokenFromStorage();
 
     const isAuthenticated =
       accessToken && this.tokenIsExpired(accessToken) === false;
     if (isAuthenticated) {
-      console.log("user is authenticated via access token");
+      console.log('user is authenticated via access token');
       // User access token is still valid we don't need to do anything
       this.authTokens.accessToken = accessToken;
       this.authTokens.refreshToken = refreshToken;
@@ -182,10 +182,10 @@ const AuthProvider: AuthProvider = {
     return decodedTokens.refreshToken || null;
   },
   async changePassword(password: string): Promise<Response> {
-    const response = await fetch("/api/auth/change-password", {
+    const response = await fetch('/api/auth/change-password', {
       method: HTTP_METHOD.POST,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${this.authTokens.accessToken}`,
       },
       body: JSON.stringify({ password }),

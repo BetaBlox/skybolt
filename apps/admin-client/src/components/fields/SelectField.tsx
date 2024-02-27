@@ -1,4 +1,4 @@
-import { DMMF } from 'database';
+import { DMMF } from '@repo/database';
 import { ChangeEvent } from 'react';
 import FieldLabel from '../FieldLabel';
 import { SelectOption } from '@/config/admin';

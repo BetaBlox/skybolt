@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DMMF, Prisma } from 'database';
+import { DMMF, Prisma } from '@repo/database';
 import * as admin from '@/config/admin';
 import { PrismaService } from '@/prisma/prisma.service';
 import { AdminRecordPayload, AdminRecordsPayload } from '@repo/types';

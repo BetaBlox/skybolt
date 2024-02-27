@@ -45,7 +45,7 @@ jobs:
       - run: npm install
       - run: npm run db:generate
       - run: npm run build
-      - run: npx --workspace=database prisma migrate reset --skip-seed --force
+      - run: npx --workspace=@repo/database prisma migrate reset --skip-seed --force
       - run: npm run test:utils
       - run: npm run test:database
       - run: npm run test:client

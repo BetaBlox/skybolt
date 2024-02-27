@@ -1,12 +1,12 @@
-import { User } from "database";
-import { useState, FormEvent } from "react";
-import AuthProvider from "@/auth/AuthProvider";
-import { Notify } from "@/features/notification/notification.service";
+import { User } from '@repo/database';
+import { useState, FormEvent } from 'react';
+import AuthProvider from '@/auth/AuthProvider';
+import { Notify } from '@/features/notification/notification.service';
 
 export default function UserProfilePage() {
   const [data, setData] = useState<User>(AuthProvider.user!);
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const savePersonalInfo = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ export default function UserProfilePage() {
     try {
       const res = await AuthProvider.changePassword(password);
       if (res.ok) {
-        Notify.success("Password updated");
+        Notify.success('Password updated');
       } else {
         Notify.error();
       }
@@ -74,9 +74,9 @@ export default function UserProfilePage() {
                     name="first-name"
                     id="first-name"
                     autoComplete="given-name"
-                    value={data.firstName || ""}
+                    value={data.firstName || ''}
                     onChange={(e) =>
-                      handleChange("firstName", e.currentTarget.value)
+                      handleChange('firstName', e.currentTarget.value)
                     }
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
@@ -97,9 +97,9 @@ export default function UserProfilePage() {
                     name="last-name"
                     id="last-name"
                     autoComplete="family-name"
-                    value={data.lastName || ""}
+                    value={data.lastName || ''}
                     onChange={(e) =>
-                      handleChange("lastName", e.currentTarget.value)
+                      handleChange('lastName', e.currentTarget.value)
                     }
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
@@ -120,9 +120,9 @@ export default function UserProfilePage() {
                     name="email"
                     type="email"
                     autoComplete="email"
-                    value={data.email || ""}
+                    value={data.email || ''}
                     onChange={(e) =>
-                      handleChange("email", e.currentTarget.value)
+                      handleChange('email', e.currentTarget.value)
                     }
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
@@ -167,7 +167,7 @@ export default function UserProfilePage() {
                     type="password"
                     name="new-password"
                     id="new-password"
-                    value={password || ""}
+                    value={password || ''}
                     onChange={(e) => setPassword(e.currentTarget.value)}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
@@ -187,7 +187,7 @@ export default function UserProfilePage() {
                     type="password"
                     name="confirm-password"
                     id="confirm-password"
-                    value={passwordConfirm || ""}
+                    value={passwordConfirm || ''}
                     onChange={(e) => setPasswordConfirm(e.currentTarget.value)}
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required

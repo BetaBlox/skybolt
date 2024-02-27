@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react';
 import JsonField from './fields/JsonField';
 import { routeWithParams } from 'utils';
-import { DMMF } from 'database';
+import { DMMF } from '@repo/database';
 import BooleanField from './fields/BooleanField';
 import IntegerField from './fields/IntegerField';
 import SelectField from './fields/SelectField';

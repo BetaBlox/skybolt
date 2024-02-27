@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from 'database';
+import { Prisma } from '@repo/database';
 import * as admin from '@/config/admin';
 import { PrismaService } from '@/prisma/prisma.service';
 import { AdminModelPayload } from '@repo/types';
