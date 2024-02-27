@@ -1,5 +1,5 @@
-import { DMMF } from "database";
-import { captilalize } from "utils";
+import { DMMF } from 'database';
+import { captilalize } from 'utils';
 
 interface Props {
   field: DMMF.Field;

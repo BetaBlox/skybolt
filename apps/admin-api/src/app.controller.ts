@@ -1,4 +1,11 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Put,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { AdminAttributeType } from '@/config/admin';
 import { DMMF } from 'database';
@@ -41,7 +48,25 @@ export class AppController {
     showAttributes: string[];
     formAttributes: string[];
     record: any;
+    displayName: string;
   }> {
     return this.appService.getRecord(modelName, id);
+  }
+
+  @Put('/models/:modelName/:id')
+  updateRecord(
+    @Param('modelName') modelName: string,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: object,
+  ): Promise<{
+    prismaModelConfig: DMMF.Model;
+    attributeTypes: AdminAttributeType[];
+    collectionAttributes: string[];
+    showAttributes: string[];
+    formAttributes: string[];
+    record: any;
+    displayName: string;
+  }> {
+    return this.appService.updateRecord(modelName, id, data);
   }
 }

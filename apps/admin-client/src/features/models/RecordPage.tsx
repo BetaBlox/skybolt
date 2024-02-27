@@ -52,8 +52,6 @@ export default function RecordPage() {
     displayName,
   } = data;
 
-  console.log(data);
-
   return (
     <div>
       <PageHeader

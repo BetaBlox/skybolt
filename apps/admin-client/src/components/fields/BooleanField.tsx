@@ -1,6 +1,6 @@
-import { DMMF } from "database";
-import { ChangeEvent } from "react";
-import FieldLabel from "../FieldLabel";
+import { DMMF } from 'database';
+import { ChangeEvent } from 'react';
+import FieldLabel from '../FieldLabel';
 
 interface Props {
   field: DMMF.Field;
@@ -21,7 +21,7 @@ export default function BooleanField({
       <FieldLabel field={field} required={false} />
       <input
         type="checkbox"
-        className="focus:ring-blue-500focus:ring-2 h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600"
+        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
         id={field.name}
         name={field.name}
         checked={value === true}

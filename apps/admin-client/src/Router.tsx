@@ -1,10 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import protectedLoader from '@/auth/protectedLoader';
 import RootLayout from '@/layout/RootLayout';
-import { HOME, MODEL, MODEL_RECORD } from '@/common/routes';
+import { HOME, MODEL, MODEL_RECORD, MODEL_RECORD_EDIT } from '@/common/routes';
 import HomePage from '@/features/home/HomePage';
 import ModelPage from '@/features/models/ModelPage';
 import RecordPage from '@/features/models/RecordPage';
+import RecordEditPage from './features/models/RecordEditPage';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,11 @@ const router = createBrowserRouter([
         path: MODEL_RECORD,
         loader: protectedLoader,
         element: <RecordPage />,
+      },
+      {
+        path: MODEL_RECORD_EDIT,
+        loader: protectedLoader,
+        element: <RecordEditPage />,
       },
     ],
   },

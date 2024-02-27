@@ -1,7 +1,7 @@
-import { DMMF } from "database";
-import { ChangeEvent } from "react";
-import FieldLabel from "../FieldLabel";
-import { SelectOption } from "@/config/admin";
+import { DMMF } from 'database';
+import { ChangeEvent } from 'react';
+import FieldLabel from '../FieldLabel';
+import { SelectOption } from '@/config/admin';
 
 interface Props {
   field: DMMF.Field;
@@ -23,7 +23,7 @@ export default function SelectField({
     <div>
       <FieldLabel field={field} />
       <select
-        className="focus:shadow-outline w-full rounded border px-3 py-2 leading-tight text-gray-700 shadow"
+        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
         id={field.name}
         name={field.name}
         value={value}
