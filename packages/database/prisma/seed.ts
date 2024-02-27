@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import * as argon2 from 'argon2';
+import colors from './fixtures/colors';
 
 const prisma = new PrismaClient();
 
@@ -77,6 +78,18 @@ const prisma = new PrismaClient();
         authorId: user.id,
       },
     });
+
+    /**
+     * Generate 100 random colors to test pagintation in admin
+     */
+    await prisma.color.deleteMany();
+
+    await prisma.color.createMany({
+      data: colors.map((c) => ({
+        label: c[1],
+        hex: c[0],
+      })),
+    });
   } catch (e) {
     console.error(e);
     process.exit(1);
@@ -84,3 +97,6 @@ const prisma = new PrismaClient();
     await prisma.$disconnect();
   }
 })();
+
+const randHexColor = () =>
+  '#' + Math.floor(Math.random() * 16777215).toString(16);

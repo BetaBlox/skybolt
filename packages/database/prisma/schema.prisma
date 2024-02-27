@@ -32,3 +32,11 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
+
+model Color {
+  id        Int      @id @default(autoincrement())
+  label     String
+  hex       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}

@@ -3,7 +3,7 @@
  *
  * @see https://administrate-demo.herokuapp.com
  */
-import { Post, User } from '@repo/database';
+import { Color, Post, User } from '@repo/database';
 import {
   AdminAttributeType,
   AdminConfig,
@@ -54,6 +54,18 @@ export const AdmingConfig: AdminConfig = {
         'updatedAt',
       ],
       formAttributes: ['title', 'content', 'author'],
+    },
+    color: {
+      getDisplayName: (record: Color) => record.label,
+      attributeTypes: [
+        { name: 'label', type: AdminFieldType.STRING },
+        { name: 'hex', type: AdminFieldType.STRING },
+        { name: 'createdAt', type: AdminFieldType.DATETIME },
+        { name: 'updatedAt', type: AdminFieldType.DATETIME },
+      ],
+      collectionAttributes: ['label', 'hex', 'createdAt', 'updatedAt'],
+      showAttributes: ['label', 'hex', 'createdAt', 'updatedAt'],
+      formAttributes: ['label', 'hex'],
     },
   },
 };

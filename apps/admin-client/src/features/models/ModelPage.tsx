@@ -54,7 +54,7 @@ export default function ModelPage() {
       />
       <div className="relative overflow-x-auto bg-white shadow-md sm:rounded-lg">
         <table className="w-full text-left text-sm text-gray-50">
-          <thead className="bg-gray-100 text-xs text-gray-700">
+          <thead className="bg-gray-600 text-xs text-white">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Id
