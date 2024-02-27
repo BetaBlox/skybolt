@@ -45,7 +45,7 @@ export default function RecordPage() {
 
   const {
     // attributeTypes,
-    collectionAttributes,
+    // collectionAttributes,
     showAttributes,
     // formAttributes,
     record,

@@ -1,4 +1,4 @@
-import { createUrl, editUrl, modelDisplayName, showUrl } from '@/config/admin';
+import { modelDisplayName } from '@/config/admin';
 import { DMMF } from 'database';
 import { Link, useParams } from 'react-router-dom';
 import { captilalize, routeWithParams } from 'utils';
