@@ -14,6 +14,7 @@ import { camelize } from 'utils';
 export enum Field {
   STRING = 'string',
   TEXT = 'text',
+  PASSWORD = 'password',
   BOOLEAN = 'boolean',
   INTEGER = 'int',
   SELECT = 'select',
@@ -53,13 +54,13 @@ export const AdmingConfig: AdminConfig = {
         { name: 'lastName', type: Field.STRING },
         { name: 'email', type: Field.STRING },
         { name: 'isAdmin', type: Field.BOOLEAN },
-        { name: 'acceptsPromotionalNotifications', type: Field.BOOLEAN },
+        { name: 'password', type: Field.PASSWORD },
         { name: 'createdAt', type: Field.DATETIME },
         { name: 'updatedAt', type: Field.DATETIME },
       ],
       collectionAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
       showAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
-      formAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
+      formAttributes: ['firstName', 'lastName', 'email', 'password', 'isAdmin'],
     },
     post: {
       getDisplayName: (record: Post) => record.title,

@@ -6,15 +6,15 @@ import { useParams } from 'react-router-dom';
 import { routeWithParams } from 'utils';
 import { AdminAttributeType } from '../../../../admin-api/src/config/admin';
 import { MODEL } from '@/common/routes';
-import UpdateForm from '@/components/UpdateForm';
+import CreateForm from '@/components/CreateForm';
 
-export default function RecordEditPage() {
+export default function RecordCreatePage() {
   const { modelName, id } = useParams();
 
   const recordQuery = useQuery({
-    queryKey: [`${modelName}/${id}`],
+    queryKey: [`models/${modelName}`],
     queryFn: async () => {
-      const url = routeWithParams(`/api/records/:modelName/:id`, {
+      const url = routeWithParams(`/api/models/:modelName`, {
         modelName,
         id,
       });
@@ -36,21 +36,14 @@ export default function RecordEditPage() {
     formAttributes: string[];
     // Ignoring for now because we don't have a type for this API payload
     record: any; // eslint-disable-line
-    displayName: string;
   };
 
-  const {
-    attributeTypes,
-    prismaModelConfig,
-    formAttributes,
-    record,
-    displayName,
-  } = data;
+  const { attributeTypes, prismaModelConfig, formAttributes } = data;
 
   return (
     <div>
       <PageHeader
-        heading={displayName}
+        heading={'Create'}
         breadcrumbs={[
           {
             href: routeWithParams(MODEL, {
@@ -61,14 +54,13 @@ export default function RecordEditPage() {
           },
           {
             href: '#',
-            text: displayName,
+            text: 'Create',
             current: true,
           },
         ]}
       />
-      <UpdateForm
+      <CreateForm
         modelName={modelName}
-        record={record}
         prismaModelConfig={prismaModelConfig}
         attributeTypes={attributeTypes}
         formAttributes={formAttributes}

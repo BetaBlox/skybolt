@@ -11,6 +11,7 @@ import SelectField from './fields/SelectField';
 import StringField from './fields/StringField';
 import TextField from './fields/TextField';
 import { Notify } from '@/config/notification/notification.service';
+import PasswordField from './fields/PasswordField';
 
 interface Props {
   modelName: string;
@@ -36,19 +37,21 @@ export default function UpdateForm({
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setSaving(true);
     e.preventDefault();
+
     try {
-      const url = routeWithParams('/api/models/:modelName/:id', {
+      const url = routeWithParams('/api/records/:modelName/:id', {
         modelName,
         id: String(data.id),
       });
-      await fetch(url, {
+      const res = await fetch(url, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
-      Notify.success();
+
+      res.ok ? Notify.success() : Notify.error();
     } catch (error) {
       Notify.error();
       console.error(error);
@@ -98,6 +101,9 @@ export default function UpdateForm({
               {attributeType.type === Field.STRING && (
                 <StringField {...defaultFieldProps} />
               )}
+              {attributeType.type === Field.PASSWORD && (
+                <PasswordField {...defaultFieldProps} />
+              )}
               {attributeType.type === Field.TEXT && (
                 <TextField {...defaultFieldProps} />
               )}
@@ -136,6 +142,7 @@ export default function UpdateForm({
         >
           Submit
         </button>
+        {/* {error && <FormError error={error} />} */}
       </div>
     </form>
   );

@@ -1,123 +1,145 @@
-// import { usePrisma } from "@/usePrisma";
-// import {
-//   Field,
-//   getModel,
-//   getAttributeType,
-//   getModelDefaultValues,
-//   showUrl,
-// } from "@/config/admin";
-// import { FormEvent, useState } from "react";
-// import StringField from "./fields/StringField";
-// import IntegerField from "./fields/IntegerField";
-// import TextField from "./fields/TextField";
-// import BooleanField from "./fields/BooleanField";
-// import SelectField from "./fields/SelectField";
-// import RelationshipHasOneField from "./fields/RelationshipHasOneField";
-// import FormError from "./FormError";
-// import JsonField from "./fields/JsonField";
-// import { useNavigate } from "react-router-dom";
-// import { PrismaContextType } from "@/PrismaProvider";
+'use client';
 
-// interface Props {
-//   modelName: string;
-// }
+import { FormEvent, useState } from 'react';
+import JsonField from './fields/JsonField';
+import { routeWithParams } from 'utils';
+import { DMMF } from 'database';
+import { AdminAttributeType, Field } from '../../../admin-api/src/config/admin';
+import BooleanField from './fields/BooleanField';
+import IntegerField from './fields/IntegerField';
+import SelectField from './fields/SelectField';
+import StringField from './fields/StringField';
+import TextField from './fields/TextField';
+import { Notify } from '@/config/notification/notification.service';
+import PasswordField from './fields/PasswordField';
 
-// export default function CreateForm({ modelName }: Props) {
-//   const [data, setData] = useState(getModelDefaultValues(modelName));
-//   const [saving, setSaving] = useState(false);
-//   const [error, setError] = useState(null);
-//   const navigate = useNavigate();
-//   const modelConfig = getModel(modelName);
-//   const { getPrismaField } = usePrisma() as PrismaContextType;
-//   const { formAttributes } = modelConfig;
+interface Props {
+  modelName: string;
+  prismaModelConfig: DMMF.Model;
+  attributeTypes: AdminAttributeType[];
+  formAttributes: string[];
+}
 
-//   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-//     setError(null);
-//     setSaving(true);
-//     e.preventDefault();
-//     try {
-//       const url = `/api/admin/${modelName}`;
-//       const response = await fetch(url, {
-//         method: "POST",
-//         body: JSON.stringify(data),
-//       })
-//       const json = await response.json();
-//       navigate(showUrl(modelName, json));
-//     // } catch (error) {
-//     //   console.error(error);
-//     //   setError(error.response.data.error);
-//     } finally {
-//       setSaving(false);
-//     }
-//   };
+export default function CreateForm({
+  modelName,
+  prismaModelConfig,
+  attributeTypes,
+  formAttributes,
+}: Props) {
+  const [data, setData] = useState({});
+  const [saving, setSaving] = useState(false);
 
-//   const handleChange = (key: string, value: any) => {
-//     const newData = {
-//       ...data,
-//       [key]: value,
-//     };
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    setSaving(true);
+    e.preventDefault();
 
-//     setData(newData);
-//   };
+    try {
+      const url = routeWithParams('/api/records/:modelName', {
+        modelName,
+      });
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-//   return (
-//     <form onSubmit={onSubmit}>
-//       <div className="mt-6 border-t border-gray-100 bg-white p-6 shadow-md sm:rounded-lg">
-//         {formAttributes.map((attribute) => {
-//           const prismaField = getPrismaField(modelName, attribute);
-//           const attributeType = getAttributeType(modelName, attribute);
+      res.ok ? Notify.success() : Notify.error();
+    } catch (error) {
+      Notify.error();
+      console.error(error);
+    } finally {
+      setSaving(false);
+    }
+  };
 
-//           const defaultFieldProps = {
-//             field: prismaField,
-//             value: data[attribute],
-//             onChange: handleChange,
-//           };
+  const handleChange = (key: string, value: any) => {
+    const newData = {
+      ...data,
+      [key]: value,
+    };
 
-//           return (
-//             <div key={attributeType.name} className="mb-4">
-//               {attributeType.type === Field.STRING && (
-//                 <StringField {...defaultFieldProps} />
-//               )}
-//               {attributeType.type === Field.TEXT && (
-//                 <TextField {...defaultFieldProps} />
-//               )}
-//               {attributeType.type === Field.JSON && (
-//                 <JsonField {...defaultFieldProps} />
-//               )}
-//               {attributeType.type === Field.SELECT && (
-//                 <SelectField
-//                   {...defaultFieldProps}
-//                   options={attributeType.options || []}
-//                 />
-//               )}
-//               {attributeType.type === Field.INTEGER && (
-//                 <IntegerField {...defaultFieldProps} />
-//               )}
-//               {attributeType.type === Field.BOOLEAN && (
-//                 <BooleanField {...defaultFieldProps} />
-//               )}
-//               {attributeType.type === Field.RELATIONSHIP_HAS_ONE && (
-//                 <RelationshipHasOneField
-//                   {...defaultFieldProps}
-//                   value={data[attributeType.sourceKey as string]}
-//                   modelName={modelName}
-//                   attribute={attribute}
-//                   attributeType={attributeType}
-//                 />
-//               )}
-//               {/* <p className="text-xs">{JSON.stringify(prismaField, null, 4)}</p> */}
-//             </div>
-//           );
-//         })}
-//         <button
-//           type="submit"
-//           className="rounded bg-indigo-600 px-3 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
-//           disabled={saving}
-//         >
-//           Submit
-//         </button>
-//         {error && <FormError error={error} />}
-//       </div>
-//     </form>
-//   );
-// }
+    setData(newData);
+  };
+
+  return (
+    <form onSubmit={onSubmit}>
+      <div className="mt-6 border-t border-gray-100 bg-white p-6 shadow-md sm:rounded-lg">
+        {formAttributes.map((attribute) => {
+          const attributeType = attributeTypes.find(
+            (at) => at.name === attribute,
+          );
+          const prismaField = prismaModelConfig?.fields.find(
+            (f) => f.name.toLowerCase() === attribute.toLowerCase(),
+          ) as DMMF.Field;
+
+          if (!attributeType) {
+            throw new Error(
+              `error locating attribute type model: ${modelName} attribute: ${attribute}`,
+            );
+          }
+
+          if (!prismaField) {
+            throw new Error(
+              `error locating prisma field type model: ${modelName} attribute: ${attribute}`,
+            );
+          }
+
+          const defaultFieldProps = {
+            field: prismaField,
+            value: data[attribute],
+            onChange: handleChange,
+          };
+
+          return (
+            <div key={attributeType.name} className="mb-4">
+              {attributeType.type === Field.STRING && (
+                <StringField {...defaultFieldProps} />
+              )}
+              {attributeType.type === Field.PASSWORD && (
+                <PasswordField {...defaultFieldProps} />
+              )}
+              {attributeType.type === Field.TEXT && (
+                <TextField {...defaultFieldProps} />
+              )}
+              {attributeType.type === Field.JSON && (
+                <JsonField {...defaultFieldProps} />
+              )}
+              {attributeType.type === Field.SELECT && (
+                <SelectField
+                  {...defaultFieldProps}
+                  options={attributeType.options || []}
+                />
+              )}
+              {attributeType.type === Field.INTEGER && (
+                <IntegerField {...defaultFieldProps} />
+              )}
+              {attributeType.type === Field.BOOLEAN && (
+                <BooleanField {...defaultFieldProps} />
+              )}
+              {/* {attributeType.type === Field.RELATIONSHIP_HAS_ONE && (
+                <RelationshipHasOneField
+                  {...defaultFieldProps}
+                  value={data[attributeType.sourceKey as string]}
+                  modelName={modelName}
+                  attribute={attribute}
+                  attributeType={attributeType}
+                />
+              )} */}
+              {/* <p className="text-xs">{JSON.stringify(prismaField, null, 4)}</p> */}
+            </div>
+          );
+        })}
+        <button
+          type="submit"
+          className="rounded bg-indigo-600 px-3 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
+          disabled={saving}
+        >
+          Submit
+        </button>
+        {/* {error && <FormError error={error} />} */}
+      </div>
+    </form>
+  );
+}
