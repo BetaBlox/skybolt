@@ -1,5 +1,5 @@
 {
-  "name": "paginator",
+  "name": "@repo/paginator",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
