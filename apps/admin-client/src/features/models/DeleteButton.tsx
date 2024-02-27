@@ -53,7 +53,7 @@ export default function DeleteButton({ payload }: Props) {
 
   return (
     <button
-      onClick={() => handleClick(modelName, record)}
+      onClick={handleClick}
       className="rounded bg-red-500 px-3 py-2 font-medium text-white hover:bg-red-600"
       disabled={saving}
     >
