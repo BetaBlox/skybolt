@@ -13,7 +13,6 @@ import PasswordField from './fields/PasswordField';
 import RelationshipHasOneField from './fields/RelationshipHasOneField';
 import { useNavigate } from 'react-router-dom';
 import { MODEL_RECORD } from '@/common/routes';
-import { showUrl } from '@/config/admin';
 
 interface Props {
   modelName: string;
