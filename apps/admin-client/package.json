@@ -11,6 +11,7 @@
     "test": "echo 'No tests specificed'"
   },
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
     "jsoneditor": "^10.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -18,6 +19,7 @@
     "utils": "*"
   },
   "devDependencies": {
+    "@repo/types": "*",
     "@types/jsoneditor": "^9.9.5",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",

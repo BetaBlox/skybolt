@@ -3,60 +3,28 @@
  *
  * @see https://administrate-demo.herokuapp.com
  */
+import { Post, User } from 'database';
 import {
-  Post,
-  User,
-  // DMMF,
-  // getPrismaModel,
-} from 'database';
+  AdminAttributeType,
+  AdminConfig,
+  AdminFieldType,
+  AdminModel,
+} from '@repo/types';
 import { camelize } from 'utils';
 
-export enum Field {
-  STRING = 'string',
-  TEXT = 'text',
-  PASSWORD = 'password',
-  BOOLEAN = 'boolean',
-  INTEGER = 'int',
-  SELECT = 'select',
-  JSON = 'json',
-  RELATIONSHIP_HAS_ONE = 'relationship_has_one',
-  DATETIME = 'datetime',
-}
-
-export type SelectOption = { label: string; value: string };
-
-export type AdminAttributeType = {
-  name: string;
-  type: Field;
-  options?: SelectOption[];
-  modelName?: string;
-  sourceKey?: string;
-  defaultValue?: any;
-};
-export type AdminModel = {
-  getDisplayName: (record: any) => string | number;
-  attributeTypes: AdminAttributeType[];
-  collectionAttributes: string[];
-  showAttributes: string[];
-  formAttributes: string[];
-};
-
-type AdminConfig = {
-  models: { [key: string]: AdminModel };
-};
 export const AdmingConfig: AdminConfig = {
   models: {
     user: {
       getDisplayName: (record: User) =>
         `${record.firstName} ${record.lastName} (${record.email})`,
       attributeTypes: [
-        { name: 'firstName', type: Field.STRING },
-        { name: 'lastName', type: Field.STRING },
-        { name: 'email', type: Field.STRING },
-        { name: 'isAdmin', type: Field.BOOLEAN },
-        { name: 'password', type: Field.PASSWORD },
-        { name: 'createdAt', type: Field.DATETIME },
-        { name: 'updatedAt', type: Field.DATETIME },
+        { name: 'firstName', type: AdminFieldType.STRING },
+        { name: 'lastName', type: AdminFieldType.STRING },
+        { name: 'email', type: AdminFieldType.STRING },
+        { name: 'isAdmin', type: AdminFieldType.BOOLEAN },
+        { name: 'password', type: AdminFieldType.PASSWORD },
+        { name: 'createdAt', type: AdminFieldType.DATETIME },
+        { name: 'updatedAt', type: AdminFieldType.DATETIME },
       ],
       collectionAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
       showAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
@@ -65,17 +33,17 @@ export const AdmingConfig: AdminConfig = {
     post: {
       getDisplayName: (record: Post) => record.title,
       attributeTypes: [
-        { name: 'title', type: Field.STRING },
-        { name: 'content', type: Field.TEXT },
+        { name: 'title', type: AdminFieldType.STRING },
+        { name: 'content', type: AdminFieldType.TEXT },
         {
           name: 'author',
-          type: Field.RELATIONSHIP_HAS_ONE,
+          type: AdminFieldType.RELATIONSHIP_HAS_ONE,
           sourceKey: 'authorId',
           modelName: 'user',
         },
-        { name: 'authorId', type: Field.INTEGER },
-        { name: 'createdAt', type: Field.DATETIME },
-        { name: 'updatedAt', type: Field.DATETIME },
+        { name: 'authorId', type: AdminFieldType.INTEGER },
+        { name: 'createdAt', type: AdminFieldType.DATETIME },
+        { name: 'updatedAt', type: AdminFieldType.DATETIME },
       ],
       collectionAttributes: ['title', 'authorId', 'createdAt', 'updatedAt'],
       showAttributes: [
@@ -132,9 +100,9 @@ export function renderFieldInCollectionView(
   const value = record[attributeType.name];
 
   switch (attributeType.type) {
-    case Field.BOOLEAN:
+    case AdminFieldType.BOOLEAN:
       return value === true ? 'yes' : 'no';
-    case Field.RELATIONSHIP_HAS_ONE:
+    case AdminFieldType.RELATIONSHIP_HAS_ONE:
       const relationshipModelName = attributeType.modelName!;
       const relationshipRecord = record[relationshipModelName];
 
@@ -160,11 +128,11 @@ export function renderFieldInShowView(
   const value = record[attributeType.name];
 
   switch (attributeType.type) {
-    case Field.JSON:
+    case AdminFieldType.JSON:
       return JSON.stringify(value, null, 2);
-    case Field.BOOLEAN:
+    case AdminFieldType.BOOLEAN:
       return value === true ? 'yes' : 'no';
-    case Field.RELATIONSHIP_HAS_ONE:
+    case AdminFieldType.RELATIONSHIP_HAS_ONE:
       const relationshipModelName = attributeType.modelName!;
       const relationshipRecord = record[relationshipModelName];
 

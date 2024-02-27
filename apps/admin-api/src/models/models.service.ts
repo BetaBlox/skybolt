@@ -1,27 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { DMMF, Prisma } from 'database';
+import { Prisma } from 'database';
 import * as admin from '@/config/admin';
 import { PrismaService } from '@/prisma/prisma.service';
-
-interface ModelPayload {
-  prismaModelConfig: DMMF.Model;
-  attributeTypes: admin.AdminAttributeType[];
-  collectionAttributes: string[];
-  showAttributes: string[];
-  formAttributes: string[];
-  count: number;
-  records: any[];
-}
+import { AdminModelPayload } from '@repo/types';
 
 @Injectable()
 export class ModelsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  getModels(): DMMF.Model[] {
-    return Prisma.dmmf.datamodel.models as DMMF.Model[];
+  async getModels(): Promise<AdminModelPayload[]> {
+    const adminModelNames = Object.keys(admin.AdmingConfig.models);
+    const promises = adminModelNames.map((modelName) => {
+      return this.getModel(modelName);
+    });
+    return Promise.all(promises);
   }
 
-  async getModel(modelName: string): Promise<ModelPayload> {
+  async getModel(modelName: string): Promise<AdminModelPayload> {
     const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
       (model) => model.name.toLowerCase() === modelName.toLowerCase(),
     );
@@ -38,6 +33,9 @@ export class ModelsService {
 
     const count = await this.prisma[modelName].count();
     const records = await this.prisma[modelName].findMany();
+    const recentRecords = await this.prisma[modelName].findMany({
+      take: 3,
+    });
 
     return {
       prismaModelConfig,
@@ -46,7 +44,14 @@ export class ModelsService {
       showAttributes: adminModelConfig.showAttributes,
       formAttributes: adminModelConfig.formAttributes,
       count,
-      records,
+      recentRecords: recentRecords.map((record) => ({
+        ...record,
+        displayName: adminModelConfig.getDisplayName(record) as string,
+      })),
+      records: records.map((record) => ({
+        ...record,
+        displayName: adminModelConfig.getDisplayName(record) as string,
+      })),
     };
   }
 }

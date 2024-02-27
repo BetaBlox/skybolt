@@ -2,34 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { DMMF, Prisma } from 'database';
 import * as admin from '@/config/admin';
 import { PrismaService } from '@/prisma/prisma.service';
-
-interface RecordPayload {
-  prismaModelConfig: DMMF.Model;
-  attributeTypes: admin.AdminAttributeType[];
-  collectionAttributes: string[];
-  showAttributes: string[];
-  formAttributes: string[];
-  record: any;
-  displayName: string;
-}
-
-interface RecordsPayload {
-  prismaModelConfig: DMMF.Model;
-  attributeTypes: admin.AdminAttributeType[];
-  collectionAttributes: string[];
-  showAttributes: string[];
-  formAttributes: string[];
-  // TODO: probably shouldn't mutate the raw data. Maybe a separate displayName lookup hash?
-  records: any[] & {
-    displayName: string;
-  };
-}
+import { AdminRecordPayload, AdminRecordsPayload } from '@repo/types';
 
 @Injectable()
 export class RecordsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findMany(modelName: string): Promise<RecordsPayload> {
+  async findMany(modelName: string): Promise<AdminRecordsPayload> {
     const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
       (model) => model.name.toLowerCase() === modelName.toLowerCase(),
     );
@@ -59,7 +38,7 @@ export class RecordsService {
     };
   }
 
-  async getRecord(modelName: string, id: number): Promise<RecordPayload> {
+  async getRecord(modelName: string, id: number): Promise<AdminRecordPayload> {
     const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
       (model) => model.name.toLowerCase() === modelName.toLowerCase(),
     );
@@ -91,7 +70,10 @@ export class RecordsService {
     };
   }
 
-  async createRecord(modelName: string, data: object): Promise<RecordPayload> {
+  async createRecord(
+    modelName: string,
+    data: object,
+  ): Promise<AdminRecordPayload> {
     const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
       (model) => model.name.toLowerCase() === modelName.toLowerCase(),
     );
@@ -127,7 +109,7 @@ export class RecordsService {
     modelName: string,
     id: number,
     data: object,
-  ): Promise<RecordPayload> {
+  ): Promise<AdminRecordPayload> {
     const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
       (model) => model.name.toLowerCase() === modelName.toLowerCase(),
     );

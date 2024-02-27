@@ -2,7 +2,6 @@ import { FormEvent, useState } from 'react';
 import JsonField from './fields/JsonField';
 import { routeWithParams } from 'utils';
 import { DMMF } from 'database';
-import { AdminAttributeType, Field } from '../../../admin-api/src/config/admin';
 import BooleanField from './fields/BooleanField';
 import IntegerField from './fields/IntegerField';
 import SelectField from './fields/SelectField';
@@ -13,6 +12,7 @@ import PasswordField from './fields/PasswordField';
 import RelationshipHasOneField from './fields/RelationshipHasOneField';
 import { MODEL_RECORD } from '@/common/routes';
 import { useNavigate } from 'react-router-dom';
+import { AdminAttributeType, AdminFieldType } from '@repo/types';
 
 interface Props {
   modelName: string;
@@ -110,31 +110,31 @@ export default function UpdateForm({
 
           return (
             <div key={attributeType.name} className="mb-4">
-              {attributeType.type === Field.STRING && (
+              {attributeType.type === AdminFieldType.STRING && (
                 <StringField {...defaultFieldProps} />
               )}
-              {attributeType.type === Field.PASSWORD && (
+              {attributeType.type === AdminFieldType.PASSWORD && (
                 <PasswordField {...defaultFieldProps} />
               )}
-              {attributeType.type === Field.TEXT && (
+              {attributeType.type === AdminFieldType.TEXT && (
                 <TextField {...defaultFieldProps} />
               )}
-              {attributeType.type === Field.JSON && (
+              {attributeType.type === AdminFieldType.JSON && (
                 <JsonField {...defaultFieldProps} />
               )}
-              {attributeType.type === Field.SELECT && (
+              {attributeType.type === AdminFieldType.SELECT && (
                 <SelectField
                   {...defaultFieldProps}
                   options={attributeType.options || []}
                 />
               )}
-              {attributeType.type === Field.INTEGER && (
+              {attributeType.type === AdminFieldType.INTEGER && (
                 <IntegerField {...defaultFieldProps} />
               )}
-              {attributeType.type === Field.BOOLEAN && (
+              {attributeType.type === AdminFieldType.BOOLEAN && (
                 <BooleanField {...defaultFieldProps} />
               )}
-              {attributeType.type === Field.RELATIONSHIP_HAS_ONE && (
+              {attributeType.type === AdminFieldType.RELATIONSHIP_HAS_ONE && (
                 <RelationshipHasOneField
                   {...defaultFieldProps}
                   value={data[attributeType.sourceKey as string]}

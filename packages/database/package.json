@@ -27,6 +27,7 @@
     "typescript": "5.3.2"
   },
   "devDependencies": {
+    "@repo/types": "*",
     "prisma": "^5.6.0"
   }
 }

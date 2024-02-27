@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '@/components/PageHeader';
 import { modelDisplayName } from '@/config/admin';
-import { DMMF } from 'database';
 import { useParams } from 'react-router-dom';
 import { routeWithParams } from 'utils';
-import { AdminAttributeType } from '../../../../admin-api/src/config/admin';
 import { MODEL } from '@/common/routes';
 import UpdateForm from '@/components/UpdateForm';
+import { AdminRecordPayload } from '@repo/types';
 
 export default function RecordEditPage() {
   const { modelName, id } = useParams();
@@ -28,16 +27,7 @@ export default function RecordEditPage() {
   if (recordQuery.isPending) return 'Loading...';
   if (recordQuery.isError || !modelName) return 'Error loading data';
 
-  const data = recordQuery.data as {
-    prismaModelConfig: DMMF.Model;
-    attributeTypes: AdminAttributeType[];
-    collectionAttributes: string[];
-    showAttributes: string[];
-    formAttributes: string[];
-    // Ignoring for now because we don't have a type for this API payload
-    record: any; // eslint-disable-line
-    displayName: string;
-  };
+  const data = recordQuery.data as AdminRecordPayload;
 
   const {
     attributeTypes,

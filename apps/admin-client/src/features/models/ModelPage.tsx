@@ -1,11 +1,7 @@
 import { modelDisplayName } from '@/config/admin';
-import { DMMF } from 'database';
 import { Link, useParams } from 'react-router-dom';
 import { captilalize, routeWithParams } from 'utils';
-import {
-  AdminAttributeType,
-  renderFieldInCollectionView,
-} from '../../../../admin-api/src/config/admin';
+import { renderFieldInCollectionView } from '../../../../admin-api/src/config/admin';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '@/components/PageHeader';
 import {
@@ -13,6 +9,7 @@ import {
   MODEL_RECORD_CREATE,
   MODEL_RECORD_EDIT,
 } from '@/common/routes';
+import { AdminModelPayload } from '@repo/types';
 
 export default function ModelPage() {
   const { modelName } = useParams();
@@ -31,25 +28,9 @@ export default function ModelPage() {
   if (modelQuery.isPending) return 'Loading...';
   if (modelQuery.isError || !modelName) return 'Error loading data';
 
-  const data = modelQuery.data as {
-    prismaModelConfig: DMMF.Model;
-    attributeTypes: AdminAttributeType[];
-    collectionAttributes: string[];
-    showAttributes: string[];
-    formAttributes: string[];
-    count: number;
-    // Ignoring for now because we don't have a type for this API payload
-    records: any[]; // eslint-disable-line
-  };
+  const data = modelQuery.data as AdminModelPayload;
 
-  const {
-    // attributeTypes,
-    collectionAttributes,
-    // showAttributes,
-    // formAttributes,
-    records,
-    count,
-  } = data;
+  const { collectionAttributes, records, count } = data;
 
   const title = `${modelDisplayName(modelName)} (${count})`;
 

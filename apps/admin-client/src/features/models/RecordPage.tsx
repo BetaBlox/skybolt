@@ -1,16 +1,14 @@
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { captilalize, routeWithParams } from 'utils';
-import { DMMF } from 'database';
 import {
-  AdminAttributeType,
-  Field,
   getAttributeType,
   renderFieldInShowView,
 } from '../../../../admin-api/src/config/admin';
 import PageHeader from '@/components/PageHeader';
 import { modelDisplayName } from '@/config/admin';
 import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
+import { AdminRecordPayload, AdminFieldType } from '@repo/types';
 
 export default function RecordPage() {
   const { modelName, id } = useParams();
@@ -32,25 +30,9 @@ export default function RecordPage() {
   if (recordQuery.isPending) return 'Loading...';
   if (recordQuery.isError || !modelName) return 'Error loading data';
 
-  const data = recordQuery.data as {
-    prismaModelConfig: DMMF.Model;
-    attributeTypes: AdminAttributeType[];
-    collectionAttributes: string[];
-    showAttributes: string[];
-    formAttributes: string[];
-    // Ignoring for now because we don't have a type for this API payload
-    record: any; // eslint-disable-line
-    displayName: string;
-  };
+  const data = recordQuery.data as AdminRecordPayload;
 
-  const {
-    // attributeTypes,
-    // collectionAttributes,
-    showAttributes,
-    // formAttributes,
-    record,
-    displayName,
-  } = data;
+  const { showAttributes, record, displayName } = data;
 
   return (
     <div>
@@ -96,7 +78,7 @@ export default function RecordPage() {
                 <dt className="text-sm font-bold leading-6 text-gray-900">
                   {captilalize(attributeType.name)}
                 </dt>
-                {attributeType.type === Field.JSON ? (
+                {attributeType.type === AdminFieldType.JSON ? (
                   <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     <pre>
                       {renderFieldInShowView(record, modelName, attribute)}
