@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -8,7 +9,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { RecordsService } from './records.service';
-import { DMMF } from '@repo/database';
 import { AdminRecordPayload, AdminRecordsPayload } from '@repo/types';
 
 @Controller('records')
@@ -16,14 +16,14 @@ export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
 
   @Get('/:modelName')
-  findMany(
+  async findMany(
     @Param('modelName') modelName: string,
   ): Promise<AdminRecordsPayload> {
     return this.recordsService.findMany(modelName);
   }
 
   @Get('/:modelName/:id')
-  findOne(
+  async findOne(
     @Param('modelName') modelName: string,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<AdminRecordPayload> {
@@ -31,7 +31,7 @@ export class RecordsController {
   }
 
   @Post('/:modelName')
-  create(
+  async create(
     @Param('modelName') modelName: string,
     @Body() data: object,
   ): Promise<AdminRecordPayload> {
@@ -39,11 +39,19 @@ export class RecordsController {
   }
 
   @Put('/:modelName/:id')
-  update(
+  async update(
     @Param('modelName') modelName: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() data: object,
   ): Promise<AdminRecordPayload> {
     return this.recordsService.updateRecord(modelName, id, data);
+  }
+
+  @Delete('/:modelName/:id')
+  async delete(
+    @Param('modelName') modelName: string,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<void> {
+    return this.recordsService.deleteRecord(modelName, id);
   }
 }

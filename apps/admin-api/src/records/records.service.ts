@@ -143,4 +143,26 @@ export class RecordsService {
       displayName: adminModelConfig.getDisplayName(record) as string,
     };
   }
+
+  async deleteRecord(modelName: string, id: number): Promise<void> {
+    const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
+      (model) => model.name.toLowerCase() === modelName.toLowerCase(),
+    );
+
+    if (!prismaModelConfig) {
+      throw new Error(`Unable to find Prisma config for model: ${modelName}`);
+    }
+
+    const adminModelConfig = admin.getModel(modelName);
+
+    if (!adminModelConfig) {
+      throw new Error(`Unable to find Admin config for model: ${modelName}`);
+    }
+
+    await this.prisma[modelName].delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

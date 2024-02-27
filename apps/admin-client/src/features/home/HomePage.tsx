@@ -21,6 +21,8 @@ export default function HomePage() {
   if (modelsQuery.isPending) return 'Loading...';
   if (modelsQuery.isError) return 'Error loading data';
 
+  console.log(modelsQuery);
+
   const data = modelsQuery.data as AdminModelPayload[];
 
   return (

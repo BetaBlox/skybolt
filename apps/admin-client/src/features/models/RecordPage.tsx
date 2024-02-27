@@ -9,6 +9,7 @@ import PageHeader from '@/components/PageHeader';
 import { modelDisplayName } from '@/config/admin';
 import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
 import { AdminRecordPayload, AdminFieldType } from '@repo/types';
+import DeleteButton from './DeleteButton';
 
 export default function RecordPage() {
   const { modelName, id } = useParams();
@@ -94,22 +95,18 @@ export default function RecordPage() {
           })}
         </dl>
       </div>
+
+      <div className="mt-6 border-t border-gray-100 bg-white px-4 py-6 shadow-md sm:rounded-lg">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-red-500">Danger Zone</h2>
+          <p className="mt-4 text-gray-500">
+            This action <strong>CANNOT</strong> be undone. This will permanently
+            delete the {modelName} record
+          </p>
+        </div>
+
+        <DeleteButton payload={data} />
+      </div>
     </div>
   );
 }
-
-//       {/* <div className="mt-6 border-t border-gray-100 bg-white px-4 py-6 shadow-md sm:rounded-lg">
-//         <div className="mb-6">
-//           <h2 className="text-2xl font-bold text-gray-900">Danger Zone</h2>
-//           <p className="mt-2 text-gray-500">
-//             This action <strong>CANNOT</strong> be undone. This will permanently
-//             delete the {modelName} record
-//           </p>
-//         </div>
-
-//         <DeleteButton
-//           modelName={modelName}
-//           record={record}
-//           text={`Delete ${getRecordDisplayName(modelName, record)}`}
-//         />
-//       </div> */}
