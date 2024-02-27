@@ -18,7 +18,7 @@ export default function RecordPage() {
   const recordQuery = useQuery({
     queryKey: [`${modelName}/${id}`],
     queryFn: async () => {
-      const url = routeWithParams(`/api/models/:modelName/:id`, {
+      const url = routeWithParams(`/api/records/:modelName/:id`, {
         modelName,
         id,
       });

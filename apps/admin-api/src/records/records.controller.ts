@@ -15,8 +15,22 @@ import { DMMF } from 'database';
 export class RecordsController {
   constructor(private readonly recordsService: RecordsService) {}
 
+  @Get('/:modelName')
+  findMany(@Param('modelName') modelName: string): Promise<{
+    prismaModelConfig: DMMF.Model;
+    attributeTypes: AdminAttributeType[];
+    collectionAttributes: string[];
+    showAttributes: string[];
+    formAttributes: string[];
+    records: any[] & {
+      displayName: string;
+    };
+  }> {
+    return this.recordsService.findMany(modelName);
+  }
+
   @Get('/:modelName/:id')
-  getRecord(
+  findOne(
     @Param('modelName') modelName: string,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<{
@@ -32,7 +46,7 @@ export class RecordsController {
   }
 
   @Post('/:modelName')
-  createRecord(
+  create(
     @Param('modelName') modelName: string,
     @Body() data: object,
   ): Promise<{
@@ -48,7 +62,7 @@ export class RecordsController {
   }
 
   @Put('/:modelName/:id')
-  updateRecord(
+  update(
     @Param('modelName') modelName: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() data: object,

@@ -67,6 +67,12 @@ export const AdmingConfig: AdminConfig = {
       attributeTypes: [
         { name: 'title', type: Field.STRING },
         { name: 'content', type: Field.TEXT },
+        {
+          name: 'author',
+          type: Field.RELATIONSHIP_HAS_ONE,
+          sourceKey: 'authorId',
+          modelName: 'user',
+        },
         { name: 'authorId', type: Field.INTEGER },
         { name: 'createdAt', type: Field.DATETIME },
         { name: 'updatedAt', type: Field.DATETIME },
@@ -79,7 +85,7 @@ export const AdmingConfig: AdminConfig = {
         'createdAt',
         'updatedAt',
       ],
-      formAttributes: ['title', 'content'],
+      formAttributes: ['title', 'content', 'author'],
     },
   },
 };

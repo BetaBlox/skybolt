@@ -1,76 +1,85 @@
-// import { DMMF } from "database";
-// import { ChangeEvent, useEffect, useState } from "react";
-// import FieldLabel from "../FieldLabel";
-// import { AdminAttributeType, SelectOption, getModel } from "@/config/admin";
+import { DMMF } from 'database';
+import { ChangeEvent, useEffect, useState } from 'react';
+import FieldLabel from '../FieldLabel';
+import { useQuery } from '@tanstack/react-query';
+import {
+  AdminAttributeType,
+  SelectOption,
+} from '../../../../admin-api/src/config/admin';
+import { routeWithParams } from 'utils';
 
-// interface Props {
-//   field: DMMF.Field;
-//   modelName: string;
-//   attribute: string;
-//   attributeType: AdminAttributeType;
-//   value: string | number;
-//   onChange: (key: string, value: string | number) => void;
-// }
-// export default function RelationshipHasOneField({
-//   field,
-//   attribute,
-//   attributeType,
-//   value = "",
-//   onChange,
-// }: Props) {
-//   const [loading, setLoading] = useState(true);
-//   const [options, setOptions] = useState<SelectOption[]>();
+interface Props {
+  field: DMMF.Field;
+  modelName: string;
+  attribute: string;
+  attributeType: AdminAttributeType;
+  value: string | number;
+  onChange: (key: string, value: string | number) => void;
+}
+export default function RelationshipHasOneField({
+  field,
+  attributeType,
+  value = '',
+  onChange,
+}: Props) {
+  const { modelName } = attributeType;
 
-//   useEffect(() => {
-//     async function fetchOptions() {
-//       setLoading(true);
-//       try {
-//         const response = await fetch(`/api/admin/${attribute}`)
-//         const json = await response.json();
-//         const newOptions = json.map((record) => {
-//           return {
-//             value: record.id,
-//             label: getModel(attributeType.modelName!).getDisplayName(record),
-//           };
-//         });
+  const recordsQuery = useQuery({
+    queryKey: [`hasOne/${modelName}`],
+    queryFn: async () => {
+      const url = routeWithParams('/api/records/:modelName', { modelName });
+      const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return res.json();
+    },
+  });
 
-//         setOptions(newOptions);
-//       } catch (error) {
-//         console.error(error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     }
+  if (recordsQuery.isPending) return 'Loading...';
+  if (recordsQuery.isError || !modelName) return 'Error loading data';
 
-//     fetchOptions();
-//   }, []);
+  const data = recordsQuery.data as {
+    prismaModelConfig: DMMF.Model;
+    attributeTypes: AdminAttributeType[];
+    collectionAttributes: string[];
+    showAttributes: string[];
+    formAttributes: string[];
+    // Ignoring for now because we don't have a type for this API payload
+    records: any; // eslint-disable-line
+  };
 
-//   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-//     onChange(attributeType.sourceKey!, parseInt(e.currentTarget.value, 10));
-//   };
+  const options: SelectOption[] = data.records.map(
+    (r: { id: number; displayName: string }) => ({
+      value: r.id,
+      label: r.displayName,
+    }),
+  );
 
-//   return (
-//     <div>
-//       <FieldLabel field={field} />
-//       {loading ? (
-//         <p>Loading...</p>
-//       ) : (
-//         <select
-//           className="focus:shadow-outline w-full rounded border px-3 py-2 leading-tight text-gray-700 shadow"
-//           id={field.name}
-//           name={field.name}
-//           value={value}
-//           required={field.isRequired}
-//           onChange={handleChange}
-//         >
-//           <option value="" />
-//           {(options || []).map((option: SelectOption) => (
-//             <option key={option.value} value={option.value}>
-//               {option.label}
-//             </option>
-//           ))}
-//         </select>
-//       )}
-//     </div>
-//   );
-// }
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    onChange(attributeType.sourceKey!, parseInt(e.currentTarget.value, 10));
+  };
+
+  return (
+    <div>
+      <FieldLabel field={field} />
+      <select
+        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
+        id={field.name}
+        name={field.name}
+        value={value}
+        required={field.isRequired}
+        onChange={handleChange}
+      >
+        <option value="" />
+        {(options || []).map((option: SelectOption) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}

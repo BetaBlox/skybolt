@@ -1,5 +1,3 @@
-'use client';
-
 import { FormEvent, useState } from 'react';
 import JsonField from './fields/JsonField';
 import { routeWithParams } from 'utils';
@@ -12,6 +10,9 @@ import StringField from './fields/StringField';
 import TextField from './fields/TextField';
 import { Notify } from '@/config/notification/notification.service';
 import PasswordField from './fields/PasswordField';
+import RelationshipHasOneField from './fields/RelationshipHasOneField';
+import { MODEL_RECORD } from '@/common/routes';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   modelName: string;
@@ -31,6 +32,7 @@ export default function UpdateForm({
   attributeTypes,
   formAttributes,
 }: Props) {
+  const navigate = useNavigate();
   const [data, setData] = useState(defaultData);
   const [saving, setSaving] = useState(false);
 
@@ -51,7 +53,17 @@ export default function UpdateForm({
         body: JSON.stringify(data),
       });
 
-      res.ok ? Notify.success() : Notify.error();
+      if (res.ok) {
+        Notify.success();
+        const json = await res.json();
+        const showUrl = routeWithParams(MODEL_RECORD, {
+          modelName,
+          id: json.record.id,
+        });
+        navigate(showUrl);
+      } else {
+        Notify.error();
+      }
     } catch (error) {
       Notify.error();
       console.error(error);
@@ -122,7 +134,7 @@ export default function UpdateForm({
               {attributeType.type === Field.BOOLEAN && (
                 <BooleanField {...defaultFieldProps} />
               )}
-              {/* {attributeType.type === Field.RELATIONSHIP_HAS_ONE && (
+              {attributeType.type === Field.RELATIONSHIP_HAS_ONE && (
                 <RelationshipHasOneField
                   {...defaultFieldProps}
                   value={data[attributeType.sourceKey as string]}
@@ -130,7 +142,7 @@ export default function UpdateForm({
                   attribute={attribute}
                   attributeType={attributeType}
                 />
-              )} */}
+              )}
               {/* <p className="text-xs">{JSON.stringify(prismaField, null, 4)}</p> */}
             </div>
           );
