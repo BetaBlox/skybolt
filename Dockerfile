@@ -28,7 +28,7 @@ COPY . .
 ARG DATABASE_URL
 
 # Generate prisma runtime 
-RUN npm run db:generate --workspace=database
+RUN npm run db:generate
 
 # Turbo build all of our apps/packages
 RUN npm run build

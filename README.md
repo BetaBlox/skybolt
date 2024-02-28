@@ -32,14 +32,25 @@ Now modify `.env` as needed
 
 ## Setup
 
-- Install your deps: `npm install`
-- Run docker services: `npm run docker:up`
-- Reset and seed your database: `npm run db:reset`
-- Run build once for turbo cache: `npm run build`
+```bash
+# Install your deps
+$ npm install
+
+# Run docker services
+$ npm run docker:up
+
+# Reset and seed your database
+$ npm run db:reset
+
+# Run build once for turbo cache
+$ npm run build
+```
 
 ## Development
 
-- Start dev: `npm run dev`
+```bash
+$ npm run dev
+```
 
 ### App
 
@@ -53,17 +64,46 @@ Now modify `.env` as needed
 
 ## Build
 
-`npm run build`
+```bash
+$ npm run build
+$ npm run start
+```
 
-## Production
+## Testing
 
-`npm run build`
+We have created individual test commands in `package.json` so that tests can run independently of each other without running into database issues such as deadlocks.
 
-`npm run start`
+The approriate test commands for our CI environment are found `.github/workflows/ci.yml`
 
-## Test
+```bash
+# Run individual app test suite
+$ npm run test:client
+$ npm run test:api
 
-`npm run test`
+# Or a shared package
+$ npm run test:utils
+$ npm run test:database
+$ npm run test:types
+$ npm run test:paginator
+
+# See package.json for all testing commands
+```
+
+## Continuous Integration (CI)
+
+All documentation for our CI process is found in `.github/workflows/ci.yml` which will utilize Github Actions when making a pull request or merging into `master`
+
+## Continuous Delivery (CD)
+
+Our recommended approach for CD is to use [Railway](https://railway.app/) it's generally very easy to setup a new project, set your environment variables, and deploy `master` directly with our `Dockerfile`
+
+[Learn more about Railway](https://docs.railway.app/)
+
+## Production Database & Hosting
+
+If your project needs a production ready database, we recommend looking at [Supabase](https://supabase.com/). You can generally boot up a new Postgres database, connect it to your Railway app, and deploy in less than 10 minutes.
+
+[Learn more about Supabase](https://supabase.com/docs)
 
 ## Making Improvements
 
