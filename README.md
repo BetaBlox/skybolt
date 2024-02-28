@@ -66,7 +66,12 @@ $ npm run dev
 
 ```bash
 $ npm run build
+
+# Start the production web application and API
 $ npm run start
+
+# Or Start the production admin portal which runs on port 8081
+$ npm run start:admin
 ```
 
 ## Testing
