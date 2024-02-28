@@ -6,8 +6,8 @@ This is our base project template for web applications, APIs, and administrative
 
 https://nestjs-react-template-production.up.railway.app/
 
-email: admin@betablox.com
-password: password
+- email: admin@betablox.com
+- password: password
 
 ## Technologies
 
