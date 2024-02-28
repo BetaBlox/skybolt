@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import JsonField from './fields/JsonField';
+// import JsonField from './fields/JsonField';
 import { routeWithParams } from '@repo/utils';
 import { DMMF } from '@repo/database';
 import BooleanField from './fields/BooleanField';
@@ -115,9 +115,9 @@ export default function CreateForm({
               {attributeType.type === AdminFieldType.TEXT && (
                 <TextField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.JSON && (
+              {/* {attributeType.type === AdminFieldType.JSON && (
                 <JsonField {...defaultFieldProps} />
-              )}
+              )} */}
               {attributeType.type === AdminFieldType.SELECT && (
                 <SelectField
                   {...defaultFieldProps}

@@ -16,7 +16,7 @@ export const enum AdminFieldType {
   BOOLEAN = 'boolean',
   INTEGER = 'int',
   SELECT = 'select',
-  JSON = 'json',
+  JSON = 'json', // Not currently used
   RELATIONSHIP_HAS_ONE = 'relationship_has_one',
   DATETIME = 'datetime',
 }
