@@ -2,6 +2,13 @@
 
 This is our base project template for web applications, APIs, and administrative portals. The goal is to make starting a new app project simple, yet come with all the things we're accustomed to having on our projects - such as testing, utilities, deployment configurations, etc.
 
+**App Demo**
+
+https://nestjs-react-template-production.up.railway.app/
+
+email: admin@betablox.com
+password: password
+
 ## Technologies
 
 ### Frontend
@@ -93,6 +100,14 @@ $ npm run test:paginator
 
 # See package.json for all testing commands
 ```
+
+### Writing Tests
+
+We encourage you to write tests and whatever level you are comfortable (e2e, integration, unit, etc.)
+
+As a general rule of thumb we like to have tests for our backend APIs at either the controller or service level in NestJS. Furthermore, we will mainly stick to integration level tests because the tradeoffs of hitting HTTP layer to database coverage generally outweigh the benefits of hundreds of isolated unit tests.
+
+Unit tests are saved for unique situations such as utility or helper methods. For example, a helper method that converts a dollars to cents or another that manipulates a string won't require much more than a few simple tests.
 
 ## Continuous Integration (CI)
 

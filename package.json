@@ -19,6 +19,7 @@
     "db:generate": "dotenv -- npm run db:generate --workspace=@repo/database",
     "db:push": "dotenv -- npm run db:push --workspace=@repo/database",
     "db:seed": "dotenv -- npm run db:seed --workspace=@repo/database",
+    "db:studio": "dotenv -- npm run db:studio --workspace=@repo/database",
     "db:reset": "dotenv -- npm run db:reset --workspace=@repo/database",
     "prisma:format": "dotenv -- npm run prisma:format --workspace=@repo/database",
     "migrate:dev": "dotenv -- npm run migrate:dev --workspace=@repo/database",
