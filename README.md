@@ -66,8 +66,8 @@ $ npm run dev
 
 ### Admin
 
-- Client: http://localhost:8080/
-- Api: http://localhost:8081/api
+- Client: http://localhost:8000/
+- Api: http://localhost:8001/api
 
 ## Build
 
@@ -77,7 +77,7 @@ $ npm run build
 # Start the production web application and API
 $ npm run start
 
-# Or Start the production admin portal which runs on port 8081
+# Or Start the production admin portal which runs on port 8001
 $ npm run start:admin
 ```
 
