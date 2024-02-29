@@ -2,9 +2,10 @@
 
 This is our base project template for web applications, APIs, and administrative portals. The goal is to make starting a new app project simple, yet come with all the things we're accustomed to having on our projects - such as testing, utilities, deployment configurations, etc.
 
-**App Demo**
+## Demo
 
-https://nestjs-react-template-production.up.railway.app/
+App - https://nestjs-react-app-demo.up.railway.app
+Admin - https://nestjs-react-admin-demo.up.railway.app
 
 - email: admin@betablox.com
 - password: password
