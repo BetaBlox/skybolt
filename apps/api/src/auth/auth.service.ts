@@ -39,9 +39,9 @@ export class AuthService {
   }
 
   async signIn(data: AuthDto) {
+    const email = data.email.toLocaleLowerCase();
     // Check if user exists
-    console.log(data);
-    const user = await this.usersService.findByEmail(data.email);
+    const user = await this.usersService.findByEmail(email);
     if (!user) {
       throw new BadRequestException('User does not exist');
     }
@@ -51,7 +51,7 @@ export class AuthService {
       throw new BadRequestException('Password is incorrect');
     }
 
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user.id, email);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
     return tokens;
   }
