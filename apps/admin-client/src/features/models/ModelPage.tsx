@@ -10,6 +10,7 @@ import {
   MODEL_RECORD_EDIT,
 } from '@/common/routes';
 import { AdminModelPayload } from '@repo/types';
+import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 
 export default function ModelPage() {
   const { modelName } = useParams();
@@ -18,10 +19,10 @@ export default function ModelPage() {
     queryKey: [`model/${modelName}`],
     queryFn: async () => {
       const url = routeWithParams('/api/models/:modelName', { modelName });
-      const res = await fetch(url, {
-        method: 'GET',
+      const { data } = await customFetch(url, {
+        method: HttpMethod.GET,
       });
-      return res.json();
+      return data;
     },
   });
 

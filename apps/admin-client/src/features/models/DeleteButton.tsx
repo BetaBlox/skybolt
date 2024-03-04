@@ -1,3 +1,4 @@
+import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import { MODEL } from '@/common/routes';
 import { Notify } from '@/config/notification/notification.service';
 import { AdminRecordPayload } from '@repo/types';
@@ -26,14 +27,14 @@ export default function DeleteButton({ payload }: Props) {
           modelName,
           id: record.id,
         });
-        const res = await fetch(url, {
-          method: 'DELETE',
+        const { response } = await customFetch(url, {
+          method: HttpMethod.DELETE,
           headers: {
             'Content-Type': 'application/json',
           },
         });
 
-        if (res.ok) {
+        if (response.ok) {
           Notify.success();
           const modelUrl = routeWithParams(MODEL, {
             modelName,

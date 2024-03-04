@@ -1,12 +1,10 @@
 import { Body, Controller, Post, Get, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from '@/auth/auth.service';
-import { CreateUserDto } from '@/users/dto/create-user.dto';
 import { AuthDto } from '@/auth/dto/auth.dto';
-import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 import { RefreshTokenGuard } from '@/common/guards/refreshToken.guard';
 import { UsersService } from '@/users/users.service';
-import { UpdateUserDto } from '@/users/dto/update-user.dto';
+import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -14,11 +12,6 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly userService: UsersService,
   ) {}
-
-  @Post('signup')
-  signup(@Body() createUserDto: CreateUserDto) {
-    return this.authService.signUp(createUserDto);
-  }
 
   @Post('login')
   signin(@Body() data: AuthDto) {
@@ -45,21 +38,8 @@ export class AuthController {
   @UseGuards(AccessTokenGuard)
   @Get('profile')
   async getProfile(@Req() req: Request) {
-    const user = await this.userService.findByEmail(req.user['email']);
+    const user = await this.userService.findAdminByEmail(req.user['email']);
     const { password, refreshToken, ...data } = user;
     return data;
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @Post('profile')
-  async updateProfile(
-    @Body() updateUserDto: UpdateUserDto,
-    @Req() req: Request,
-  ) {
-    const { password, refreshToken, ...user } = await this.userService.update(
-      req.user['sub'],
-      updateUserDto,
-    );
-    return user;
   }
 }

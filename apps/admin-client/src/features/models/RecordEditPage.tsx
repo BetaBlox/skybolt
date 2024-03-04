@@ -6,6 +6,7 @@ import { routeWithParams } from '@repo/utils';
 import { MODEL } from '@/common/routes';
 import UpdateForm from '@/components/UpdateForm';
 import { AdminRecordPayload } from '@repo/types';
+import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 
 export default function RecordEditPage() {
   const { modelName, id } = useParams();
@@ -17,10 +18,10 @@ export default function RecordEditPage() {
         modelName,
         id,
       });
-      const res = await fetch(url, {
-        method: 'GET',
+      const { data } = await customFetch(url, {
+        method: HttpMethod.GET,
       });
-      return res.json();
+      return data;
     },
   });
 

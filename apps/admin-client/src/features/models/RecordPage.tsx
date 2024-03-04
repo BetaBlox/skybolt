@@ -10,6 +10,7 @@ import { modelDisplayName } from '@/config/admin';
 import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
 import { AdminRecordPayload, AdminFieldType } from '@repo/types';
 import DeleteButton from './DeleteButton';
+import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 
 export default function RecordPage() {
   const { modelName, id } = useParams();
@@ -21,10 +22,10 @@ export default function RecordPage() {
         modelName,
         id,
       });
-      const res = await fetch(url, {
-        method: 'GET',
+      const { data } = await customFetch(url, {
+        method: HttpMethod.GET,
       });
-      return res.json();
+      return data;
     },
   });
 
