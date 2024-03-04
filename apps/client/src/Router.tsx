@@ -1,23 +1,27 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ErrorPage from "./ErrorPage";
-import HomePage from "@/features/home/HomePage";
-import Login from "@/auth/Login";
-import loginAction from "@/auth/loginAction";
-import loginLoader from "@/auth/loginLoader";
-import protectedLoader from "@/auth/protectedLoader";
-import Logout from "@/auth/Logout";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ErrorPage from './ErrorPage';
+import HomePage from '@/features/home/HomePage';
+import Login from '@/auth/Login';
+import loginAction from '@/auth/loginAction';
+import loginLoader from '@/auth/loginLoader';
+import protectedLoader from '@/auth/protectedLoader';
+import Logout from '@/auth/Logout';
 import {
+  FORGOT_PASSWORD,
   HOME,
   LOGIN,
   LOGOUT,
+  PASSWORD_RESET,
   PROFILE,
-} from "@/common/routes";
-import SidebarLayout from "@/layouts/SidebarLayout";
-import UserProfilePage from "./features/user-profile/UserProfilePage";
+} from '@/common/routes';
+import SidebarLayout from '@/layouts/SidebarLayout';
+import UserProfilePage from './features/user-profile/UserProfilePage';
+import ForgotPasswordPage from './auth/ForgotPasswordPage';
+import PasswordResetPage from './auth/PasswordResetPage';
 
 const router = createBrowserRouter([
   {
-    id: "root",
+    id: 'root',
     path: HOME,
     errorElement: <ErrorPage />,
     Component: SidebarLayout,
@@ -44,6 +48,14 @@ const router = createBrowserRouter([
   {
     path: LOGOUT,
     element: <Logout />,
+  },
+  {
+    path: FORGOT_PASSWORD,
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: PASSWORD_RESET,
+    element: <PasswordResetPage />,
   },
 ]);
 
