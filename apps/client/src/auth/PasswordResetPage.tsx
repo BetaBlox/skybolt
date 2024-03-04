@@ -1,26 +1,47 @@
-import { FORGOT_PASSWORD } from '@/common/routes';
+import { HTTP_METHOD } from '@/common/custom-fetcher';
+import { LOGIN } from '@/common/routes';
+import { Notify } from '@/features/notification/notification.service';
 import { useState } from 'react';
-import {
-  useLocation,
-  useNavigation,
-  useActionData,
-  Form,
-  Link,
-} from 'react-router-dom';
+import { Form, useNavigate, useParams } from 'react-router-dom';
 
-function Login() {
+export default function PasswordResetPage() {
+  const { token } = useParams();
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
   const [data, setData] = useState({
-    email: '',
     password: '',
+    passwordConfirmation: '',
   });
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const from = params.get('from') || '/';
 
-  const navigation = useNavigation();
-  const isLoggingIn = navigation.formData?.get('email') != null;
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const actionData = useActionData() as { error: string } | undefined;
+    setError('');
+
+    try {
+      const url = '/api/password-reset/reset';
+      const response = await fetch(url, {
+        method: HTTP_METHOD.POST,
+        body: JSON.stringify({
+          token,
+          password: data.password,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        Notify.success('Password saved! Please log in again');
+        navigate(LOGIN);
+      }
+    } catch (error) {
+      console.error(error);
+      setError('Something is not working quite right');
+    }
+  };
+
+  if (!token) return 'Error loading data';
 
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -31,40 +52,13 @@ function Login() {
           alt="Your Company"
         />
         <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Sign in to your account
+          Update Your Password
         </h2>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
         <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-          <Form method="post" className="space-y-6" replace>
-            <input type="hidden" name="redirectTo" value={from} />
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email
-              </label>
-              <div className="mt-2">
-                <input
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  required
-                  value={data.email}
-                  onChange={(e) =>
-                    setData({
-                      ...data,
-                      email: e.currentTarget.value,
-                    })
-                  }
-                />
-              </div>
-            </div>
-
+          <Form className="space-y-6" onSubmit={submit}>
             <div>
               <label
                 htmlFor="password"
@@ -90,28 +84,45 @@ function Login() {
                 />
               </div>
             </div>
+            <div>
+              <label
+                htmlFor="password-confirmation"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Password Confirmation
+              </label>
+              <div className="mt-2">
+                <input
+                  id="password-confirmation"
+                  name="password-confirmation"
+                  type="password"
+                  autoComplete="current-password"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  required
+                  value={data.passwordConfirmation}
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      passwordConfirmation: e.currentTarget.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
 
             <div>
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                disabled={isLoggingIn}
               >
-                {isLoggingIn ? 'Logging in...' : 'Login'}
+                Reset Password
               </button>
             </div>
 
-            {actionData && actionData.error ? (
-              <p className="text-center text-red-500">{actionData.error}</p>
-            ) : null}
+            {error ? <p className="text-center text-red-500">{error}</p> : null}
           </Form>
-          <div className="mt-6 text-center text-sm text-gray-600">
-            <Link to={FORGOT_PASSWORD}>Forgot password? Click here.</Link>
-          </div>
         </div>
       </div>
     </div>
   );
 }
-
-export default Login;
