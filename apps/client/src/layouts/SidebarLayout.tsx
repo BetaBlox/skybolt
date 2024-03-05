@@ -18,8 +18,6 @@ type NavItem = {
   href: string;
   /* eslint-disable  @typescript-eslint/no-explicit-any */
   icon?: any;
-  count?: string;
-  initial?: string;
 };
 
 const navigation: NavItem[] = [{ name: 'Home', href: HOME, icon: HomeIcon }];

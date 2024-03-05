@@ -1,13 +1,32 @@
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { Fragment } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  Bars3Icon,
+  BellIcon,
+  HomeIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { classNames } from '@repo/utils';
-import { HOME } from '@/common/routes';
+import { HOME, LOGOUT, PROFILE } from '@/common/routes';
 
-const navigation = [{ name: 'Home', href: HOME, current: true }];
+type NavItem = {
+  name: string;
+  href: string;
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
+  icon?: any;
+};
+
+const navigation: NavItem[] = [{ name: 'Home', href: HOME, icon: HomeIcon }];
+const userNavigation: NavItem[] = [
+  { name: 'Your profile', href: PROFILE },
+  { name: 'Sign out', href: LOGOUT },
+];
 
 export default function RootLayout() {
+  const isCurrentNavItem = (navItem: NavItem): boolean =>
+    location.pathname === navItem.href;
+
   return (
     <div>
       <Disclosure as="nav" className="bg-gray-800">
@@ -38,19 +57,18 @@ export default function RootLayout() {
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
                       {navigation.map((item) => (
-                        <a
+                        <Link
                           key={item.name}
-                          href={item.href}
+                          to={item.href}
                           className={classNames(
-                            item.current
+                            isCurrentNavItem(item)
                               ? 'bg-gray-900 text-white'
                               : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                             'rounded-md px-3 py-2 text-sm font-medium',
                           )}
-                          aria-current={item.current ? 'page' : undefined}
                         >
                           {item.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -87,46 +105,22 @@ export default function RootLayout() {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
-                              )}
-                            >
-                              Your Profile
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
-                              )}
-                            >
-                              Settings
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700',
-                              )}
-                            >
-                              Sign out
-                            </a>
-                          )}
-                        </Menu.Item>
+                      <Menu.Items className="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                        {userNavigation.map((item) => (
+                          <Menu.Item key={item.name}>
+                            {({ active }) => (
+                              <Link
+                                to={item.href}
+                                className={classNames(
+                                  active ? 'bg-gray-50' : '',
+                                  'block px-3 py-1 text-sm leading-6 text-gray-900',
+                                )}
+                              >
+                                {item.name}
+                              </Link>
+                            )}
+                          </Menu.Item>
+                        ))}
                       </Menu.Items>
                     </Transition>
                   </Menu>
@@ -142,12 +136,11 @@ export default function RootLayout() {
                     as="a"
                     href={item.href}
                     className={classNames(
-                      item.current
+                      isCurrentNavItem(item)
                         ? 'bg-gray-900 text-white'
                         : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                       'block rounded-md px-3 py-2 text-base font-medium',
                     )}
-                    aria-current={item.current ? 'page' : undefined}
                   >
                     {item.name}
                   </Disclosure.Button>

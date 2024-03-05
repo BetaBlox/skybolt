@@ -2,17 +2,27 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import protectedLoader from '@/auth/protectedLoader';
 import RootLayout from '@/layout/RootLayout';
 import {
+  FORGOT_PASSWORD,
   HOME,
+  LOGIN,
+  LOGOUT,
   MODEL,
   MODEL_RECORD,
   MODEL_RECORD_CREATE,
   MODEL_RECORD_EDIT,
+  PASSWORD_RESET,
 } from '@/common/routes';
 import HomePage from '@/features/home/HomePage';
 import ModelPage from '@/features/models/ModelPage';
 import RecordPage from '@/features/models/RecordPage';
 import RecordEditPage from './features/models/RecordEditPage';
 import RecordCreatePage from './features/models/RecordCreatePage';
+import loginAction from './auth/loginAction';
+import ForgotPasswordPage from './auth/ForgotPasswordPage';
+import Login from './auth/Login';
+import Logout from './auth/Logout';
+import PasswordResetPage from './auth/PasswordResetPage';
+import loginLoader from './auth/loginLoader';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +57,24 @@ const router = createBrowserRouter([
         element: <RecordEditPage />,
       },
     ],
+  },
+  {
+    path: LOGIN,
+    action: loginAction,
+    loader: loginLoader,
+    element: <Login />,
+  },
+  {
+    path: LOGOUT,
+    element: <Logout />,
+  },
+  {
+    path: FORGOT_PASSWORD,
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: PASSWORD_RESET,
+    element: <PasswordResetPage />,
   },
 ]);
 

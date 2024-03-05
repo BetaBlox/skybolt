@@ -6,22 +6,21 @@ import { routeWithParams } from '@repo/utils';
 import { MODEL, MODEL_RECORD } from '@/common/routes';
 import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import { AdminModelPayload } from '@repo/types';
+import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 
 export default function HomePage() {
   const modelsQuery = useQuery({
     queryKey: ['models'],
     queryFn: async () => {
-      const res = await fetch('/api/models', {
-        method: 'GET',
+      const { data } = await customFetch('/api/models', {
+        method: HttpMethod.GET,
       });
-      return res.json();
+      return data;
     },
   });
 
   if (modelsQuery.isPending) return 'Loading...';
   if (modelsQuery.isError) return 'Error loading data';
-
-  console.log(modelsQuery);
 
   const data = modelsQuery.data as AdminModelPayload[];
 

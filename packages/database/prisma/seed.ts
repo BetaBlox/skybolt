@@ -37,6 +37,20 @@ const prisma = new PrismaClient();
       },
     });
 
+    const standardUser = await prisma.user.upsert({
+      where: {
+        id: 3,
+      },
+      update: {},
+      create: {
+        firstName: 'Standard',
+        lastName: 'User',
+        email: 'user@betablox.com',
+        password: await argon2.hash('password'),
+        isAdmin: false,
+      },
+    });
+
     /**
      * Posts
      */
@@ -97,6 +111,3 @@ const prisma = new PrismaClient();
     await prisma.$disconnect();
   }
 })();
-
-const randHexColor = () =>
-  '#' + Math.floor(Math.random() * 16777215).toString(16);

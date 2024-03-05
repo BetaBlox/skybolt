@@ -6,7 +6,6 @@ import {
 import * as argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { CreateUserDto } from '@/users/dto/create-user.dto';
 import { AuthDto } from '@/auth/dto/auth.dto';
 import { UsersService } from '@/users/users.service';
 
@@ -18,28 +17,10 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async signUp(createUserDto: CreateUserDto): Promise<any> {
-    // Check if user exists
-    const userExists = await this.usersService.findByEmail(createUserDto.email);
-    if (userExists) {
-      throw new BadRequestException('User already exists');
-    }
-
-    // Hash password
-    const hash = await this.hashData(createUserDto.password);
-    const newUser = await this.usersService.create({
-      ...createUserDto,
-      password: hash,
-    });
-    const tokens = await this.getTokens(newUser.id, newUser.email);
-    await this.updateRefreshToken(newUser.id, tokens.refreshToken);
-    return tokens;
-  }
-
   async signIn(data: AuthDto) {
     // Check if user exists
     console.log(data);
-    const user = await this.usersService.findByEmail(data.email);
+    const user = await this.usersService.findAdminByEmail(data.email);
     if (!user) {
       throw new BadRequestException('User does not exist');
     }
@@ -55,7 +36,7 @@ export class AuthService {
   }
 
   async refreshTokens(userId: number, refreshToken: string) {
-    const user = await this.usersService.findById(userId);
+    const user = await this.usersService.findAdminById(userId);
     if (!user || !user.refreshToken) {
       throw new ForbiddenException('Access Denied');
     }
