@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm run build -- --watch",
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "test": "jest"
+    "test": "jest --maxWorkers=1"
   },
   "dependencies": {
     "date-fns": "^3.1.0",
