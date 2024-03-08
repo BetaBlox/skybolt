@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { DMMF, Prisma } from '@repo/database';
 import * as admin from '@/config/admin';
 import { PrismaService } from '@/prisma/prisma.service';
-import { AdminRecordPayload, AdminRecordsPayload } from '@repo/types';
+import {
+  AdminFieldType,
+  AdminRecordPayload,
+  AdminRecordsPayload,
+} from '@repo/types';
 
 @Injectable()
 export class RecordsService {
@@ -23,7 +27,17 @@ export class RecordsService {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
     }
 
-    const records = await this.prisma[modelName].findMany();
+    // Dynamically include related models
+    const include = {};
+    adminModelConfig.attributeTypes.forEach((at) => {
+      if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
+        include[at.name] = true;
+      }
+    });
+
+    const records = await this.prisma[modelName].findMany({
+      include,
+    });
 
     return {
       prismaModelConfig,
@@ -53,10 +67,19 @@ export class RecordsService {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
     }
 
+    // Dynamically include related models
+    const include = {};
+    adminModelConfig.attributeTypes.forEach((at) => {
+      if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
+        include[at.name] = true;
+      }
+    });
+
     const record = await this.prisma[modelName].findFirst({
       where: {
         id,
       },
+      include,
     });
 
     return {

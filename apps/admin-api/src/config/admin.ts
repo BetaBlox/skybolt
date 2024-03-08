@@ -112,6 +112,8 @@ export function renderFieldInCollectionView(
   const value = record[attributeType.name];
 
   switch (attributeType.type) {
+    case AdminFieldType.JSON:
+      return JSON.stringify(value, null, 2);
     case AdminFieldType.BOOLEAN:
       return value === true ? 'yes' : 'no';
     case AdminFieldType.RELATIONSHIP_HAS_ONE:
@@ -140,8 +142,8 @@ export function renderFieldInShowView(
   const value = record[attributeType.name];
 
   switch (attributeType.type) {
-    // case AdminFieldType.JSON:
-    //   return JSON.stringify(value, null, 2);
+    case AdminFieldType.JSON:
+      return JSON.stringify(value, null, 2);
     case AdminFieldType.BOOLEAN:
       return value === true ? 'yes' : 'no';
     case AdminFieldType.RELATIONSHIP_HAS_ONE:
