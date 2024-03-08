@@ -1,5 +1,5 @@
 # Set the version of docker compose to use
-version: "3.8"
+version: '3.8'
 
 # The containers that compose the project
 services:
@@ -8,10 +8,10 @@ services:
     restart: always
     container_name: nest_react_development
     ports:
-      - "54320:5432"
+      - '54320:5432'
     environment:
-      TZ: "UTC"
-      PGTZ: "UTC"
+      TZ: 'UTC'
+      PGTZ: 'UTC'
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: nest_react_development
@@ -20,10 +20,10 @@ services:
     restart: always
     container_name: nest_react_test
     ports:
-      - "54321:5432"
+      - '54321:5432'
     environment:
-      TZ: "UTC"
-      PGTZ: "UTC"
+      TZ: 'UTC'
+      PGTZ: 'UTC'
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: nest_react_test

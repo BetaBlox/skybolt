@@ -13,6 +13,7 @@ import RelationshipHasOneField from './fields/RelationshipHasOneField';
 import { useNavigate } from 'react-router-dom';
 import { MODEL_RECORD } from '@/common/routes';
 import { AdminAttributeType, AdminFieldType } from '@repo/types';
+import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 
 interface Props {
   modelName: string;
@@ -39,17 +40,13 @@ export default function CreateForm({
       const url = routeWithParams('/api/records/:modelName', {
         modelName,
       });
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const { response, data: json } = await customFetch(url, {
+        method: HttpMethod.POST,
         body: JSON.stringify(data),
       });
 
-      if (res.ok) {
+      if (response.ok) {
         Notify.success();
-        const json = await res.json();
         const showUrl = routeWithParams(MODEL_RECORD, {
           modelName,
           id: json.record.id,
@@ -59,8 +56,8 @@ export default function CreateForm({
         Notify.error();
       }
     } catch (error) {
-      Notify.error();
       console.error(error);
+      Notify.error();
     } finally {
       setSaving(false);
     }

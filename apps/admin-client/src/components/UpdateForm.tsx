@@ -13,6 +13,7 @@ import RelationshipHasOneField from './fields/RelationshipHasOneField';
 import { MODEL_RECORD } from '@/common/routes';
 import { useNavigate } from 'react-router-dom';
 import { AdminAttributeType, AdminFieldType } from '@repo/types';
+import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 
 interface Props {
   modelName: string;
@@ -45,17 +46,13 @@ export default function UpdateForm({
         modelName,
         id: String(data.id),
       });
-      const res = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const { response, data: json } = await customFetch(url, {
+        method: HttpMethod.PUT,
         body: JSON.stringify(data),
       });
 
-      if (res.ok) {
+      if (response.ok) {
         Notify.success();
-        const json = await res.json();
         const showUrl = routeWithParams(MODEL_RECORD, {
           modelName,
           id: json.record.id,
@@ -65,8 +62,8 @@ export default function UpdateForm({
         Notify.error();
       }
     } catch (error) {
-      Notify.error();
       console.error(error);
+      Notify.error();
     } finally {
       setSaving(false);
     }

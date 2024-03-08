@@ -44,6 +44,11 @@ export class ModelsService {
     const recentRecords = await this.prisma[modelName].findMany({
       take: 3,
       include,
+      orderBy: [
+        {
+          id: 'desc',
+        },
+      ],
     });
 
     return {
@@ -51,7 +56,8 @@ export class ModelsService {
       attributeTypes: adminModelConfig.attributeTypes,
       collectionAttributes: adminModelConfig.collectionAttributes,
       showAttributes: adminModelConfig.showAttributes,
-      formAttributes: adminModelConfig.formAttributes,
+      createFormAttributes: adminModelConfig.createFormAttributes,
+      editFormAttributes: adminModelConfig.editFormAttributes,
       count,
       recentRecords: recentRecords.map((record) => ({
         ...record,

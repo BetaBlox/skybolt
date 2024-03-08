@@ -33,7 +33,7 @@ export default function RecordEditPage() {
   const {
     attributeTypes,
     prismaModelConfig,
-    formAttributes,
+    editFormAttributes,
     record,
     displayName,
   } = data;
@@ -62,7 +62,7 @@ export default function RecordEditPage() {
         record={record}
         prismaModelConfig={prismaModelConfig}
         attributeTypes={attributeTypes}
-        formAttributes={formAttributes}
+        formAttributes={editFormAttributes}
       />
     </div>
   );
