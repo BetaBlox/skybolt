@@ -41,7 +41,6 @@ const AuthProvider: AuthProvider = {
     return new Promise((resolve) => {
       const interval = setInterval(() => {
         if (this.loaded) {
-          console.log('hi');
           resolve(this.isAuthenticated);
           clearInterval(interval);
         }
