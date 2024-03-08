@@ -28,7 +28,20 @@ export const AdmingConfig: AdminConfig = {
       ],
       collectionAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
       showAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
-      formAttributes: ['firstName', 'lastName', 'email', 'password', 'isAdmin'],
+      createFormAttributes: [
+        'firstName',
+        'lastName',
+        'email',
+        'password',
+        'isAdmin',
+      ],
+      editFormAttributes: [
+        'firstName',
+        'lastName',
+        'email',
+        // 'password', // need to figure out how to hash this first
+        'isAdmin',
+      ],
     },
     post: {
       getDisplayName: (record: Post) => record.title,
@@ -53,7 +66,8 @@ export const AdmingConfig: AdminConfig = {
         'createdAt',
         'updatedAt',
       ],
-      formAttributes: ['title', 'content', 'author'],
+      createFormAttributes: ['title', 'content', 'author'],
+      editFormAttributes: ['title', 'content', 'author'],
     },
     color: {
       getDisplayName: (record: Color) => record.label,
@@ -65,7 +79,8 @@ export const AdmingConfig: AdminConfig = {
       ],
       collectionAttributes: ['label', 'hex', 'createdAt', 'updatedAt'],
       showAttributes: ['label', 'hex', 'createdAt', 'updatedAt'],
-      formAttributes: ['label', 'hex'],
+      createFormAttributes: ['label', 'hex'],
+      editFormAttributes: ['label', 'hex'],
     },
   },
 };
@@ -74,23 +89,6 @@ export function getModel(modelName: string): AdminModel {
   // camelize because we need to convert 'Dispensary' to 'dispensary'
   return AdmingConfig.models[camelize(modelName)];
 }
-
-// export function getPrismaField(
-//   modelName: string,
-//   fieldName: string
-// ): DMMF.Field {
-//   const prismaModel = getPrismaModel(modelName);
-
-//   const field = prismaModel?.fields.find(
-//     (f) => f.name.toLowerCase() === fieldName.toLowerCase()
-//   );
-
-//   if (!field) {
-//     throw new Error("FIELD_NOT_FOUND");
-//   }
-
-//   return field;
-// }
 
 export function getAttributeType(
   modelName: string,
@@ -161,19 +159,4 @@ export function renderFieldInShowView(
     default:
       return record[attributeType.name];
   }
-}
-
-export function getModelDefaultValues(modelName: string): object {
-  const modelConfig = getModel(modelName);
-  const { formAttributes } = modelConfig;
-
-  const defaultValues = {};
-  formAttributes.forEach((attribute) => {
-    const attributeType = getAttributeType(modelName, attribute);
-    if (attributeType.defaultValue) {
-      defaultValues[attributeType.name] = attributeType.defaultValue;
-    }
-  });
-
-  return defaultValues;
 }

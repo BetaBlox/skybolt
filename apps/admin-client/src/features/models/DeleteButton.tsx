@@ -29,9 +29,6 @@ export default function DeleteButton({ payload }: Props) {
         });
         const { response } = await customFetch(url, {
           method: HttpMethod.DELETE,
-          headers: {
-            'Content-Type': 'application/json',
-          },
         });
 
         if (response.ok) {
@@ -44,8 +41,8 @@ export default function DeleteButton({ payload }: Props) {
           Notify.error();
         }
       } catch (error) {
-        Notify.error();
         console.error(error);
+        Notify.error();
       } finally {
         setSaving(false);
       }

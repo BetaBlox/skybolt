@@ -30,7 +30,7 @@ export default function RecordCreatePage() {
 
   const data = recordQuery.data as AdminRecordPayload;
 
-  const { attributeTypes, prismaModelConfig, formAttributes } = data;
+  const { attributeTypes, prismaModelConfig, createFormAttributes } = data;
 
   return (
     <div>
@@ -55,7 +55,7 @@ export default function RecordCreatePage() {
         modelName={modelName}
         prismaModelConfig={prismaModelConfig}
         attributeTypes={attributeTypes}
-        formAttributes={formAttributes}
+        formAttributes={createFormAttributes}
       />
     </div>
   );

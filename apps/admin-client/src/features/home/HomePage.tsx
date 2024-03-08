@@ -28,7 +28,7 @@ export default function HomePage() {
     <div>
       <PageHeader heading="Home" />
       <div className="grid-col-2 mx-auto my-5 grid gap-4 md:grid-cols-3">
-        {data.map(({ prismaModelConfig, count, records }) => {
+        {data.map(({ prismaModelConfig, count, recentRecords }) => {
           const modelName = prismaModelConfig.name;
 
           return (
@@ -51,7 +51,7 @@ export default function HomePage() {
                     Recent Records
                   </h3>
                   <div className="divide-y">
-                    {(records || []).slice(0, 5).map((record) => (
+                    {(recentRecords || []).map((record) => (
                       <div key={record.id}>
                         <Link
                           to={routeWithParams(MODEL_RECORD, {

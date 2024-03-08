@@ -58,7 +58,7 @@ export class RecordsController {
   async delete(
     @Param('modelName') modelName: string,
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<void> {
+  ): Promise<boolean> {
     return this.recordsService.deleteRecord(modelName, id);
   }
 }

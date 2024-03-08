@@ -44,7 +44,8 @@ export class RecordsService {
       attributeTypes: adminModelConfig.attributeTypes,
       collectionAttributes: adminModelConfig.collectionAttributes,
       showAttributes: adminModelConfig.showAttributes,
-      formAttributes: adminModelConfig.formAttributes,
+      createFormAttributes: adminModelConfig.createFormAttributes,
+      editFormAttributes: adminModelConfig.editFormAttributes,
       records: records.map((record) => ({
         ...record,
         displayName: adminModelConfig.getDisplayName(record) as string,
@@ -87,7 +88,8 @@ export class RecordsService {
       attributeTypes: adminModelConfig.attributeTypes,
       collectionAttributes: adminModelConfig.collectionAttributes,
       showAttributes: adminModelConfig.showAttributes,
-      formAttributes: adminModelConfig.formAttributes,
+      createFormAttributes: adminModelConfig.createFormAttributes,
+      editFormAttributes: adminModelConfig.editFormAttributes,
       record,
       displayName: adminModelConfig.getDisplayName(record) as string,
     };
@@ -111,7 +113,7 @@ export class RecordsService {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
     }
 
-    // TODO: filter data by adminModelConfig.formAttributes so we limit scope of modified data
+    // TODO: filter data by form attributes so we limit scope of modified data
 
     const record = await this.prisma[modelName].create({
       data,
@@ -122,7 +124,8 @@ export class RecordsService {
       attributeTypes: adminModelConfig.attributeTypes,
       collectionAttributes: adminModelConfig.collectionAttributes,
       showAttributes: adminModelConfig.showAttributes,
-      formAttributes: adminModelConfig.formAttributes,
+      createFormAttributes: adminModelConfig.createFormAttributes,
+      editFormAttributes: adminModelConfig.editFormAttributes,
       record,
       displayName: adminModelConfig.getDisplayName(record) as string,
     };
@@ -161,13 +164,14 @@ export class RecordsService {
       attributeTypes: adminModelConfig.attributeTypes,
       collectionAttributes: adminModelConfig.collectionAttributes,
       showAttributes: adminModelConfig.showAttributes,
-      formAttributes: adminModelConfig.formAttributes,
+      createFormAttributes: adminModelConfig.createFormAttributes,
+      editFormAttributes: adminModelConfig.editFormAttributes,
       record,
       displayName: adminModelConfig.getDisplayName(record) as string,
     };
   }
 
-  async deleteRecord(modelName: string, id: number): Promise<void> {
+  async deleteRecord(modelName: string, id: number): Promise<boolean> {
     const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
       (model) => model.name.toLowerCase() === modelName.toLowerCase(),
     );
@@ -187,5 +191,7 @@ export class RecordsService {
         id,
       },
     });
+
+    return true;
   }
 }
