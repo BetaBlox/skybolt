@@ -19,7 +19,6 @@ export class AuthService {
 
   async signIn(data: AuthDto) {
     // Check if user exists
-    console.log(data);
     const user = await this.usersService.findAdminByEmail(data.email);
     if (!user) {
       throw new BadRequestException('User does not exist');
