@@ -6,7 +6,7 @@ import {
   renderFieldInShowView,
 } from '../../../../admin-api/src/config/admin';
 import PageHeader from '@/components/PageHeader';
-import { modelDisplayName } from '@/config/admin';
+import { modelDisplayName } from '@/common/model-display-name';
 import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
 import { AdminRecordPayload, AdminFieldType } from '@repo/types';
 import DeleteButton from './DeleteButton';

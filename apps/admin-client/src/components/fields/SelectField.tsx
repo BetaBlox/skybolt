@@ -1,7 +1,7 @@
 import { DMMF } from '@repo/database';
 import { ChangeEvent } from 'react';
 import FieldLabel from '../FieldLabel';
-import { SelectOption } from '@/config/admin';
+import { SelectOption } from '@repo/types';
 
 interface Props {
   field: DMMF.Field;
