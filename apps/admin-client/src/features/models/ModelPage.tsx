@@ -1,4 +1,4 @@
-import { modelDisplayName } from '@/config/admin';
+import { modelDisplayName } from '@/common/model-display-name';
 import { Link, useParams } from 'react-router-dom';
 import { captilalize, routeWithParams } from '@repo/utils';
 import { renderFieldInCollectionView } from '../../../../admin-api/src/config/admin';

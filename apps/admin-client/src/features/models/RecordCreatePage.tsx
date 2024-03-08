@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '@/components/PageHeader';
-import { modelDisplayName } from '@/config/admin';
+import { modelDisplayName } from '@/common/model-display-name';
 import { useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
 import { MODEL } from '@/common/routes';
