@@ -1,4 +1,4 @@
-import { HTTP_METHOD } from '@/common/custom-fetcher';
+import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
 import { useState } from 'react';
 import { Form, Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ export default function ForgotPasswordPage() {
     try {
       const url = '/api/password-reset/send';
       const response = await fetch(url, {
-        method: HTTP_METHOD.POST,
+        method: HttpMethod.POST,
         body: JSON.stringify({
           email,
         }),

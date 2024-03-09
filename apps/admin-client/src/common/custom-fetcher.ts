@@ -1,5 +1,11 @@
-import AuthProvider from '../auth/AuthProvider';
+import {
+  getAccessTokenFromStorage,
+  refreshTokens,
+  signout,
+  tokenIsExpired,
+} from '@repo/auth';
 import { redirect } from 'react-router-dom';
+import { HOME } from './routes';
 
 export const HttpMethod = {
   GET: 'GET',
@@ -38,27 +44,27 @@ export const customFetch = async (
     throw new Error('Invalid fetch, no url provided');
   }
 
-  const accessToken = AuthProvider.getAccessTokenFromStorage();
+  const accessToken = getAccessTokenFromStorage();
 
   if (!accessToken) {
     console.log('Unable to find user access token');
-    await AuthProvider.signout();
-    redirect('/');
+    await signout();
+    redirect(HOME);
     return { response: null, data: null };
   }
 
-  if (AuthProvider.tokenIsExpired(accessToken)) {
+  if (tokenIsExpired(accessToken)) {
     console.warn('Access token is expired. Attempting to refresh token now.');
 
     // Make sure we only try to refresh once.
     // Even if a bunch of API requests fire off at once.
-    refreshPromise = refreshPromise || AuthProvider.refreshToken();
+    refreshPromise = refreshPromise || refreshTokens();
     await refreshPromise;
   }
 
   const defaultHeaders = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${AuthProvider.authTokens.accessToken}`,
+    Authorization: `Bearer ${accessToken}`,
   };
   const headerOverrides = {
     ...(config.headers || {}),

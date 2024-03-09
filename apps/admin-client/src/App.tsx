@@ -3,7 +3,7 @@ import Router from './Router';
 import { ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import 'react-toastify/dist/ReactToastify.css';
-import AuthProvider from './auth/AuthProvider';
+import { loadFromStorage } from '@repo/auth';
 
 const queryClient = new QueryClient();
 
@@ -11,7 +11,7 @@ function App() {
   const [appLoaded, setAppLoaded] = useState(false);
 
   useEffect(() => {
-    AuthProvider.loadFromStorage().then(() => {
+    loadFromStorage().then(() => {
       console.log('app is fully loaded');
       setAppLoaded(true);
     });

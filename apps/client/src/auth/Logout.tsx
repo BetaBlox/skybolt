@@ -1,13 +1,14 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthProvider from "./AuthProvider";
-import { LOGIN } from "../common/routes";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { LOGIN } from '../common/routes';
+import { signout } from '@repo/auth';
 
-function Logout() {
+export default function Logout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    AuthProvider.signout();
+    console.log('logging the user out...');
+    signout();
 
     setTimeout(() => {
       navigate(LOGIN);
@@ -27,5 +28,3 @@ function Logout() {
     </div>
   );
 }
-
-export default Logout;

@@ -1,4 +1,4 @@
-import { HTTP_METHOD } from '@/common/custom-fetcher';
+import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
 import { Notify } from '@/features/notification/notification.service';
 import { useState } from 'react';
@@ -21,7 +21,7 @@ export default function PasswordResetPage() {
     try {
       const url = '/api/password-reset/reset';
       const response = await fetch(url, {
-        method: HTTP_METHOD.POST,
+        method: HttpMethod.POST,
         body: JSON.stringify({
           token,
           password: data.password,
