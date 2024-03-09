@@ -11,10 +11,12 @@ COPY apps/api/package.json ./apps/api/package.json
 COPY apps/client/package.json ./apps/client/package.json
 
 # Copy supporting packages package.json files
-COPY packages/utils/package.json ./packages/utils/package.json
+COPY packages/admin-config/package.json ./packages/admin-config/package.json
+COPY packages/auth/package.json ./packages/auth/package.json
 COPY packages/database/package.json ./packages/database/package.json
 COPY packages/paginator/package.json ./packages/paginator/package.json
 COPY packages/types/package.json ./packages/types/package.json
+COPY packages/utils/package.json ./packages/utils/package.json
 
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 # optionally if you want to run npm global bin without specifying path
