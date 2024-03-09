@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@repo/database';
+import { DMMF, Prisma } from '@repo/database';
 import * as admin from '@/config/admin';
 import { PrismaService } from '@/prisma/prisma.service';
 import {
@@ -115,10 +115,7 @@ export class RecordsService {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
     }
 
-    let payload = filterRecordPayload(
-      adminModelConfig.createFormAttributes,
-      data,
-    );
+    let payload = filterRecordPayload(prismaModelConfig, data);
 
     // TODO: need a better way to do this because it's just isolated to the password field attribute type
     payload = await hashPasswordFields(
@@ -162,10 +159,7 @@ export class RecordsService {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
     }
 
-    const payload = filterRecordPayload(
-      adminModelConfig.editFormAttributes,
-      data,
-    );
+    const payload = filterRecordPayload(prismaModelConfig, data);
 
     const record = await this.prisma[modelName].update({
       where: {
@@ -215,11 +209,35 @@ export class RecordsService {
  * Filters a record payload and strips out data that is not supported by your model's attributes types.
  * This helps prevent unwanted data from being created/updated on the backend
  */
-function filterRecordPayload(attributes: string[], data: object): object {
+function filterRecordPayload(
+  prismaModelConfig: DMMF.Model,
+  data: object,
+): object {
   const filtered = {};
 
-  attributes.forEach((key) => {
-    filtered[key] = data[key];
+  Object.keys(data).forEach((key) => {
+    const isValid = prismaModelConfig.fields.some((field) => {
+      return field.name === key && field.relationName === undefined;
+    });
+
+    /**
+     * Also validate that the attribute actually exists in the database
+     *
+     * This prvents issues with relationship fields such as a post's author author
+     * being submitted to the database instead of the foreign key authorId;
+     *
+     * {
+     *     name: 'author',
+     *     // ...
+     *     type: 'User',
+     *     relationName: 'PostToUser',
+     *     relationFromFields: [ 'authorId' ],
+     *     relationToFields: [ 'id' ],
+     * },
+     */
+    if (isValid) {
+      filtered[key] = data[key];
+    }
   });
 
   return filtered;

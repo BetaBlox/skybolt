@@ -11,6 +11,7 @@ import {
 } from '@/common/routes';
 import { AdminModelPayload } from '@repo/types';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
+import CollectionViewField from '@/components/ShowViewField';
 
 export default function ModelPage() {
   const { modelName } = useParams();
@@ -32,6 +33,8 @@ export default function ModelPage() {
   const data = modelQuery.data as AdminModelPayload;
 
   const { collectionAttributes, records, count } = data;
+
+  console.log(data);
 
   const title = `${modelDisplayName(modelName)} (${count})`;
 
@@ -83,7 +86,11 @@ export default function ModelPage() {
                     key={attribute}
                     className="whitespace-nowrap px-6 py-4 text-gray-900"
                   >
-                    {renderFieldInCollectionView(record, modelName, attribute)}
+                    <CollectionViewField
+                      record={record}
+                      modelName={modelName}
+                      attribute={attribute}
+                    />
                   </td>
                 ))}
                 <td className="flex flex-row gap-2 px-6 py-4 text-gray-900">

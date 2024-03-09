@@ -4,7 +4,7 @@ import FieldLabel from '../FieldLabel';
 import { useQuery } from '@tanstack/react-query';
 import { routeWithParams } from '@repo/utils';
 import { AdminAttributeType, SelectOption } from '@repo/types';
-import { HttpMethod } from '@/common/custom-fetcher';
+import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 
 interface Props {
   field: DMMF.Field;
@@ -26,13 +26,10 @@ export default function RelationshipHasOneField({
     queryKey: [`hasOne/${modelName}`],
     queryFn: async () => {
       const url = routeWithParams('/api/records/:modelName', { modelName });
-      const res = await fetch(url, {
+      const { data } = await customFetch(url, {
         method: HttpMethod.GET,
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
-      return res.json();
+      return data;
     },
   });
 

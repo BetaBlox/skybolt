@@ -58,14 +58,8 @@ export const AdmingConfig: AdminConfig = {
         { name: 'createdAt', type: AdminFieldType.DATETIME },
         { name: 'updatedAt', type: AdminFieldType.DATETIME },
       ],
-      collectionAttributes: ['title', 'authorId', 'createdAt', 'updatedAt'],
-      showAttributes: [
-        'title',
-        'authorId',
-        'content',
-        'createdAt',
-        'updatedAt',
-      ],
+      collectionAttributes: ['title', 'author', 'createdAt', 'updatedAt'],
+      showAttributes: ['title', 'author', 'content', 'createdAt', 'updatedAt'],
       createFormAttributes: ['title', 'content', 'author'],
       editFormAttributes: ['title', 'content', 'author'],
     },
@@ -99,64 +93,4 @@ export function getAttributeType(
   return attributeTypes.find(
     (at) => at.name === attribute,
   ) as AdminAttributeType;
-}
-
-export function renderFieldInCollectionView(
-  record: any,
-  modelName: string,
-  attribute: string,
-): string {
-  const attributeType = getAttributeType(modelName, attribute);
-  const value = record[attributeType.name];
-
-  switch (attributeType.type) {
-    case AdminFieldType.JSON:
-      return JSON.stringify(value, null, 2);
-    case AdminFieldType.BOOLEAN:
-      return value === true ? 'yes' : 'no';
-    case AdminFieldType.RELATIONSHIP_HAS_ONE:
-      const relationshipModelName = attributeType.modelName!;
-      const relationshipRecord = record[relationshipModelName];
-
-      if (!relationshipRecord) {
-        throw new Error(
-          "No relationship record found on your model. Did you forget to 'include' it with your query?",
-        );
-      }
-
-      const { getDisplayName } = getModel(relationshipModelName);
-      return getDisplayName(relationshipRecord) as string;
-    default:
-      return record[attributeType.name];
-  }
-}
-
-export function renderFieldInShowView(
-  record: any,
-  modelName: string,
-  attribute: string,
-): string {
-  const attributeType = getAttributeType(modelName, attribute);
-  const value = record[attributeType.name];
-
-  switch (attributeType.type) {
-    case AdminFieldType.JSON:
-      return JSON.stringify(value, null, 2);
-    case AdminFieldType.BOOLEAN:
-      return value === true ? 'yes' : 'no';
-    case AdminFieldType.RELATIONSHIP_HAS_ONE:
-      const relationshipModelName = attributeType.modelName!;
-      const relationshipRecord = record[relationshipModelName];
-
-      if (!relationshipRecord) {
-        throw new Error(
-          "No relationship record found on your model. Did you forget to 'include' it with your query?",
-        );
-      }
-
-      const { getDisplayName } = getModel(relationshipModelName);
-      return getDisplayName(relationshipRecord) as string;
-    default:
-      return record[attributeType.name];
-  }
 }
