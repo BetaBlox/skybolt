@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { DMMF, Prisma } from '@repo/database';
-import * as admin from '@/config/admin';
 import { PrismaService } from '@/prisma/prisma.service';
 import {
   AdminAttributeType,
@@ -9,6 +8,7 @@ import {
   AdminRecordsPayload,
 } from '@repo/types';
 import * as argon2 from 'argon2';
+import { getModel } from '@repo/admin-config';
 
 @Injectable()
 export class RecordsService {
@@ -23,7 +23,7 @@ export class RecordsService {
       throw new Error(`Unable to find Prisma config for model: ${modelName}`);
     }
 
-    const adminModelConfig = admin.getModel(modelName);
+    const adminModelConfig = getModel(modelName);
 
     if (!adminModelConfig) {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
@@ -64,7 +64,7 @@ export class RecordsService {
       throw new Error(`Unable to find Prisma config for model: ${modelName}`);
     }
 
-    const adminModelConfig = admin.getModel(modelName);
+    const adminModelConfig = getModel(modelName);
 
     if (!adminModelConfig) {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
@@ -109,7 +109,7 @@ export class RecordsService {
       throw new Error(`Unable to find Prisma config for model: ${modelName}`);
     }
 
-    const adminModelConfig = admin.getModel(modelName);
+    const adminModelConfig = getModel(modelName);
 
     if (!adminModelConfig) {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
@@ -153,7 +153,7 @@ export class RecordsService {
       throw new Error(`Unable to find Prisma config for model: ${modelName}`);
     }
 
-    const adminModelConfig = admin.getModel(modelName);
+    const adminModelConfig = getModel(modelName);
 
     if (!adminModelConfig) {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
@@ -189,7 +189,7 @@ export class RecordsService {
       throw new Error(`Unable to find Prisma config for model: ${modelName}`);
     }
 
-    const adminModelConfig = admin.getModel(modelName);
+    const adminModelConfig = getModel(modelName);
 
     if (!adminModelConfig) {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);

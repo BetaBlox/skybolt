@@ -1,10 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { captilalize, routeWithParams } from '@repo/utils';
-import {
-  getAttributeType,
-  renderFieldInShowView,
-} from '../../../../admin-api/src/config/admin';
 import PageHeader from '@/components/PageHeader';
 import { modelDisplayName } from '@/common/model-display-name';
 import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
@@ -12,6 +8,7 @@ import { AdminRecordPayload, AdminFieldType } from '@repo/types';
 import DeleteButton from './DeleteButton';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import ShowViewField from '@/components/ShowViewField';
+import { getAttributeType } from '@repo/admin-config';
 
 export default function RecordPage() {
   const { modelName, id } = useParams();

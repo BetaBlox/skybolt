@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@repo/database';
-import * as admin from '@/config/admin';
 import { PrismaService } from '@/prisma/prisma.service';
 import { AdminFieldType, AdminModelPayload } from '@repo/types';
+import { AdmingConfig, getModel } from '@repo/admin-config';
 
 @Injectable()
 export class ModelsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getModels(): Promise<AdminModelPayload[]> {
-    const adminModelNames = Object.keys(admin.AdmingConfig.models);
+    const adminModelNames = Object.keys(AdmingConfig.models);
     const promises = adminModelNames.map((modelName) => {
       return this.getModel(modelName);
     });
@@ -25,7 +25,7 @@ export class ModelsService {
       throw new Error(`Unable to find Prisma config for model: ${modelName}`);
     }
 
-    const adminModelConfig = admin.getModel(modelName);
+    const adminModelConfig = getModel(modelName);
 
     if (!adminModelConfig) {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
