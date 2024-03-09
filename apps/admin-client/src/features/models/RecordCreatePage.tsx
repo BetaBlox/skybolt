@@ -1,22 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '@/components/PageHeader';
-import { modelDisplayName } from '@/common/model-display-name';
 import { useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
 import { MODEL } from '@/common/routes';
 import CreateForm from '@/components/CreateForm';
+import { getDashboard } from '@repo/admin-config';
+import { customFetch, HttpMethod } from '@/common/custom-fetcher';
 import { AdminRecordPayload } from '@repo/types';
-import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 
 export default function RecordCreatePage() {
-  const { modelName, id } = useParams();
-
+  const { modelName } = useParams();
   const recordQuery = useQuery({
     queryKey: [`models/${modelName}`],
     queryFn: async () => {
       const url = routeWithParams(`/api/models/:modelName`, {
         modelName,
-        id,
       });
       const { data } = await customFetch(url, {
         method: HttpMethod.GET,
@@ -29,8 +27,9 @@ export default function RecordCreatePage() {
   if (recordQuery.isError || !modelName) return 'Error loading data';
 
   const data = recordQuery.data as AdminRecordPayload;
-
-  const { attributeTypes, prismaModelConfig, createFormAttributes } = data;
+  const dashboard = getDashboard(modelName);
+  const { attributeTypes, createFormAttributes } = dashboard;
+  const { prismaModel } = data;
 
   return (
     <div>
@@ -41,7 +40,7 @@ export default function RecordCreatePage() {
             href: routeWithParams(MODEL, {
               modelName,
             }),
-            text: modelDisplayName(modelName),
+            text: dashboard.name,
             current: false,
           },
           {
@@ -53,7 +52,7 @@ export default function RecordCreatePage() {
       />
       <CreateForm
         modelName={modelName}
-        prismaModelConfig={prismaModelConfig}
+        prismaModel={prismaModel}
         attributeTypes={attributeTypes}
         formAttributes={createFormAttributes}
       />

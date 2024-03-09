@@ -2,15 +2,14 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { captilalize, routeWithParams } from '@repo/utils';
 import PageHeader from '@/components/PageHeader';
-import { modelDisplayName } from '@/common/model-display-name';
 import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
 import { AdminRecordPayload, AdminFieldType } from '@repo/types';
 import DeleteButton from './DeleteButton';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import ShowViewField from '@/components/ShowViewField';
-import { getAttributeType } from '@repo/admin-config';
+import { getAttributeType, getDashboard } from '@repo/admin-config';
 
-export default function RecordPage() {
+export default function RecordShowPage() {
   const { modelName, id } = useParams();
 
   const recordQuery = useQuery({
@@ -31,24 +30,26 @@ export default function RecordPage() {
   if (recordQuery.isError || !modelName) return 'Error loading data';
 
   const data = recordQuery.data as AdminRecordPayload;
+  const dashboard = getDashboard(data.modelName);
 
-  const { showAttributes, record, displayName } = data;
+  const { record } = data;
+  const { showAttributes, getDisplayName } = dashboard;
 
   return (
     <div>
       <PageHeader
-        heading={displayName}
+        heading={getDisplayName(record)}
         breadcrumbs={[
           {
             href: routeWithParams(MODEL, {
               modelName,
             }),
-            text: modelDisplayName(modelName),
+            text: dashboard.name,
             current: false,
           },
           {
             href: '#',
-            text: displayName,
+            text: getDisplayName(record),
             current: true,
           },
         ]}

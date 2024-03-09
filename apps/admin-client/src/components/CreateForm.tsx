@@ -14,23 +14,26 @@ import { useNavigate } from 'react-router-dom';
 import { MODEL_RECORD } from '@/common/routes';
 import { AdminAttributeType, AdminFieldType } from '@repo/types';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
+// import { getDashboard } from '@repo/admin-config';
 
 interface Props {
   modelName: string;
-  prismaModelConfig: DMMF.Model;
+  prismaModel: DMMF.Model;
   attributeTypes: AdminAttributeType[];
   formAttributes: string[];
 }
 
 export default function CreateForm({
   modelName,
-  prismaModelConfig,
+  prismaModel,
   attributeTypes,
   formAttributes,
 }: Props) {
   const navigate = useNavigate();
   const [data, setData] = useState({});
   const [saving, setSaving] = useState(false);
+
+  // const dashboard = getDashboard(modelName);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setSaving(true);
@@ -79,7 +82,8 @@ export default function CreateForm({
           const attributeType = attributeTypes.find(
             (at) => at.name === attribute,
           );
-          const prismaField = prismaModelConfig?.fields.find(
+
+          const prismaField = prismaModel.fields.find(
             (f) => f.name.toLowerCase() === attribute.toLowerCase(),
           ) as DMMF.Field;
 

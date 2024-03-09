@@ -1,6 +1,7 @@
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import { MODEL } from '@/common/routes';
 import { Notify } from '@/config/notification/notification.service';
+import { getDashboard } from '@repo/admin-config';
 import { AdminRecordPayload } from '@repo/types';
 import { routeWithParams } from '@repo/utils';
 import { useState } from 'react';
@@ -13,13 +14,13 @@ export default function DeleteButton({ payload }: Props) {
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
-  const { record, displayName, prismaModelConfig } = payload;
-  const { name: modelName } = prismaModelConfig;
+  const { record, modelName } = payload;
+  const dashboard = getDashboard(modelName);
 
   const handleClick = async () => {
     setSaving(true);
 
-    const message = `Delete ${displayName}?`;
+    const message = `Delete ${dashboard.getDisplayName(record)}?`;
 
     if (window.confirm(message)) {
       try {
@@ -55,7 +56,7 @@ export default function DeleteButton({ payload }: Props) {
       className="rounded bg-red-500 px-3 py-2 font-medium text-white hover:bg-red-600"
       disabled={saving}
     >
-      Delete {displayName}
+      Delete {dashboard.getDisplayName(record)}
     </button>
   );
 }

@@ -1,4 +1,3 @@
-import { modelDisplayName } from '@/common/model-display-name';
 import { Link, useParams } from 'react-router-dom';
 import { captilalize, routeWithParams } from '@repo/utils';
 import { useQuery } from '@tanstack/react-query';
@@ -11,6 +10,7 @@ import {
 import { AdminModelPayload } from '@repo/types';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import CollectionViewField from '@/components/ShowViewField';
+import { getDashboard } from '@repo/admin-config';
 
 export default function ModelPage() {
   const { modelName } = useParams();
@@ -31,17 +31,17 @@ export default function ModelPage() {
 
   const data = modelQuery.data as AdminModelPayload;
 
-  const { collectionAttributes, records, count } = data;
+  const dashboard = getDashboard(modelName);
+  const { collectionAttributes } = dashboard;
+  const { records, count } = data;
 
-  const title = `${modelDisplayName(modelName)} (${count})`;
+  const title = `${dashboard.name} (${count})`;
 
   return (
     <div>
       <PageHeader
         heading={title}
-        breadcrumbs={[
-          { href: '#', text: modelDisplayName(modelName), current: true },
-        ]}
+        breadcrumbs={[{ href: '#', text: dashboard.name, current: true }]}
         actions={
           <Link
             to={routeWithParams(MODEL_RECORD_CREATE, {
