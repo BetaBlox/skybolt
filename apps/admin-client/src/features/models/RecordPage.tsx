@@ -11,6 +11,7 @@ import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
 import { AdminRecordPayload, AdminFieldType } from '@repo/types';
 import DeleteButton from './DeleteButton';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
+import ShowViewField from '@/components/ShowViewField';
 
 export default function RecordPage() {
   const { modelName, id } = useParams();
@@ -83,12 +84,20 @@ export default function RecordPage() {
                 {attributeType.type === AdminFieldType.JSON ? (
                   <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     <pre>
-                      {renderFieldInShowView(record, modelName, attribute)}
+                      <ShowViewField
+                        record={record}
+                        modelName={modelName}
+                        attribute={attribute}
+                      />
                     </pre>
                   </dd>
                 ) : (
                   <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {renderFieldInShowView(record, modelName, attribute)}
+                    <ShowViewField
+                      record={record}
+                      modelName={modelName}
+                      attribute={attribute}
+                    />
                   </dd>
                 )}
               </div>
