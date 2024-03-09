@@ -1,8 +1,5 @@
+import { getAttributeType, getModel } from '@repo/admin-config';
 import { AdminFieldType } from '@repo/types';
-import {
-  getAttributeType,
-  getModel,
-} from '../../../admin-api/src/config/admin';
 
 interface Props {
   record: any;

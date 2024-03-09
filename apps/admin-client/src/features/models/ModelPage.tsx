@@ -1,7 +1,6 @@
 import { modelDisplayName } from '@/common/model-display-name';
 import { Link, useParams } from 'react-router-dom';
 import { captilalize, routeWithParams } from '@repo/utils';
-import { renderFieldInCollectionView } from '../../../../admin-api/src/config/admin';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '@/components/PageHeader';
 import {
@@ -33,8 +32,6 @@ export default function ModelPage() {
   const data = modelQuery.data as AdminModelPayload;
 
   const { collectionAttributes, records, count } = data;
-
-  console.log(data);
 
   const title = `${modelDisplayName(modelName)} (${count})`;
 
