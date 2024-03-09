@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { DMMF, Prisma } from '@repo/database';
+import { Prisma } from '@repo/database';
 import * as admin from '@/config/admin';
 import { PrismaService } from '@/prisma/prisma.service';
 import {
+  AdminAttributeType,
   AdminFieldType,
   AdminRecordPayload,
   AdminRecordsPayload,
 } from '@repo/types';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class RecordsService {
@@ -113,9 +115,16 @@ export class RecordsService {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
     }
 
-    const payload = filterRecordPayload(
-      adminModelConfig.editFormAttributes,
+    let payload = filterRecordPayload(
+      adminModelConfig.createFormAttributes,
       data,
+    );
+
+    // TODO: need a better way to do this because it's just isolated to the password field attribute type
+    payload = await hashPasswordFields(
+      adminModelConfig.attributeTypes,
+      adminModelConfig.createFormAttributes,
+      payload,
     );
 
     const record = await this.prisma[modelName].create({
@@ -206,7 +215,7 @@ export class RecordsService {
  * Filters a record payload and strips out data that is not supported by your model's attributes types.
  * This helps prevent unwanted data from being created/updated on the backend
  */
-const filterRecordPayload = (attributes: string[], data: object): object => {
+function filterRecordPayload(attributes: string[], data: object): object {
   const filtered = {};
 
   attributes.forEach((key) => {
@@ -214,4 +223,26 @@ const filterRecordPayload = (attributes: string[], data: object): object => {
   });
 
   return filtered;
-};
+}
+
+async function hashPasswordFields(
+  attributeTypes: AdminAttributeType[],
+  attributes: string[],
+  data: object,
+): Promise<object> {
+  const result = { ...data };
+
+  const passwordAttributes = attributes.filter((attributeKey) => {
+    const attributeType = attributeTypes.find((at) => at.name === attributeKey);
+
+    return attributeType && attributeType.type === AdminFieldType.PASSWORD;
+  });
+
+  const promises = passwordAttributes.map(async (attributeKey) => {
+    result[attributeKey] = await argon2.hash(result[attributeKey]);
+  });
+
+  await Promise.all(promises);
+
+  return result;
+}
