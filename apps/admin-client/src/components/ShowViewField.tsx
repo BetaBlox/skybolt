@@ -1,4 +1,4 @@
-import { getAttributeType, getModel } from '@repo/admin-config';
+import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { AdminFieldType } from '@repo/types';
 
 interface Props {
@@ -27,8 +27,8 @@ export default function ShowViewField({ record, modelName, attribute }: Props) {
       );
     }
 
-    const { getDisplayName } = getModel(relationshipModelName);
-    return getDisplayName(relationshipRecord) as string;
+    const relationshipDashboard = getDashboard(relationshipModelName);
+    return relationshipDashboard.getDisplayName(relationshipRecord);
   } else {
     return record[attributeType.name];
   }

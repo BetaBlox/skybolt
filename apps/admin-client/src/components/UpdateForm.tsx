@@ -17,7 +17,7 @@ import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 
 interface Props {
   modelName: string;
-  prismaModelConfig: DMMF.Model;
+  prismaModel: DMMF.Model;
   attributeTypes: AdminAttributeType[];
   formAttributes: string[];
   record: {
@@ -28,14 +28,16 @@ interface Props {
 
 export default function UpdateForm({
   modelName,
+  prismaModel,
   record: defaultData,
-  prismaModelConfig,
   attributeTypes,
   formAttributes,
 }: Props) {
   const navigate = useNavigate();
   const [data, setData] = useState(defaultData);
   const [saving, setSaving] = useState(false);
+
+  // const dashboard = getDashboard(modelName);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setSaving(true);
@@ -83,7 +85,7 @@ export default function UpdateForm({
           const attributeType = attributeTypes.find(
             (at) => at.name === attribute,
           );
-          const prismaField = prismaModelConfig?.fields.find(
+          const prismaField = prismaModel?.fields.find(
             (f) => f.name.toLowerCase() === attribute.toLowerCase(),
           ) as DMMF.Field;
 

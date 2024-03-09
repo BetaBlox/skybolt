@@ -7,6 +7,7 @@ import { MODEL } from '@/common/routes';
 import UpdateForm from '@/components/UpdateForm';
 import { AdminRecordPayload } from '@repo/types';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
+import { getDashboard } from '@repo/admin-config';
 
 export default function RecordEditPage() {
   const { modelName, id } = useParams();
@@ -29,19 +30,14 @@ export default function RecordEditPage() {
   if (recordQuery.isError || !modelName) return 'Error loading data';
 
   const data = recordQuery.data as AdminRecordPayload;
+  const dashboard = getDashboard(modelName);
 
-  const {
-    attributeTypes,
-    prismaModelConfig,
-    editFormAttributes,
-    record,
-    displayName,
-  } = data;
+  const { record, prismaModel } = data;
 
   return (
     <div>
       <PageHeader
-        heading={displayName}
+        heading={dashboard.getDisplayName(record)}
         breadcrumbs={[
           {
             href: routeWithParams(MODEL, {
@@ -52,17 +48,17 @@ export default function RecordEditPage() {
           },
           {
             href: '#',
-            text: displayName,
+            text: dashboard.getDisplayName(record),
             current: true,
           },
         ]}
       />
       <UpdateForm
         modelName={modelName}
+        prismaModel={prismaModel}
         record={record}
-        prismaModelConfig={prismaModelConfig}
-        attributeTypes={attributeTypes}
-        formAttributes={editFormAttributes}
+        attributeTypes={dashboard.attributeTypes}
+        formAttributes={dashboard.editFormAttributes}
       />
     </div>
   );

@@ -3,8 +3,13 @@ import { ChangeEvent } from 'react';
 import FieldLabel from '../FieldLabel';
 import { useQuery } from '@tanstack/react-query';
 import { routeWithParams } from '@repo/utils';
-import { AdminAttributeType, SelectOption } from '@repo/types';
+import {
+  AdminAttributeType,
+  AdminRecordsPayload,
+  SelectOption,
+} from '@repo/types';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
+import { getDashboard } from '@repo/admin-config';
 
 interface Props {
   field: DMMF.Field;
@@ -36,22 +41,13 @@ export default function RelationshipHasOneField({
   if (recordsQuery.isPending) return 'Loading...';
   if (recordsQuery.isError || !modelName) return 'Error loading data';
 
-  const data = recordsQuery.data as {
-    prismaModelConfig: DMMF.Model;
-    attributeTypes: AdminAttributeType[];
-    collectionAttributes: string[];
-    showAttributes: string[];
-    formAttributes: string[];
-    // Ignoring for now because we don't have a type for this API payload
-    records: any; // eslint-disable-line
-  };
+  const data = recordsQuery.data as AdminRecordsPayload;
+  const relatedDashboard = getDashboard(data.modelName);
 
-  const options: SelectOption[] = data.records.map(
-    (r: { id: number; displayName: string }) => ({
-      value: r.id,
-      label: r.displayName,
-    }),
-  );
+  const options: SelectOption[] = data.records.map((r) => ({
+    value: r.id,
+    label: relatedDashboard.getDisplayName(r),
+  }));
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onChange(attributeType.sourceKey!, parseInt(e.currentTarget.value, 10));

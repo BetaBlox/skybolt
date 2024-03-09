@@ -1,4 +1,4 @@
-import { getAttributeType, getModel } from '@repo/admin-config';
+import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { AdminFieldType } from '@repo/types';
 
 interface Props {
@@ -31,7 +31,7 @@ export default function CollectionViewField({
       );
     }
 
-    const { getDisplayName } = getModel(relationshipModelName);
+    const { getDisplayName } = getDashboard(relationshipModelName);
     return getDisplayName(relationshipRecord) as string;
   } else {
     return record[attributeType.name];

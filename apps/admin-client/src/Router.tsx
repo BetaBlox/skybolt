@@ -14,7 +14,7 @@ import {
 } from '@/common/routes';
 import HomePage from '@/features/home/HomePage';
 import ModelPage from '@/features/models/ModelPage';
-import RecordPage from '@/features/models/RecordPage';
+import RecordShowPage from '@/features/models/RecordShowPage';
 import RecordEditPage from './features/models/RecordEditPage';
 import RecordCreatePage from './features/models/RecordCreatePage';
 import loginAction from './auth/loginAction';
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
       {
         path: MODEL_RECORD,
         loader: protectedLoader,
-        element: <RecordPage />,
+        element: <RecordShowPage />,
       },
       {
         path: MODEL_RECORD_CREATE,

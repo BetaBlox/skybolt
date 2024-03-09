@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DMMF, Prisma } from '@repo/database';
+import { DMMF, getPrismaModel } from '@repo/database';
 import { PrismaService } from '@/prisma/prisma.service';
 import {
   AdminAttributeType,
@@ -8,30 +8,19 @@ import {
   AdminRecordsPayload,
 } from '@repo/types';
 import * as argon2 from 'argon2';
-import { getModel } from '@repo/admin-config';
+import { getDashboard } from '@repo/admin-config';
 
 @Injectable()
 export class RecordsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findMany(modelName: string): Promise<AdminRecordsPayload> {
-    const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
-      (model) => model.name.toLowerCase() === modelName.toLowerCase(),
-    );
-
-    if (!prismaModelConfig) {
-      throw new Error(`Unable to find Prisma config for model: ${modelName}`);
-    }
-
-    const adminModelConfig = getModel(modelName);
-
-    if (!adminModelConfig) {
-      throw new Error(`Unable to find Admin config for model: ${modelName}`);
-    }
+    const prismaModel = getPrismaModel(modelName);
+    const dashboard = getDashboard(modelName);
 
     // Dynamically include related models
     const include = {};
-    adminModelConfig.attributeTypes.forEach((at) => {
+    dashboard.attributeTypes.forEach((at) => {
       if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
         include[at.name] = true;
       }
@@ -42,37 +31,19 @@ export class RecordsService {
     });
 
     return {
-      prismaModelConfig,
-      attributeTypes: adminModelConfig.attributeTypes,
-      collectionAttributes: adminModelConfig.collectionAttributes,
-      showAttributes: adminModelConfig.showAttributes,
-      createFormAttributes: adminModelConfig.createFormAttributes,
-      editFormAttributes: adminModelConfig.editFormAttributes,
-      records: records.map((record) => ({
-        ...record,
-        displayName: adminModelConfig.getDisplayName(record) as string,
-      })),
+      prismaModel,
+      modelName,
+      records,
     };
   }
 
   async getRecord(modelName: string, id: number): Promise<AdminRecordPayload> {
-    const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
-      (model) => model.name.toLowerCase() === modelName.toLowerCase(),
-    );
-
-    if (!prismaModelConfig) {
-      throw new Error(`Unable to find Prisma config for model: ${modelName}`);
-    }
-
-    const adminModelConfig = getModel(modelName);
-
-    if (!adminModelConfig) {
-      throw new Error(`Unable to find Admin config for model: ${modelName}`);
-    }
+    const prismaModel = getPrismaModel(modelName);
+    const dashboard = getDashboard(modelName);
 
     // Dynamically include related models
     const include = {};
-    adminModelConfig.attributeTypes.forEach((at) => {
+    dashboard.attributeTypes.forEach((at) => {
       if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
         include[at.name] = true;
       }
@@ -86,14 +57,9 @@ export class RecordsService {
     });
 
     return {
-      prismaModelConfig,
-      attributeTypes: adminModelConfig.attributeTypes,
-      collectionAttributes: adminModelConfig.collectionAttributes,
-      showAttributes: adminModelConfig.showAttributes,
-      createFormAttributes: adminModelConfig.createFormAttributes,
-      editFormAttributes: adminModelConfig.editFormAttributes,
+      prismaModel,
+      modelName,
       record,
-      displayName: adminModelConfig.getDisplayName(record) as string,
     };
   }
 
@@ -101,26 +67,15 @@ export class RecordsService {
     modelName: string,
     data: object,
   ): Promise<AdminRecordPayload> {
-    const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
-      (model) => model.name.toLowerCase() === modelName.toLowerCase(),
-    );
+    const prismaModel = getPrismaModel(modelName);
+    const dashboard = getDashboard(modelName);
 
-    if (!prismaModelConfig) {
-      throw new Error(`Unable to find Prisma config for model: ${modelName}`);
-    }
-
-    const adminModelConfig = getModel(modelName);
-
-    if (!adminModelConfig) {
-      throw new Error(`Unable to find Admin config for model: ${modelName}`);
-    }
-
-    let payload = filterRecordPayload(prismaModelConfig, data);
+    let payload = filterRecordPayload(prismaModel, data);
 
     // TODO: need a better way to do this because it's just isolated to the password field attribute type
     payload = await hashPasswordFields(
-      adminModelConfig.attributeTypes,
-      adminModelConfig.createFormAttributes,
+      dashboard.attributeTypes,
+      dashboard.createFormAttributes,
       payload,
     );
 
@@ -129,14 +84,9 @@ export class RecordsService {
     });
 
     return {
-      prismaModelConfig,
-      attributeTypes: adminModelConfig.attributeTypes,
-      collectionAttributes: adminModelConfig.collectionAttributes,
-      showAttributes: adminModelConfig.showAttributes,
-      createFormAttributes: adminModelConfig.createFormAttributes,
-      editFormAttributes: adminModelConfig.editFormAttributes,
+      prismaModel,
+      modelName,
       record,
-      displayName: adminModelConfig.getDisplayName(record) as string,
     };
   }
 
@@ -145,21 +95,8 @@ export class RecordsService {
     id: number,
     data: object,
   ): Promise<AdminRecordPayload> {
-    const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
-      (model) => model.name.toLowerCase() === modelName.toLowerCase(),
-    );
-
-    if (!prismaModelConfig) {
-      throw new Error(`Unable to find Prisma config for model: ${modelName}`);
-    }
-
-    const adminModelConfig = getModel(modelName);
-
-    if (!adminModelConfig) {
-      throw new Error(`Unable to find Admin config for model: ${modelName}`);
-    }
-
-    const payload = filterRecordPayload(prismaModelConfig, data);
+    const prismaModel = getPrismaModel(modelName);
+    const payload = filterRecordPayload(prismaModel, data);
 
     const record = await this.prisma[modelName].update({
       where: {
@@ -169,32 +106,13 @@ export class RecordsService {
     });
 
     return {
-      prismaModelConfig,
-      attributeTypes: adminModelConfig.attributeTypes,
-      collectionAttributes: adminModelConfig.collectionAttributes,
-      showAttributes: adminModelConfig.showAttributes,
-      createFormAttributes: adminModelConfig.createFormAttributes,
-      editFormAttributes: adminModelConfig.editFormAttributes,
+      prismaModel,
+      modelName,
       record,
-      displayName: adminModelConfig.getDisplayName(record) as string,
     };
   }
 
   async deleteRecord(modelName: string, id: number): Promise<boolean> {
-    const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
-      (model) => model.name.toLowerCase() === modelName.toLowerCase(),
-    );
-
-    if (!prismaModelConfig) {
-      throw new Error(`Unable to find Prisma config for model: ${modelName}`);
-    }
-
-    const adminModelConfig = getModel(modelName);
-
-    if (!adminModelConfig) {
-      throw new Error(`Unable to find Admin config for model: ${modelName}`);
-    }
-
     await this.prisma[modelName].delete({
       where: {
         id,
@@ -209,14 +127,11 @@ export class RecordsService {
  * Filters a record payload and strips out data that is not supported by your model's attributes types.
  * This helps prevent unwanted data from being created/updated on the backend
  */
-function filterRecordPayload(
-  prismaModelConfig: DMMF.Model,
-  data: object,
-): object {
+function filterRecordPayload(prismaModel: DMMF.Model, data: object): object {
   const filtered = {};
 
   Object.keys(data).forEach((key) => {
-    const isValid = prismaModelConfig.fields.some((field) => {
+    const isValid = prismaModel.fields.some((field) => {
       return field.name === key && field.relationName === undefined;
     });
 

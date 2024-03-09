@@ -12,19 +12,6 @@ export const enum AdminFieldType {
   DATETIME = 'datetime',
 }
 
-export type AdminModel = {
-  getDisplayName: (record: any) => string | number;
-  attributeTypes: AdminAttributeType[];
-  collectionAttributes: string[];
-  showAttributes: string[];
-  createFormAttributes: string[];
-  editFormAttributes: string[];
-};
-
-export type AdminConfig = {
-  models: { [key: string]: AdminModel };
-};
-
 export type AdminAttributeType = {
   name: string;
   type: AdminFieldType;
@@ -35,12 +22,8 @@ export type AdminAttributeType = {
 };
 
 export interface AdminModelPayload {
-  prismaModelConfig: any;
-  attributeTypes: AdminAttributeType[];
-  collectionAttributes: string[];
-  showAttributes: string[];
-  createFormAttributes: string[];
-  editFormAttributes: string[];
+  prismaModel: any;
+  modelName: string;
   count: number;
   // TODO: probably shouldn't mutate the raw data. Maybe a separate displayName lookup hash?
   recentRecords: any[] & {
@@ -53,25 +36,13 @@ export interface AdminModelPayload {
 }
 
 export interface AdminRecordsPayload {
-  prismaModelConfig: any;
-  attributeTypes: AdminAttributeType[];
-  collectionAttributes: string[];
-  showAttributes: string[];
-  createFormAttributes: string[];
-  editFormAttributes: string[];
-  // TODO: probably shouldn't mutate the raw data. Maybe a separate displayName lookup hash?
-  records: any[] & {
-    displayName: string;
-  };
+  prismaModel: any;
+  modelName: string;
+  records: any[];
 }
 
 export interface AdminRecordPayload {
-  prismaModelConfig: any;
-  attributeTypes: AdminAttributeType[];
-  collectionAttributes: string[];
-  showAttributes: string[];
-  createFormAttributes: string[];
-  editFormAttributes: string[];
+  prismaModel: any;
+  modelName: string;
   record: any;
-  displayName: string;
 }

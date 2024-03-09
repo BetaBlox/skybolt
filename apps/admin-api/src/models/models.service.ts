@@ -1,39 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@repo/database';
 import { PrismaService } from '@/prisma/prisma.service';
 import { AdminFieldType, AdminModelPayload } from '@repo/types';
-import { AdmingConfig, getModel } from '@repo/admin-config';
+import { getDashboard, getDashboards } from '@repo/admin-config';
+import { getPrismaModel } from '@repo/database';
 
 @Injectable()
 export class ModelsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async getModels(): Promise<AdminModelPayload[]> {
-    const adminModelNames = Object.keys(AdmingConfig.models);
-    const promises = adminModelNames.map((modelName) => {
+    const modelNames = getDashboards().map((d) => d.modelName);
+    const promises = modelNames.map((modelName) => {
       return this.getModel(modelName);
     });
     return Promise.all(promises);
   }
 
   async getModel(modelName: string): Promise<AdminModelPayload> {
-    const prismaModelConfig = Prisma.dmmf.datamodel.models.find(
-      (model) => model.name.toLowerCase() === modelName.toLowerCase(),
-    );
-
-    if (!prismaModelConfig) {
-      throw new Error(`Unable to find Prisma config for model: ${modelName}`);
-    }
-
-    const adminModelConfig = getModel(modelName);
-
-    if (!adminModelConfig) {
-      throw new Error(`Unable to find Admin config for model: ${modelName}`);
-    }
+    const prismaModel = getPrismaModel(modelName);
+    const dashboard = getDashboard(modelName);
 
     // Dynamically include related models
     const include = {};
-    adminModelConfig.attributeTypes.forEach((at) => {
+    dashboard.attributeTypes.forEach((at) => {
       if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
         include[at.name] = true;
       }
@@ -52,20 +41,16 @@ export class ModelsService {
     });
 
     return {
-      prismaModelConfig,
-      attributeTypes: adminModelConfig.attributeTypes,
-      collectionAttributes: adminModelConfig.collectionAttributes,
-      showAttributes: adminModelConfig.showAttributes,
-      createFormAttributes: adminModelConfig.createFormAttributes,
-      editFormAttributes: adminModelConfig.editFormAttributes,
+      prismaModel,
+      modelName: dashboard.modelName,
       count,
       recentRecords: recentRecords.map((record) => ({
         ...record,
-        displayName: adminModelConfig.getDisplayName(record) as string,
+        displayName: dashboard.getDisplayName(record) as string,
       })),
       records: records.map((record) => ({
         ...record,
-        displayName: adminModelConfig.getDisplayName(record) as string,
+        displayName: dashboard.getDisplayName(record) as string,
       })),
     };
   }

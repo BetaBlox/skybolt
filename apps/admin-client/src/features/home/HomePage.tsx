@@ -1,5 +1,4 @@
 import PageHeader from '@/components/PageHeader';
-import { modelDisplayName } from '@/common/model-display-name';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { routeWithParams } from '@repo/utils';
@@ -7,6 +6,7 @@ import { MODEL, MODEL_RECORD } from '@/common/routes';
 import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import { AdminModelPayload } from '@repo/types';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
+import { getDashboard } from '@repo/admin-config';
 
 export default function HomePage() {
   const modelsQuery = useQuery({
@@ -28,11 +28,11 @@ export default function HomePage() {
     <div>
       <PageHeader heading="Home" />
       <div className="grid-col-2 mx-auto my-5 grid gap-4 md:grid-cols-3">
-        {data.map(({ prismaModelConfig, count, recentRecords }) => {
-          const modelName = prismaModelConfig.name;
+        {data.map(({ modelName, count, recentRecords }) => {
+          const dashboard = getDashboard(modelName);
 
           return (
-            <div key={prismaModelConfig.name}>
+            <div key={dashboard.name}>
               <div className="h-full rounded bg-white shadow">
                 <div className="mb-4 px-6 py-4">
                   <div className="mb-2 text-4xl font-bold">{count}</div>
@@ -41,9 +41,7 @@ export default function HomePage() {
                       modelName,
                     })}
                   >
-                    <h2 className="text-lg">
-                      {modelDisplayName(prismaModelConfig.name)}
-                    </h2>
+                    <h2 className="text-lg">{dashboard.name}</h2>
                   </Link>
                 </div>
                 <div className="px-6 py-4">
