@@ -1,7 +1,7 @@
 import { User } from '@repo/database';
 import { useState, FormEvent } from 'react';
-import AuthProvider from '@/auth/AuthProvider';
 import { Notify } from '@/features/notification/notification.service';
+import { AuthProvider, changePassword, updateUserProfile } from '@repo/auth';
 
 export default function UserProfilePage() {
   const [data, setData] = useState<User>(AuthProvider.user!);
@@ -12,7 +12,7 @@ export default function UserProfilePage() {
     e.preventDefault();
 
     try {
-      await AuthProvider.updateUserProfile(data);
+      await updateUserProfile(data);
       Notify.success();
     } catch (error) {
       console.error(error);
@@ -24,7 +24,7 @@ export default function UserProfilePage() {
     e.preventDefault();
 
     try {
-      const res = await AuthProvider.changePassword(password);
+      const res = await changePassword(password);
       if (res.ok) {
         Notify.success('Password updated');
       } else {

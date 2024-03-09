@@ -1,25 +1,26 @@
-import { LoaderFunctionArgs, redirect } from "react-router-dom";
-import AuthProvider from "./AuthProvider";
+import { HOME } from '@/common/routes';
+import { signin } from '@repo/auth';
+import { LoaderFunctionArgs, redirect } from 'react-router-dom';
 
 export default async function loginAction({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
 
   // Validate our form inputs and return validation errors via useActionData()
   if (!email) {
     return {
-      error: "You must provide a email to log in",
+      error: 'You must provide a email to log in',
     };
   }
 
   // Sign in and redirect to the proper destination if successful.
   try {
-    const res = await AuthProvider.signin(email, password);
+    const res = await signin(email, password);
 
     if (!res.ok) {
       return {
-        error: "Invalid login attempt",
+        error: 'Invalid login attempt',
       };
     }
   } catch (error) {
@@ -27,10 +28,10 @@ export default async function loginAction({ request }: LoaderFunctionArgs) {
     // username/password combinations - just like validating the inputs
     // above
     return {
-      error: "Invalid login attempt",
+      error: 'Invalid login attempt',
     };
   }
 
-  const redirectTo = formData.get("redirectTo") as string | null;
-  return redirect(redirectTo || "/");
+  const redirectTo = formData.get('redirectTo') as string | null;
+  return redirect(redirectTo || HOME);
 }

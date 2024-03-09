@@ -10,8 +10,8 @@ import {
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { classNames } from '@repo/utils';
-import AuthProvider from '../auth/AuthProvider';
 import { HOME, LOGOUT, PROFILE } from '../common/routes';
+import { AuthProvider } from '@repo/auth';
 
 type NavItem = {
   name: string;

@@ -1,11 +1,11 @@
+import { isAuthenticatedAsync } from '@repo/auth';
 import { LoaderFunctionArgs, redirect } from 'react-router-dom';
-import AuthProvider from './AuthProvider';
 
 export default async function protectedLoader({ request }: LoaderFunctionArgs) {
   // If the user is not logged in and tries to access `/protected`, we redirect
   // them to `/login` with a `from` parameter that allows login to redirect back
   // to this page upon successful authentication
-  const isAuthenticated = await AuthProvider.isAuthenticatedAsync();
+  const isAuthenticated = await isAuthenticatedAsync();
 
   if (!isAuthenticated) {
     const params = new URLSearchParams();
