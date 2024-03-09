@@ -113,10 +113,13 @@ export class RecordsService {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
     }
 
-    // TODO: filter data by form attributes so we limit scope of modified data
+    const payload = filterRecordPayload(
+      adminModelConfig.editFormAttributes,
+      data,
+    );
 
     const record = await this.prisma[modelName].create({
-      data,
+      data: { ...payload },
     });
 
     return {
@@ -150,13 +153,16 @@ export class RecordsService {
       throw new Error(`Unable to find Admin config for model: ${modelName}`);
     }
 
-    // TODO: filter data by adminModelConfig.formAttributes so we limit scope of modified data
+    const payload = filterRecordPayload(
+      adminModelConfig.editFormAttributes,
+      data,
+    );
 
     const record = await this.prisma[modelName].update({
       where: {
         id,
       },
-      data,
+      data: { ...payload },
     });
 
     return {
@@ -195,3 +201,17 @@ export class RecordsService {
     return true;
   }
 }
+
+/**
+ * Filters a record payload and strips out data that is not supported by your model's attributes types.
+ * This helps prevent unwanted data from being created/updated on the backend
+ */
+const filterRecordPayload = (attributes: string[], data: object): object => {
+  const filtered = {};
+
+  attributes.forEach((key) => {
+    filtered[key] = data[key];
+  });
+
+  return filtered;
+};
