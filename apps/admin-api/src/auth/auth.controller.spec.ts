@@ -3,17 +3,10 @@ import { AuthController } from '@/auth/auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { AuthService } from '@/auth/auth.service';
-import { PrismaService } from '@/prisma/prisma.service';
 import { UsersModule } from '@/users/users.module';
 
 describe('AuthController', () => {
   let controller: AuthController;
-  let prisma: PrismaService;
-
-  beforeAll(async () => {
-    prisma = new PrismaService();
-    await prisma.truncateDatabase();
-  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

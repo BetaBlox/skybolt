@@ -1,0 +1,12 @@
+entity: user
+items:
+  admin:
+    id: 1
+    email: admin@betablox.com
+    firstName: Admin
+    lastName: User
+  user_1:
+    id: 2
+    email: user_1@betablox.com
+    firstName: User
+    lastName: One
