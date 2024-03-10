@@ -3,7 +3,7 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import * as argon2 from 'argon2';
+import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthDto } from '@/auth/dto/auth.dto';
@@ -24,7 +24,7 @@ export class AuthService {
       throw new BadRequestException('User does not exist');
     }
 
-    const passwordMatches = await argon2.verify(user.password, data.password);
+    const passwordMatches = bcrypt.compareSync(data.password, user.password);
     if (!passwordMatches) {
       throw new BadRequestException('Password is incorrect');
     }
@@ -40,9 +40,9 @@ export class AuthService {
       throw new ForbiddenException('Access Denied');
     }
 
-    const refreshTokenMatches = await argon2.verify(
-      user.refreshToken,
+    const refreshTokenMatches = bcrypt.compareSync(
       refreshToken,
+      user.refreshToken,
     );
 
     if (!refreshTokenMatches) {
@@ -58,12 +58,13 @@ export class AuthService {
     return this.usersService.updateRefreshToken(userId, null);
   }
 
-  async hashData(data: string): Promise<string> {
-    return argon2.hash(data);
+  hashData(data: string): string {
+    const salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(data, salt);
   }
 
   async updateRefreshToken(userId: number, refreshToken: string) {
-    const hashedRefreshToken = await this.hashData(refreshToken);
+    const hashedRefreshToken = this.hashData(refreshToken);
     await this.usersService.updateRefreshToken(userId, hashedRefreshToken);
   }
 

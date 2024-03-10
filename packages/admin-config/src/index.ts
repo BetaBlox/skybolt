@@ -31,8 +31,15 @@ export function getAttributeType(
   attribute: string,
 ): AdminAttributeType {
   const dashboard = getDashboard(modelName);
+  const { attributeTypes } = dashboard;
 
-  return dashboard.attributeTypes.find(
-    (at) => at.name === attribute,
-  ) as AdminAttributeType;
+  const attributeType = attributeTypes.find((at) => at.name === attribute);
+
+  if (!attributeType) {
+    throw new Error(
+      `Unable to find attribute type for ${dashboard.name} ${attribute}`,
+    );
+  }
+
+  return attributeType;
 }
