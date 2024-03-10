@@ -2,12 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { DMMF, getPrismaModel } from '@repo/database';
 import { PrismaService } from '@/prisma/prisma.service';
 import {
-  AdminAttributeType,
   AdminFieldType,
   AdminRecordPayload,
   AdminRecordsPayload,
 } from '@repo/types';
-import * as argon2 from 'argon2';
 import { getDashboard } from '@repo/admin-config';
 
 @Injectable()
@@ -70,18 +68,13 @@ export class RecordsService {
     const prismaModel = getPrismaModel(modelName);
     const dashboard = getDashboard(modelName);
 
-    if (dashboard.isCreatable()) {
+    if (dashboard.isCreatable() === false) {
       throw new Error('Record is not creatable');
     }
 
     let payload = filterRecordPayload(prismaModel, data);
 
-    // TODO: need a better way to do this because it's just isolated to the password field attribute type
-    payload = await hashPasswordFields(
-      dashboard.attributeTypes,
-      dashboard.createFormAttributes,
-      payload,
-    );
+    payload = await dashboard.beforeCreate(payload);
 
     const record = await this.prisma[modelName].create({
       data: { ...payload },
@@ -184,26 +177,4 @@ function filterRecordPayload(prismaModel: DMMF.Model, data: object): object {
   });
 
   return filtered;
-}
-
-async function hashPasswordFields(
-  attributeTypes: AdminAttributeType[],
-  attributes: string[],
-  data: object,
-): Promise<object> {
-  const result = { ...data };
-
-  const passwordAttributes = attributes.filter((attributeKey) => {
-    const attributeType = attributeTypes.find((at) => at.name === attributeKey);
-
-    return attributeType && attributeType.type === AdminFieldType.PASSWORD;
-  });
-
-  const promises = passwordAttributes.map(async (attributeKey) => {
-    result[attributeKey] = await argon2.hash(result[attributeKey]);
-  });
-
-  await Promise.all(promises);
-
-  return result;
 }

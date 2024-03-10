@@ -1,6 +1,8 @@
 import { User } from '@repo/database';
 import { AdminFieldType } from '@repo/types';
 import Dashboard from './Dashboard';
+// import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 
 export class UserDashboard extends Dashboard {
   name = 'User';
@@ -35,7 +37,23 @@ export class UserDashboard extends Dashboard {
     'isAdmin',
   ];
 
-  isDeletable = (record: User) => record.isAdmin === false;
-  // isEditable = (record: User) => true;
-  // isCreatable = () => true;
+  isDeletable(record: User): boolean {
+    return record.isAdmin === false;
+  }
+
+  // isEditable(record: User): boolean {
+  //   return true;
+  // }
+  // isCreatable(): boolean {
+  //   return true;
+  // }
+
+  // Hook when a user record is created.
+  async beforeCreate(data: User): Promise<object> {
+    // Hash the user's password so they can authenticate and login
+    const salt = bcrypt.genSaltSync(10);
+    data.password = bcrypt.hashSync(data.password, salt);
+
+    return data;
+  }
 }

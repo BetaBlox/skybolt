@@ -11,11 +11,13 @@
   "dependencies": {
     "@repo/database": "*",
     "@repo/utils": "*",
+    "bcryptjs": "^2.4.3",
     "tsup": "^8.0.1",
     "typescript": "5.3.2"
   },
   "devDependencies": {
     "@repo/types": "*",
+    "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^29.5.10",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.1"

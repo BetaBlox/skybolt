@@ -1,8 +1,13 @@
 import { PrismaClient } from '@prisma/client';
-import * as argon2 from 'argon2';
+import * as bcrypt from 'bcryptjs';
 import colors from './fixtures/colors';
 
 const prisma = new PrismaClient();
+
+function hashData(data: string): string {
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(data, salt);
+}
 
 (async function main() {
   try {
@@ -18,7 +23,7 @@ const prisma = new PrismaClient();
         firstName: 'John',
         lastName: 'Rake',
         email: 'john@betablox.com',
-        password: await argon2.hash('password'),
+        password: hashData('password'),
         isAdmin: true,
       },
     });
@@ -32,7 +37,7 @@ const prisma = new PrismaClient();
         firstName: 'Admin',
         lastName: 'User',
         email: 'admin@betablox.com',
-        password: await argon2.hash('password'),
+        password: hashData('password'),
         isAdmin: true,
       },
     });
@@ -46,7 +51,7 @@ const prisma = new PrismaClient();
         firstName: 'Standard',
         lastName: 'User',
         email: 'user@betablox.com',
-        password: await argon2.hash('password'),
+        password: hashData('password'),
         isAdmin: false,
       },
     });

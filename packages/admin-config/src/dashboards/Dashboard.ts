@@ -11,9 +11,24 @@ export default class Dashboard {
   editFormAttributes: string[] = [];
   prismaModel: DMMF.Model = null;
 
-  getDisplayName = (record: any): string => record.name;
+  getDisplayName(record: any): string {
+    return record.name;
+  }
 
-  isDeletable = (record: any) => true;
-  isEditable = (record: any) => true;
-  isCreatable = () => true;
+  isDeletable(record: any): boolean {
+    return true;
+  }
+
+  isEditable(record: any): boolean {
+    return true;
+  }
+
+  isCreatable(): boolean {
+    return true;
+  }
+
+  // Lifecycle hook right before a record is being created through the dashboard.
+  async beforeCreate(data: object): Promise<object> {
+    return data;
+  }
 }

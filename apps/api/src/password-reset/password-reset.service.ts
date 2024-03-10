@@ -2,7 +2,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import * as crypto from 'node:crypto';
 import { ServerClient } from 'postmark';
-import * as argon2 from 'argon2';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class PasswordResetService {
@@ -61,7 +61,7 @@ export class PasswordResetService {
       },
     });
 
-    const newPassword = await argon2.hash(password);
+    const newPassword = this.hashData(password);
 
     await this.prisma.user.update({
       where: {
@@ -78,5 +78,10 @@ export class PasswordResetService {
         id: passwordReset.id,
       },
     });
+  }
+
+  private hashData(data: string): string {
+    const salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(data, salt);
   }
 }
