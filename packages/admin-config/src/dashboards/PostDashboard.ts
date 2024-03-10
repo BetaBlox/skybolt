@@ -24,4 +24,8 @@ export class PostDashboard extends Dashboard {
   showAttributes = ['title', 'author', 'content', 'createdAt', 'updatedAt'];
   createFormAttributes = ['title', 'content', 'author'];
   editFormAttributes = ['title', 'content', 'author'];
+
+  // isDeletable = (record: Post) => false;
+  // isEditable = (record: Post) => true;
+  // isCreatable = () => true;
 }

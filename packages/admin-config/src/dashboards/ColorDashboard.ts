@@ -17,4 +17,8 @@ export class ColorDashboard extends Dashboard {
   showAttributes = ['label', 'hex', 'createdAt', 'updatedAt'];
   createFormAttributes = ['label', 'hex'];
   editFormAttributes = ['label', 'hex'];
+
+  // isDeletable = (record: Color) => false;
+  isEditable = (record: Color) => false;
+  isCreatable = () => false;
 }

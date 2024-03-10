@@ -70,6 +70,10 @@ export class RecordsService {
     const prismaModel = getPrismaModel(modelName);
     const dashboard = getDashboard(modelName);
 
+    if (dashboard.isCreatable()) {
+      throw new Error('Record is not creatable');
+    }
+
     let payload = filterRecordPayload(prismaModel, data);
 
     // TODO: need a better way to do this because it's just isolated to the password field attribute type
@@ -96,9 +100,21 @@ export class RecordsService {
     data: object,
   ): Promise<AdminRecordPayload> {
     const prismaModel = getPrismaModel(modelName);
+    const dashboard = getDashboard(modelName);
+
+    let record = await this.prisma[modelName].findFirstOrThrow({
+      where: {
+        id,
+      },
+    });
+
+    if (dashboard.isEditable(record) === false) {
+      throw new Error('Record is not editable');
+    }
+
     const payload = filterRecordPayload(prismaModel, data);
 
-    const record = await this.prisma[modelName].update({
+    record = await this.prisma[modelName].update({
       where: {
         id,
       },
@@ -113,6 +129,18 @@ export class RecordsService {
   }
 
   async deleteRecord(modelName: string, id: number): Promise<boolean> {
+    const record = await this.prisma[modelName].findFirstOrThrow({
+      where: {
+        id,
+      },
+    });
+
+    const dashboard = getDashboard(modelName);
+
+    if (dashboard.isDeletable(record) === false) {
+      throw new Error('Record is not deletable');
+    }
+
     await this.prisma[modelName].delete({
       where: {
         id,
