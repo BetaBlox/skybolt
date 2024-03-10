@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { RecordsService } from './records.service';
@@ -21,8 +22,9 @@ export class RecordsController {
   @Get('/:modelName')
   async findMany(
     @Param('modelName') modelName: string,
+    @Query('search') search: string,
   ): Promise<AdminRecordsPayload> {
-    return this.recordsService.findMany(modelName);
+    return this.recordsService.findMany(modelName, search);
   }
 
   @UseGuards(AccessTokenGuard)

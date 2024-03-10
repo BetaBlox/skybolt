@@ -9,6 +9,8 @@ export default class Dashboard {
   showAttributes: string[] = [];
   createFormAttributes: string[] = [];
   editFormAttributes: string[] = [];
+  // Text searchable attributes. Only supports String attribute types
+  searchAttributes: string[] = [];
   prismaModel: DMMF.Model = null;
 
   getDisplayName = (record: any): string => record.name;
