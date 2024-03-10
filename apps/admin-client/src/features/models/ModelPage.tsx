@@ -37,21 +37,23 @@ export default function ModelPage() {
 
   const title = `${dashboard.name} (${count})`;
 
+  const actions = dashboard.isCreatable() ? (
+    <Link
+      to={routeWithParams(MODEL_RECORD_CREATE, {
+        modelName,
+      })}
+      className="rounded bg-green-600 px-3 py-2 font-medium text-white"
+    >
+      Add New
+    </Link>
+  ) : null;
+
   return (
     <div>
       <PageHeader
         heading={title}
         breadcrumbs={[{ href: '#', text: dashboard.name, current: true }]}
-        actions={
-          <Link
-            to={routeWithParams(MODEL_RECORD_CREATE, {
-              modelName,
-            })}
-            className="rounded bg-green-600 px-3 py-2 font-medium text-white"
-          >
-            Add New
-          </Link>
-        }
+        actions={actions}
       />
       <div className="relative overflow-x-auto bg-white shadow-md sm:rounded-lg">
         <table className="w-full text-left text-sm text-gray-50">
@@ -100,15 +102,17 @@ export default function ModelPage() {
                   >
                     Show
                   </Link>
-                  <Link
-                    to={routeWithParams(MODEL_RECORD_EDIT, {
-                      modelName,
-                      id: record.id,
-                    })}
-                    className="rounded px-3 py-2 font-medium text-indigo-500 hover:bg-indigo-500 hover:text-white"
-                  >
-                    Edit
-                  </Link>
+                  {dashboard.isEditable(record) && (
+                    <Link
+                      to={routeWithParams(MODEL_RECORD_EDIT, {
+                        modelName,
+                        id: record.id,
+                      })}
+                      className="rounded px-3 py-2 font-medium text-indigo-500 hover:bg-indigo-500 hover:text-white"
+                    >
+                      Edit
+                    </Link>
+                  )}
                   {/* <DeleteButton modelName={modelName} record={record} /> */}
                 </td>
               </tr>

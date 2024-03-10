@@ -12,4 +12,8 @@ export default class Dashboard {
   prismaModel: DMMF.Model = null;
 
   getDisplayName = (record: any): string => record.name;
+
+  isDeletable = (record: any) => true;
+  isEditable = (record: any) => true;
+  isCreatable = () => true;
 }

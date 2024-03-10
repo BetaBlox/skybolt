@@ -35,6 +35,18 @@ export default function RecordShowPage() {
   const { record } = data;
   const { showAttributes, getDisplayName } = dashboard;
 
+  const actions = dashboard.isEditable(record) ? (
+    <Link
+      to={routeWithParams(MODEL_RECORD_EDIT, {
+        modelName,
+        id: record.id,
+      })}
+      className="rounded bg-indigo-500 px-3 py-2 font-medium text-white"
+    >
+      Edit
+    </Link>
+  ) : null;
+
   return (
     <div>
       <PageHeader
@@ -53,17 +65,7 @@ export default function RecordShowPage() {
             current: true,
           },
         ]}
-        actions={
-          <Link
-            to={routeWithParams(MODEL_RECORD_EDIT, {
-              modelName,
-              id: record.id,
-            })}
-            className="rounded bg-indigo-500 px-3 py-2 font-medium text-white"
-          >
-            Edit
-          </Link>
-        }
+        actions={actions}
       />
 
       <div className="mt-6 border-t border-gray-100 bg-white px-4 shadow-md sm:rounded-lg">
@@ -104,17 +106,19 @@ export default function RecordShowPage() {
         </dl>
       </div>
 
-      <div className="mt-6 border-t border-gray-100 bg-white px-4 py-6 shadow-md sm:rounded-lg">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-red-500">Danger Zone</h2>
-          <p className="mt-4 text-gray-500">
-            This action <strong>CANNOT</strong> be undone. This will permanently
-            delete the {modelName} record
-          </p>
-        </div>
+      {dashboard.isDeletable(record) && (
+        <div className="mt-6 border-t border-gray-100 bg-white px-4 py-6 shadow-md sm:rounded-lg">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-red-500">Danger Zone</h2>
+            <p className="mt-4 text-gray-500">
+              This action <strong>CANNOT</strong> be undone. This will
+              permanently delete the {modelName} record
+            </p>
+          </div>
 
-        <DeleteButton payload={data} />
-      </div>
+          <DeleteButton payload={data} />
+        </div>
+      )}
     </div>
   );
 }

@@ -34,4 +34,8 @@ export class UserDashboard extends Dashboard {
     // 'password', // need to figure out how to hash this first
     'isAdmin',
   ];
+
+  isDeletable = (record: User) => record.isAdmin === false;
+  // isEditable = (record: User) => true;
+  // isCreatable = () => true;
 }
