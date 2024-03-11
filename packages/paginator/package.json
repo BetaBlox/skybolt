@@ -9,6 +9,7 @@
     "test": "echo 'No tests specificed'"
   },
   "dependencies": {
+    "@repo/types": "*",
     "tsup": "^8.0.1",
     "typescript": "5.3.2"
   },

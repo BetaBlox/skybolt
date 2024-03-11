@@ -1,11 +1,13 @@
-import { AdminModelPayload } from '@repo/types';
+import { AdminRecordsPayload } from '@repo/types';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import { Dashboard } from '@repo/admin-config';
 import { MODEL_RECORD, MODEL_RECORD_EDIT } from '@/common/routes';
 import CollectionViewField from '@/components/CollectionViewField';
 import { routeWithParams, captilalize } from '@repo/utils';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import PaginationRow from '@/components/PaginationRow';
+import { useState } from 'react';
 
 interface Props {
   modelName: string;
@@ -17,27 +19,32 @@ export default function CollectionTable({
   modelName,
   search,
 }: Props) {
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
   const modelQuery = useQuery({
-    queryKey: ['records', modelName, search],
+    queryKey: ['records', modelName, search, page, perPage],
     queryFn: async () => {
       const url = routeWithParams('/api/records/:modelName', {
         modelName,
         search,
+        page: String(page),
+        perPage: String(perPage),
       });
       const { data } = await customFetch(url, {
         method: HttpMethod.GET,
       });
       return data;
     },
+    placeholderData: keepPreviousData,
   });
 
   if (modelQuery.isPending) return 'Loading...';
   if (modelQuery.isError || !modelName) return 'Error loading data';
 
-  const data = modelQuery.data as AdminModelPayload;
+  const data = modelQuery.data as AdminRecordsPayload;
 
   const { collectionAttributes } = dashboard;
-  const { records } = data;
+  const { paginatedResult } = data;
 
   return (
     <div className="relative overflow-x-auto bg-white shadow-md sm:rounded-lg">
@@ -62,7 +69,7 @@ export default function CollectionTable({
           </tr>
         </thead>
         <tbody>
-          {records.map((record) => (
+          {paginatedResult.data.map((record) => (
             <tr key={record.id}>
               <td className="px-6 py-4 text-gray-900">{record.id}</td>
               {collectionAttributes.map((attribute) => (
@@ -81,7 +88,7 @@ export default function CollectionTable({
                 <Link
                   to={routeWithParams(MODEL_RECORD, {
                     modelName,
-                    id: record.id,
+                    id: String(record.id),
                   })}
                   className="rounded px-3 py-2 font-medium text-slate-500 hover:bg-slate-500 hover:text-white"
                 >
@@ -91,7 +98,7 @@ export default function CollectionTable({
                   <Link
                     to={routeWithParams(MODEL_RECORD_EDIT, {
                       modelName,
-                      id: record.id,
+                      id: String(record.id),
                     })}
                     className="rounded px-3 py-2 font-medium text-indigo-500 hover:bg-indigo-500 hover:text-white"
                   >
@@ -104,6 +111,13 @@ export default function CollectionTable({
           ))}
         </tbody>
       </table>
+      <div className="px-6">
+        <PaginationRow
+          paginatedResult={paginatedResult}
+          onPageChange={setPage}
+          onPerPageChange={setPerPage}
+        />
+      </div>
     </div>
   );
 }
