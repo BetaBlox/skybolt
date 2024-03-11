@@ -36,6 +36,8 @@ export class UserDashboard extends Dashboard {
     // 'password', // need to figure out how to hash this first
     'isAdmin',
   ];
+  // Text searchable attributes. Only supports String attribute types
+  searchAttributes = ['firstName', 'lastName', 'email'];
 
   isDeletable(record: User): boolean {
     return record.isAdmin === false;

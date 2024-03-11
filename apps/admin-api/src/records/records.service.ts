@@ -12,9 +12,22 @@ import { getDashboard } from '@repo/admin-config';
 export class RecordsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findMany(modelName: string): Promise<AdminRecordsPayload> {
+  async findMany(
+    modelName: string,
+    search: string,
+  ): Promise<AdminRecordsPayload> {
     const prismaModel = getPrismaModel(modelName);
     const dashboard = getDashboard(modelName);
+
+    // Build a filter clause including all searchable attributes
+    const where =
+      dashboard.searchAttributes.length > 0
+        ? {
+            OR: dashboard.searchAttributes.map((attribute) => ({
+              [attribute]: { contains: search, mode: 'insensitive' },
+            })),
+          }
+        : {};
 
     // Dynamically include related models
     const include = {};
@@ -26,6 +39,7 @@ export class RecordsService {
 
     const records = await this.prisma[modelName].findMany({
       include,
+      where,
     });
 
     return {

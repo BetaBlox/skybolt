@@ -1,125 +1,58 @@
 import { Link, useParams } from 'react-router-dom';
-import { captilalize, routeWithParams } from '@repo/utils';
-import { useQuery } from '@tanstack/react-query';
+import { routeWithParams } from '@repo/utils';
 import PageHeader from '@/components/PageHeader';
-import {
-  MODEL_RECORD,
-  MODEL_RECORD_CREATE,
-  MODEL_RECORD_EDIT,
-} from '@/common/routes';
-import { AdminModelPayload } from '@repo/types';
-import { HttpMethod, customFetch } from '@/common/custom-fetcher';
-import CollectionViewField from '@/components/ShowViewField';
+import { MODEL_RECORD_CREATE } from '@/common/routes';
 import { getDashboard } from '@repo/admin-config';
+import CollectionTable from './CollectionTable';
+import { useDebounce } from '@uidotdev/usehooks';
+import { useState } from 'react';
 
 export default function ModelPage() {
   const { modelName } = useParams();
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebounce(search, 500);
 
-  const modelQuery = useQuery({
-    queryKey: [`model/${modelName}`],
-    queryFn: async () => {
-      const url = routeWithParams('/api/models/:modelName', { modelName });
-      const { data } = await customFetch(url, {
-        method: HttpMethod.GET,
-      });
-      return data;
-    },
-  });
-
-  if (modelQuery.isPending) return 'Loading...';
-  if (modelQuery.isError || !modelName) return 'Error loading data';
-
-  const data = modelQuery.data as AdminModelPayload;
+  if (!modelName) return 'Loading...';
 
   const dashboard = getDashboard(modelName);
-  const { collectionAttributes } = dashboard;
-  const { records, count } = data;
 
-  const title = `${dashboard.name} (${count})`;
-
-  const actions = dashboard.isCreatable() ? (
-    <Link
-      to={routeWithParams(MODEL_RECORD_CREATE, {
-        modelName,
-      })}
-      className="rounded bg-green-600 px-3 py-2 font-medium text-white"
-    >
-      Add New
-    </Link>
-  ) : null;
+  const actions = (
+    <div className="flex flex-row gap-x-4">
+      {dashboard.searchAttributes.length > 0 && (
+        <input
+          type="text"
+          id="search"
+          name="search"
+          className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          placeholder="Search"
+          onChange={(e) => setSearch(e.currentTarget.value)}
+        />
+      )}
+      {dashboard.isCreatable() && (
+        <Link
+          to={routeWithParams(MODEL_RECORD_CREATE, {
+            modelName,
+          })}
+          className="rounded bg-green-600 px-3 py-2 font-medium text-white"
+        >
+          Add New
+        </Link>
+      )}
+    </div>
+  );
 
   return (
     <div>
       <PageHeader
-        heading={title}
+        heading={dashboard.name}
         breadcrumbs={[{ href: '#', text: dashboard.name, current: true }]}
         actions={actions}
       />
-      <div className="relative overflow-x-auto bg-white shadow-md sm:rounded-lg">
-        <table className="w-full text-left text-sm text-gray-50">
-          <thead className="bg-gray-600 text-xs text-white">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Id
-              </th>
-              {collectionAttributes.map((attribute) => (
-                <th
-                  scope="col"
-                  key={attribute}
-                  className="whitespace-nowrap px-6 py-3"
-                >
-                  {captilalize(attribute)}
-                </th>
-              ))}
-              <th scope="col" className="px-6 py-3">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {records.map((record) => (
-              <tr key={record.id}>
-                <td className="px-6 py-4 text-gray-900">{record.id}</td>
-                {collectionAttributes.map((attribute) => (
-                  <td
-                    key={attribute}
-                    className="whitespace-nowrap px-6 py-4 text-gray-900"
-                  >
-                    <CollectionViewField
-                      record={record}
-                      modelName={modelName}
-                      attribute={attribute}
-                    />
-                  </td>
-                ))}
-                <td className="flex flex-row gap-2 px-6 py-4 text-gray-900">
-                  <Link
-                    to={routeWithParams(MODEL_RECORD, {
-                      modelName,
-                      id: record.id,
-                    })}
-                    className="rounded px-3 py-2 font-medium text-slate-500 hover:bg-slate-500 hover:text-white"
-                  >
-                    Show
-                  </Link>
-                  {dashboard.isEditable(record) && (
-                    <Link
-                      to={routeWithParams(MODEL_RECORD_EDIT, {
-                        modelName,
-                        id: record.id,
-                      })}
-                      className="rounded px-3 py-2 font-medium text-indigo-500 hover:bg-indigo-500 hover:text-white"
-                    >
-                      Edit
-                    </Link>
-                  )}
-                  {/* <DeleteButton modelName={modelName} record={record} /> */}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <CollectionTable
+        dashboard={dashboard}
+        modelName={modelName}
+        search={debouncedSearch}
+      />
     </div>
   );
 }

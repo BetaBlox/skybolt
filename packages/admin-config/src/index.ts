@@ -9,6 +9,8 @@ import { PostDashboard } from './dashboards/PostDashboard';
 import { ColorDashboard } from './dashboards/ColorDashboard';
 import Dashboard from './dashboards/Dashboard';
 
+export { Dashboard };
+
 export function getDashboards(): Dashboard[] {
   return [new UserDashboard(), new PostDashboard(), new ColorDashboard()];
 }
