@@ -111,13 +111,11 @@ export default function CollectionTable({
           ))}
         </tbody>
       </table>
-      <div className="px-6">
-        <PaginationRow
-          paginatedResult={paginatedResult}
-          onPageChange={setPage}
-          onPerPageChange={setPerPage}
-        />
-      </div>
+      <PaginationRow
+        paginatedResult={paginatedResult}
+        onPageChange={setPage}
+        onPerPageChange={setPerPage}
+      />
     </div>
   );
 }
