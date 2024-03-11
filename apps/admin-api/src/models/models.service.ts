@@ -29,7 +29,6 @@ export class ModelsService {
     });
 
     const count = await this.prisma[modelName].count();
-    const records = await this.prisma[modelName].findMany({ include });
     const recentRecords = await this.prisma[modelName].findMany({
       take: 3,
       include,
@@ -45,10 +44,6 @@ export class ModelsService {
       modelName: dashboard.modelName,
       count,
       recentRecords: recentRecords.map((record) => ({
-        ...record,
-        displayName: dashboard.getDisplayName(record) as string,
-      })),
-      records: records.map((record) => ({
         ...record,
         displayName: dashboard.getDisplayName(record) as string,
       })),

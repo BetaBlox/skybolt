@@ -13,6 +13,7 @@
   "dependencies": {
     "@heroicons/react": "^2.1.1",
     "@repo/auth": "*",
+    "@repo/paginator": "*",
     "@repo/utils": "*",
     "@uidotdev/usehooks": "^2.4.1",
     "jsoneditor": "^10.0.0",

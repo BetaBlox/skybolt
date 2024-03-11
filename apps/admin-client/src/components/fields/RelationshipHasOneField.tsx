@@ -44,7 +44,8 @@ export default function RelationshipHasOneField({
   const data = recordsQuery.data as AdminRecordsPayload;
   const relatedDashboard = getDashboard(data.modelName);
 
-  const options: SelectOption[] = data.records.map((r) => ({
+  // TODO: paginated results are limited to 20, probably an issue
+  const options: SelectOption[] = data.paginatedResult.data.map((r) => ({
     value: r.id,
     label: relatedDashboard.getDisplayName(r),
   }));

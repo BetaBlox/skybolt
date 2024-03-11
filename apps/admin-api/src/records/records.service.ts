@@ -5,8 +5,13 @@ import {
   AdminFieldType,
   AdminRecordPayload,
   AdminRecordsPayload,
+  PaginateFunction,
+  PaginatedResult,
 } from '@repo/types';
 import { getDashboard } from '@repo/admin-config';
+import { paginator } from '@repo/paginator';
+
+const paginate: PaginateFunction = paginator();
 
 @Injectable()
 export class RecordsService {
@@ -15,6 +20,8 @@ export class RecordsService {
   async findMany(
     modelName: string,
     search: string,
+    page: number,
+    perPage: number,
   ): Promise<AdminRecordsPayload> {
     const prismaModel = getPrismaModel(modelName);
     const dashboard = getDashboard(modelName);
@@ -37,15 +44,22 @@ export class RecordsService {
       }
     });
 
-    const records = await this.prisma[modelName].findMany({
-      include,
-      where,
-    });
+    const paginatedResult: PaginatedResult<any> = await paginate(
+      this.prisma[modelName],
+      {
+        include,
+        where,
+      },
+      {
+        page,
+        perPage,
+      },
+    );
 
     return {
       prismaModel,
       modelName,
-      records,
+      paginatedResult,
     };
   }
 

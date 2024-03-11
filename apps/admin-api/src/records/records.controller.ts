@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
@@ -13,6 +14,7 @@ import {
 import { RecordsService } from './records.service';
 import { AdminRecordPayload, AdminRecordsPayload } from '@repo/types';
 import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
+import { defaultPerPage } from '@repo/paginator';
 
 @Controller('records')
 export class RecordsController {
@@ -23,8 +25,11 @@ export class RecordsController {
   async findMany(
     @Param('modelName') modelName: string,
     @Query('search') search: string,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('perPage', new DefaultValuePipe(defaultPerPage), ParseIntPipe)
+    perPage: number,
   ): Promise<AdminRecordsPayload> {
-    return this.recordsService.findMany(modelName, search);
+    return this.recordsService.findMany(modelName, search, page, perPage);
   }
 
   @UseGuards(AccessTokenGuard)
