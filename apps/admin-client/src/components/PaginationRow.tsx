@@ -28,7 +28,7 @@ export default function PaginationRow({
   const pageMax = nextDisabled ? total : perPage * currentPage;
 
   return (
-    <div className="flex items-center justify-between border-t border-gray-200 bg-white pb-6 pt-10">
+    <div className="flex items-center justify-between border-t border-gray-200 px-6 py-4">
       <div className="flex flex-1 items-center justify-between sm:hidden">
         <button
           className={classNames(

@@ -4,13 +4,12 @@ import PageHeader from '@/components/PageHeader';
 import { MODEL_RECORD_CREATE } from '@/common/routes';
 import { getDashboard } from '@repo/admin-config';
 import CollectionTable from './CollectionTable';
-import { useDebounce } from '@uidotdev/usehooks';
-import { useState } from 'react';
+
+import { useDebounceValue } from 'usehooks-ts';
 
 export default function ModelPage() {
   const { modelName } = useParams();
-  const [search, setSearch] = useState('');
-  const debouncedSearch = useDebounce(search, 500);
+  const [search, setSearch] = useDebounceValue('', 500);
 
   if (!modelName) return 'Loading...';
 
@@ -51,7 +50,7 @@ export default function ModelPage() {
       <CollectionTable
         dashboard={dashboard}
         modelName={modelName}
-        search={debouncedSearch}
+        search={search}
       />
     </div>
   );
