@@ -43,7 +43,11 @@ export default function CreateForm({
 
     // Filter out non supported parameters for submit
     Object.keys(data)
-      .filter((key) => formAttributes.includes(key))
+      .filter(
+        (key) =>
+          formAttributes.includes(key) ||
+          formAttributes.includes(key.replace('Id', '')), // Hack to still support relationship fields like authorId -> author
+      )
       .forEach((key) => (payload[key] = data[key]));
 
     try {

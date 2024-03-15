@@ -17,6 +17,9 @@ const paginate: PaginateFunction = paginator();
 export class RecordsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  // TODO: need a test for searching
+  // TODO: need a test for pagination
+  // TODO: need a test for included models
   async findMany(
     modelName: string,
     search: string,
@@ -25,16 +28,16 @@ export class RecordsService {
   ): Promise<AdminRecordsPayload> {
     const prismaModel = getPrismaModel(modelName);
     const dashboard = getDashboard(modelName);
+    let where = {};
 
     // Build a filter clause including all searchable attributes
-    const where =
-      dashboard.searchAttributes.length > 0
-        ? {
-            OR: dashboard.searchAttributes.map((attribute) => ({
-              [attribute]: { contains: search, mode: 'insensitive' },
-            })),
-          }
-        : {};
+    if (search && dashboard.searchAttributes.length > 0) {
+      where = {
+        OR: dashboard.searchAttributes.map((attribute) => ({
+          [attribute]: { contains: search, mode: 'insensitive' },
+        })),
+      };
+    }
 
     // Dynamically include related models
     const include = {};
