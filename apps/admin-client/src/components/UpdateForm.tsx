@@ -43,6 +43,13 @@ export default function UpdateForm({
     setSaving(true);
     e.preventDefault();
 
+    const payload = { id: data.id };
+
+    // Filter out non supported parameters for submit
+    Object.keys(data)
+      .filter((key) => formAttributes.includes(key))
+      .forEach((key) => (payload[key] = data[key]));
+
     try {
       const url = routeWithParams('/api/records/:modelName/:id', {
         modelName,
@@ -50,7 +57,7 @@ export default function UpdateForm({
       });
       const { response, data: json } = await customFetch(url, {
         method: HttpMethod.PUT,
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
