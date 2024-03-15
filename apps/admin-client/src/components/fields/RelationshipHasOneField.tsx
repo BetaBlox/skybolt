@@ -30,7 +30,11 @@ export default function RelationshipHasOneField({
   const recordsQuery = useQuery({
     queryKey: [`hasOne/${modelName}`],
     queryFn: async () => {
-      const url = routeWithParams('/api/records/:modelName', { modelName });
+      const url = routeWithParams('/api/records/:modelName', {
+        modelName,
+        page: '1',
+        perPage: '1000', // Likely need to support searching AJAX instead of just loading everything
+      });
       const { data } = await customFetch(url, {
         method: HttpMethod.GET,
       });
