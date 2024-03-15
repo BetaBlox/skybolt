@@ -13,7 +13,7 @@ export default ({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: 'http://localhost:8081', // local Nest app
+          target: 'http://localhost:8001', // local Nest app
           changeOrigin: true,
         },
       },
