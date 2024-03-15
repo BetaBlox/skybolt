@@ -4,7 +4,6 @@ import PageHeader from '@/components/PageHeader';
 import { MODEL_RECORD_CREATE } from '@/common/routes';
 import { getDashboard } from '@repo/admin-config';
 import CollectionTable from './CollectionTable';
-
 import { useDebounceValue } from 'usehooks-ts';
 
 export default function ModelPage() {

@@ -10,6 +10,10 @@ COPY package-lock.json .
 COPY apps/api/package.json ./apps/api/package.json
 COPY apps/client/package.json ./apps/client/package.json
 
+# Copy admin package.json files
+COPY apps/admin-api/package.json ./apps/admin-api/package.json
+COPY apps/admin-client/package.json ./apps/admin-client/package.json
+
 # Copy supporting packages package.json files
 COPY packages/admin-config/package.json ./packages/admin-config/package.json
 COPY packages/auth/package.json ./packages/auth/package.json
