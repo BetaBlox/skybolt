@@ -32,7 +32,7 @@ export default function RecordEditPage() {
   const data = recordQuery.data as AdminRecordPayload;
   const dashboard = getDashboard(modelName);
 
-  const { record, prismaModel } = data;
+  const { record, fields } = data;
 
   return (
     <div>
@@ -55,7 +55,7 @@ export default function RecordEditPage() {
       />
       <UpdateForm
         modelName={modelName}
-        prismaModel={prismaModel}
+        fields={fields}
         record={record}
         attributeTypes={dashboard.attributeTypes}
         formAttributes={dashboard.editFormAttributes}

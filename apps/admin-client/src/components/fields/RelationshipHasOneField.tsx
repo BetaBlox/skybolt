@@ -1,10 +1,10 @@
-import { DMMF } from '@repo/database';
 import { ChangeEvent } from 'react';
 import FieldLabel from '../FieldLabel';
 import { useQuery } from '@tanstack/react-query';
 import { routeWithParams } from '@repo/utils';
 import {
   AdminAttributeType,
+  AdminModelField,
   AdminRecordsPayload,
   SelectOption,
 } from '@repo/types';
@@ -12,7 +12,7 @@ import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import { getDashboard } from '@repo/admin-config';
 
 interface Props {
-  field: DMMF.Field;
+  field: AdminModelField;
   modelName: string;
   attribute: string;
   attributeType: AdminAttributeType;
@@ -28,7 +28,7 @@ export default function RelationshipHasOneField({
   const { modelName } = attributeType;
 
   const recordsQuery = useQuery({
-    queryKey: [`hasOne/${modelName}`],
+    queryKey: ['hasOne', modelName],
     queryFn: async () => {
       const url = routeWithParams('/api/records/:modelName', {
         modelName,
@@ -62,11 +62,11 @@ export default function RelationshipHasOneField({
     <div>
       <FieldLabel field={field} />
       <select
-        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
         id={field.name}
         name={field.name}
         value={value}
         required={field.isRequired}
+        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
         onChange={handleChange}
       >
         <option value="" />

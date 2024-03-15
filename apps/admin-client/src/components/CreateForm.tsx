@@ -1,7 +1,6 @@
 import { FormEvent, useState } from 'react';
 // import JsonField from './fields/JsonField';
 import { routeWithParams } from '@repo/utils';
-import { DMMF } from '@repo/database';
 import BooleanField from './fields/BooleanField';
 import IntegerField from './fields/IntegerField';
 import SelectField from './fields/SelectField';
@@ -12,20 +11,24 @@ import PasswordField from './fields/PasswordField';
 import RelationshipHasOneField from './fields/RelationshipHasOneField';
 import { useNavigate } from 'react-router-dom';
 import { MODEL_RECORD } from '@/common/routes';
-import { AdminAttributeType, AdminFieldType } from '@repo/types';
+import {
+  AdminAttributeType,
+  AdminFieldType,
+  AdminModelField,
+} from '@repo/types';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 // import { getDashboard } from '@repo/admin-config';
 
 interface Props {
   modelName: string;
-  prismaModel: DMMF.Model;
+  fields: AdminModelField[];
   attributeTypes: AdminAttributeType[];
   formAttributes: string[];
 }
 
 export default function CreateForm({
   modelName,
-  prismaModel,
+  fields,
   attributeTypes,
   formAttributes,
 }: Props) {
@@ -94,9 +97,9 @@ export default function CreateForm({
             (at) => at.name === attribute,
           );
 
-          const prismaField = prismaModel.fields.find(
+          const field = fields.find(
             (f) => f.name.toLowerCase() === attribute.toLowerCase(),
-          ) as DMMF.Field;
+          );
 
           if (!attributeType) {
             throw new Error(
@@ -104,14 +107,14 @@ export default function CreateForm({
             );
           }
 
-          if (!prismaField) {
+          if (!field) {
             throw new Error(
               `error locating prisma field type model: ${modelName} attribute: ${attribute}`,
             );
           }
 
           const defaultFieldProps = {
-            field: prismaField,
+            field: field,
             value: data[attribute],
             onChange: handleChange,
           };

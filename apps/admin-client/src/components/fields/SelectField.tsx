@@ -1,10 +1,9 @@
-import { DMMF } from '@repo/database';
 import { ChangeEvent } from 'react';
 import FieldLabel from '../FieldLabel';
-import { SelectOption } from '@repo/types';
+import { AdminModelField, SelectOption } from '@repo/types';
 
 interface Props {
-  field: DMMF.Field;
+  field: AdminModelField;
   value: string;
   options: SelectOption[];
   onChange: (key: string, value: string) => void;

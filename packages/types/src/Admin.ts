@@ -21,9 +21,15 @@ export type AdminAttributeType = {
   defaultValue?: any;
 };
 
+export type AdminModelField = {
+  name: string;
+  isRequired: boolean;
+  relationName?: string | null;
+};
+
 export interface AdminModelPayload {
-  prismaModel: any;
   modelName: string;
+  fields: AdminModelField[];
   count: number;
   // TODO: probably shouldn't mutate the raw data. Maybe a separate displayName lookup hash?
   recentRecords: any[] & {
@@ -32,13 +38,13 @@ export interface AdminModelPayload {
 }
 
 export interface AdminRecordsPayload {
-  prismaModel: any;
+  fields: AdminModelField[];
   modelName: string;
   paginatedResult: PaginatedResult<any>;
 }
 
 export interface AdminRecordPayload {
-  prismaModel: any;
+  fields: AdminModelField[];
   modelName: string;
   record: any;
 }
