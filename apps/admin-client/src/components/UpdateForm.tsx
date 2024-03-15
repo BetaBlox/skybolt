@@ -1,7 +1,6 @@
 import { FormEvent, useState } from 'react';
 // import JsonField from './fields/JsonField';
 import { routeWithParams } from '@repo/utils';
-import { DMMF } from '@repo/database';
 import BooleanField from './fields/BooleanField';
 import IntegerField from './fields/IntegerField';
 import SelectField from './fields/SelectField';
@@ -12,12 +11,16 @@ import PasswordField from './fields/PasswordField';
 import RelationshipHasOneField from './fields/RelationshipHasOneField';
 import { MODEL_RECORD } from '@/common/routes';
 import { useNavigate } from 'react-router-dom';
-import { AdminAttributeType, AdminFieldType } from '@repo/types';
+import {
+  AdminAttributeType,
+  AdminFieldType,
+  AdminModelField,
+} from '@repo/types';
 import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 
 interface Props {
   modelName: string;
-  prismaModel: DMMF.Model;
+  fields: AdminModelField[];
   attributeTypes: AdminAttributeType[];
   formAttributes: string[];
   record: {
@@ -28,7 +31,7 @@ interface Props {
 
 export default function UpdateForm({
   modelName,
-  prismaModel,
+  fields,
   record: defaultData,
   attributeTypes,
   formAttributes,
@@ -43,7 +46,7 @@ export default function UpdateForm({
     setSaving(true);
     e.preventDefault();
 
-    const payload = { id: data.id };
+    const payload = {};
 
     // Filter out non supported parameters for submit
     Object.keys(data)
@@ -92,9 +95,9 @@ export default function UpdateForm({
           const attributeType = attributeTypes.find(
             (at) => at.name === attribute,
           );
-          const prismaField = prismaModel?.fields.find(
+          const field = fields.find(
             (f) => f.name.toLowerCase() === attribute.toLowerCase(),
-          ) as DMMF.Field;
+          );
 
           if (!attributeType) {
             throw new Error(
@@ -102,14 +105,14 @@ export default function UpdateForm({
             );
           }
 
-          if (!prismaField) {
+          if (!field) {
             throw new Error(
               `error locating prisma field type model: ${modelName} attribute: ${attribute}`,
             );
           }
 
           const defaultFieldProps = {
-            field: prismaField,
+            field: field,
             value: data[attribute],
             onChange: handleChange,
           };

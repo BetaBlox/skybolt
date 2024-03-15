@@ -29,7 +29,7 @@ export default function RecordCreatePage() {
   const data = recordQuery.data as AdminRecordPayload;
   const dashboard = getDashboard(modelName);
   const { attributeTypes, createFormAttributes } = dashboard;
-  const { prismaModel } = data;
+  const { fields } = data;
 
   return (
     <div>
@@ -52,7 +52,7 @@ export default function RecordCreatePage() {
       />
       <CreateForm
         modelName={modelName}
-        prismaModel={prismaModel}
+        fields={fields}
         attributeTypes={attributeTypes}
         formAttributes={createFormAttributes}
       />

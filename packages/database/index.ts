@@ -17,14 +17,28 @@ export function getConnection(): PrismaClient {
   return connection;
 }
 
-export function getPrismaModel(modelName: string): DMMF.Model {
-  const model = Prisma.dmmf.datamodel.models.find(
-    (model) => model.name.toLowerCase() === modelName.toLowerCase(),
-  );
+export class PrismaAdapter {
+  getModel(modelName: string): DMMF.Model {
+    const model = Prisma.dmmf.datamodel.models.find(
+      (model) => model.name.toLowerCase() === modelName.toLowerCase(),
+    );
 
-  if (!model) {
-    throw new Error(`Unable to find Prisma config for model: ${modelName}`);
+    if (!model) {
+      throw new Error(`Unable to find Prisma config for model: ${modelName}`);
+    }
+
+    return model;
   }
 
-  return model;
+  getFields(modelName: string): {
+    name: string;
+    isRequired: boolean;
+  }[] {
+    const model = this.getModel(modelName);
+    return model.fields.map((field) => ({
+      name: field.name,
+      isRequired: field.isRequired,
+      relationName: field.relationName,
+    }));
+  }
 }

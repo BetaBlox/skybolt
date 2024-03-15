@@ -6,7 +6,7 @@
 // import FieldLabel from '../FieldLabel';
 
 // interface Props {
-//   field: DMMF.Field;
+//   field: AdminModelField;
 //   value: string;
 //   onChange: (key: string, value: any) => void;
 // }

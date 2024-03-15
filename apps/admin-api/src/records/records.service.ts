@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { DMMF, getPrismaModel } from '@repo/database';
 import { PrismaService } from '@/prisma/prisma.service';
 import {
   AdminFieldType,
+  AdminModelField,
   AdminRecordPayload,
   AdminRecordsPayload,
   PaginateFunction,
@@ -10,6 +10,7 @@ import {
 } from '@repo/types';
 import { getDashboard } from '@repo/admin-config';
 import { paginator } from '@repo/paginator';
+import { PrismaAdapter } from '@repo/database';
 
 const paginate: PaginateFunction = paginator();
 
@@ -23,7 +24,6 @@ export class RecordsService {
     page: number,
     perPage: number,
   ): Promise<AdminRecordsPayload> {
-    const prismaModel = getPrismaModel(modelName);
     const dashboard = getDashboard(modelName);
 
     // Build a filter clause including all searchable attributes
@@ -56,15 +56,16 @@ export class RecordsService {
       },
     );
 
+    const adapter = new PrismaAdapter();
+
     return {
-      prismaModel,
       modelName,
+      fields: adapter.getFields(modelName),
       paginatedResult,
     };
   }
 
   async getRecord(modelName: string, id: number): Promise<AdminRecordPayload> {
-    const prismaModel = getPrismaModel(modelName);
     const dashboard = getDashboard(modelName);
 
     // Dynamically include related models
@@ -82,9 +83,11 @@ export class RecordsService {
       include,
     });
 
+    const adapter = new PrismaAdapter();
+
     return {
-      prismaModel,
       modelName,
+      fields: adapter.getFields(modelName),
       record,
     };
   }
@@ -93,14 +96,15 @@ export class RecordsService {
     modelName: string,
     data: object,
   ): Promise<AdminRecordPayload> {
-    const prismaModel = getPrismaModel(modelName);
+    const adapter = new PrismaAdapter();
+    const fields = adapter.getFields(modelName);
     const dashboard = getDashboard(modelName);
 
     if (dashboard.isCreatable() === false) {
       throw new Error('Record is not creatable');
     }
 
-    let payload = filterRecordPayload(prismaModel, data);
+    let payload = filterRecordPayload(fields, data);
 
     payload = await dashboard.beforeCreate(payload);
 
@@ -109,8 +113,8 @@ export class RecordsService {
     });
 
     return {
-      prismaModel,
       modelName,
+      fields,
       record,
     };
   }
@@ -120,7 +124,8 @@ export class RecordsService {
     id: number,
     data: object,
   ): Promise<AdminRecordPayload> {
-    const prismaModel = getPrismaModel(modelName);
+    const adapter = new PrismaAdapter();
+    const fields = adapter.getFields(modelName);
     const dashboard = getDashboard(modelName);
 
     let record = await this.prisma[modelName].findFirstOrThrow({
@@ -133,7 +138,7 @@ export class RecordsService {
       throw new Error('Record is not editable');
     }
 
-    const payload = filterRecordPayload(prismaModel, data);
+    const payload = filterRecordPayload(fields, data);
 
     record = await this.prisma[modelName].update({
       where: {
@@ -143,8 +148,8 @@ export class RecordsService {
     });
 
     return {
-      prismaModel,
       modelName,
+      fields,
       record,
     };
   }
@@ -176,11 +181,11 @@ export class RecordsService {
  * Filters a record payload and strips out data that is not supported by your model's attributes types.
  * This helps prevent unwanted data from being created/updated on the backend
  */
-function filterRecordPayload(prismaModel: DMMF.Model, data: object): object {
+function filterRecordPayload(fields: AdminModelField[], data: object): object {
   const filtered = {};
 
   Object.keys(data).forEach((key) => {
-    const isValid = prismaModel.fields.some((field) => {
+    const isValid = fields.some((field) => {
       return field.name === key && field.relationName === undefined;
     });
 

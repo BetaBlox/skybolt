@@ -1,8 +1,8 @@
-import { DMMF } from '@repo/database';
+import { AdminModelField } from '@repo/types';
 import { captilalize } from '@repo/utils';
 
 interface Props {
-  field: DMMF.Field;
+  field: AdminModelField;
   required?: boolean;
 }
 export default function FieldLabel({ field, required }: Props) {

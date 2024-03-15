@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { AdminFieldType, AdminModelPayload } from '@repo/types';
 import { getDashboard, getDashboards } from '@repo/admin-config';
-import { getPrismaModel } from '@repo/database';
+import { PrismaAdapter } from '@repo/database';
 
 @Injectable()
 export class ModelsService {
@@ -17,7 +17,6 @@ export class ModelsService {
   }
 
   async getModel(modelName: string): Promise<AdminModelPayload> {
-    const prismaModel = getPrismaModel(modelName);
     const dashboard = getDashboard(modelName);
 
     // Dynamically include related models
@@ -39,9 +38,11 @@ export class ModelsService {
       ],
     });
 
+    const adapter = new PrismaAdapter();
+
     return {
-      prismaModel,
       modelName: dashboard.modelName,
+      fields: adapter.getFields(modelName),
       count,
       recentRecords: recentRecords.map((record) => ({
         ...record,

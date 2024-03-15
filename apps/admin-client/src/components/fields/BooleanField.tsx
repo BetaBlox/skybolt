@@ -1,9 +1,9 @@
-import { DMMF } from '@repo/database';
 import { ChangeEvent } from 'react';
 import FieldLabel from '../FieldLabel';
+import { AdminModelField } from '@repo/types';
 
 interface Props {
-  field: DMMF.Field;
+  field: AdminModelField;
   value: boolean;
   onChange: (key: string, value: boolean) => void;
 }
