@@ -1,4 +1,4 @@
-entity: user
+entity: User
 items:
   admin:
     id: 1
