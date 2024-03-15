@@ -39,13 +39,20 @@ export default function CreateForm({
     setSaving(true);
     e.preventDefault();
 
+    const payload = {};
+
+    // Filter out non supported parameters for submit
+    Object.keys(data)
+      .filter((key) => formAttributes.includes(key))
+      .forEach((key) => (payload[key] = data[key]));
+
     try {
       const url = routeWithParams('/api/records/:modelName', {
         modelName,
       });
       const { response, data: json } = await customFetch(url, {
         method: HttpMethod.POST,
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
