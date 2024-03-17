@@ -1,24 +1,16 @@
 import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Form, Link } from 'react-router-dom';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState('');
-  const [error, setError] = useState('');
-  const [isFetching, setIsFetching] = useState(false);
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    setMsg('');
-    setError('');
-    setIsFetching(true);
-
-    try {
-      const url = '/api/password-reset/send';
-      const response = await fetch(url, {
+  const sendResetMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/password-reset/send', {
         method: HttpMethod.POST,
         body: JSON.stringify({
           email,
@@ -28,17 +20,22 @@ export default function ForgotPasswordPage() {
         },
       });
 
-      if (response.ok) {
-        setMsg('Your reset email is on the way!');
-      } else {
-        setError('Something is not working quite right');
+      if (!response.ok) {
+        throw new Error('Something is not working quite right');
       }
-    } catch (error) {
+    },
+    onSuccess() {
+      setMsg('Your reset email is on the way!');
+    },
+    onError(error) {
       console.error(error);
-      setError('Something is not working quite right');
-    } finally {
-      setIsFetching(false);
-    }
+    },
+  });
+
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setMsg('');
+    sendResetMutation.mutate();
   };
 
   return (
@@ -81,14 +78,18 @@ export default function ForgotPasswordPage() {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                disabled={isFetching}
+                disabled={sendResetMutation.isPending}
               >
-                {isFetching ? 'Logging in...' : 'Login'}
+                {sendResetMutation.isPending ? 'Sending...' : 'Send'}
               </button>
             </div>
 
             {msg ? <p className="text-center text-green-500">{msg}</p> : null}
-            {error ? <p className="text-center text-red-500">{error}</p> : null}
+            {sendResetMutation.error ? (
+              <p className="text-center text-red-500">
+                {sendResetMutation.error.message}
+              </p>
+            ) : null}
           </Form>
           <div className="mt-6 text-center text-sm text-gray-600">
             <Link to={LOGIN}>Back to login</Link>
