@@ -1,4 +1,4 @@
-import { HttpMethod, customFetch } from '@/common/custom-fetcher';
+import { RecordApi } from '@/api/RecordApi';
 import { MODEL } from '@/common/routes';
 import { Notify } from '@/config/notification/notification.service';
 import { getDashboard } from '@repo/admin-config';
@@ -24,13 +24,7 @@ export default function DeleteButton({ payload }: Props) {
 
     if (window.confirm(message)) {
       try {
-        const url = routeWithParams(`/api/records/:modelName/:id`, {
-          modelName,
-          id: record.id,
-        });
-        const { response } = await customFetch(url, {
-          method: HttpMethod.DELETE,
-        });
+        const { response } = await RecordApi.delete(modelName, record.id);
 
         if (response.ok) {
           Notify.success();

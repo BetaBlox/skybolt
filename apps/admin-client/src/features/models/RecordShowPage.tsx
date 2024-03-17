@@ -5,25 +5,17 @@ import PageHeader from '@/components/PageHeader';
 import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
 import { AdminRecordPayload, AdminFieldType } from '@repo/types';
 import DeleteButton from './DeleteButton';
-import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import ShowViewField from '@/components/ShowViewField';
 import { getAttributeType, getDashboard } from '@repo/admin-config';
+import { RecordApi } from '@/api/RecordApi';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();
 
   const recordQuery = useQuery({
-    queryKey: [`${modelName}/${id}`],
-    queryFn: async () => {
-      const url = routeWithParams(`/api/records/:modelName/:id`, {
-        modelName,
-        id,
-      });
-      const { data } = await customFetch(url, {
-        method: HttpMethod.GET,
-      });
-      return data;
-    },
+    queryKey: [modelName, id],
+    queryFn: async () =>
+      RecordApi.findOne(modelName!, parseInt(id!)).then(({ data }) => data),
   });
 
   if (recordQuery.isPending) return 'Loading...';

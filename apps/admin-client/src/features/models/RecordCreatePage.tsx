@@ -5,22 +5,14 @@ import { routeWithParams } from '@repo/utils';
 import { MODEL } from '@/common/routes';
 import CreateForm from '@/components/CreateForm';
 import { getDashboard } from '@repo/admin-config';
-import { customFetch, HttpMethod } from '@/common/custom-fetcher';
 import { AdminRecordPayload } from '@repo/types';
+import { ModelApi } from '@/api/ModelApi';
 
 export default function RecordCreatePage() {
   const { modelName } = useParams();
   const recordQuery = useQuery({
-    queryKey: [`models/${modelName}`],
-    queryFn: async () => {
-      const url = routeWithParams(`/api/models/:modelName`, {
-        modelName,
-      });
-      const { data } = await customFetch(url, {
-        method: HttpMethod.GET,
-      });
-      return data;
-    },
+    queryKey: ['models', modelName],
+    queryFn: async () => ModelApi.findOne(modelName!).then(({ data }) => data),
   });
 
   if (recordQuery.isPending) return 'Loading...';

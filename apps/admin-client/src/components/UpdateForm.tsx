@@ -16,7 +16,7 @@ import {
   AdminFieldType,
   AdminModelField,
 } from '@repo/types';
-import { HttpMethod, customFetch } from '@/common/custom-fetcher';
+import { RecordApi } from '@/api/RecordApi';
 
 interface Props {
   modelName: string;
@@ -58,14 +58,11 @@ export default function UpdateForm({
       .forEach((key) => (payload[key] = data[key]));
 
     try {
-      const url = routeWithParams('/api/records/:modelName/:id', {
+      const { response, data: json } = await RecordApi.update(
         modelName,
-        id: String(data.id),
-      });
-      const { response, data: json } = await customFetch(url, {
-        method: HttpMethod.PUT,
-        body: JSON.stringify(payload),
-      });
+        data.id,
+        payload,
+      );
 
       if (response.ok) {
         Notify.success();
