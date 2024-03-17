@@ -1,26 +1,22 @@
 import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
 import { Notify } from '@/features/notification/notification.service';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Form, useNavigate, useParams } from 'react-router-dom';
 
 export default function PasswordResetPage() {
   const { token } = useParams();
   const navigate = useNavigate();
-  const [error, setError] = useState('');
   const [data, setData] = useState({
     password: '',
     passwordConfirmation: '',
   });
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    setError('');
-
-    try {
-      const url = '/api/password-reset/reset';
-      const response = await fetch(url, {
+  const resetMutation = useMutation({
+    mutationKey: ['reset-password'],
+    mutationFn: async () => {
+      const response = await fetch('/api/password-reset/reset', {
         method: HttpMethod.POST,
         body: JSON.stringify({
           token,
@@ -31,14 +27,19 @@ export default function PasswordResetPage() {
         },
       });
 
-      if (response.ok) {
-        Notify.success('Password saved! Please log in again');
-        navigate(LOGIN);
+      if (!response.ok) {
+        throw new Error('Something is not working quite right');
       }
-    } catch (error) {
-      console.error(error);
-      setError('Something is not working quite right');
-    }
+    },
+    onSuccess: () => {
+      Notify.success('Password saved! Please log in again');
+      navigate(LOGIN);
+    },
+  });
+
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    resetMutation.mutate();
   };
 
   if (!token) return 'Error loading data';
@@ -48,7 +49,7 @@ export default function PasswordResetPage() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <img
           className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+          src="https://cdn-icons-png.flaticon.com/512/906/906343.png"
           alt="Your Company"
         />
         <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -114,12 +115,17 @@ export default function PasswordResetPage() {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                disabled={resetMutation.isPending}
               >
-                Reset Password
+                {resetMutation.isPending ? '...' : 'Reset Password'}
               </button>
             </div>
 
-            {error ? <p className="text-center text-red-500">{error}</p> : null}
+            {resetMutation.error ? (
+              <p className="text-center text-red-500">
+                {resetMutation.error.message}
+              </p>
+            ) : null}
           </Form>
         </div>
       </div>

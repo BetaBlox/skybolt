@@ -9,6 +9,7 @@ import { AuthModule } from '@/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ModelsModule } from './models/models.module';
 import { RecordsModule } from './records/records.module';
+import { PasswordResetModule } from './password-reset/password-reset.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { RecordsModule } from './records/records.module';
     PrismaModule,
     UsersModule,
     AuthModule,
+    PasswordResetModule,
     ModelsModule,
     RecordsModule,
   ],
