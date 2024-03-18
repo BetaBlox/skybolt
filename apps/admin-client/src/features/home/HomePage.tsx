@@ -7,6 +7,7 @@ import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
 import { AdminModelPayload } from '@repo/types';
 import { getDashboard } from '@repo/admin-config';
 import { ModelApi } from '@/api/ModelApi';
+import { Button } from '@/components/Button';
 
 export default function HomePage() {
   const modelsQuery = useQuery({
@@ -66,9 +67,10 @@ export default function HomePage() {
                 <div className="px-6 py-4">
                   <Link to={routeWithParams(MODEL, { modelName })}>
                     <div className="flex flex-row justify-end">
-                      <button className="mt-4 flex flex-row items-center justify-between gap-2 rounded bg-indigo-600 px-2 py-1 text-sm text-white">
-                        See All <ArrowRightCircleIcon className="h-6 w-6" />
-                      </button>
+                      <Button>
+                        See All{' '}
+                        <ArrowRightCircleIcon className="ml-2 h-6 w-6" />
+                      </Button>
                     </div>
                   </Link>
                 </div>
