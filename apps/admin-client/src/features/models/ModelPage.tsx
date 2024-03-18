@@ -5,6 +5,14 @@ import { MODEL_RECORD_CREATE } from '@/common/routes';
 import { getDashboard } from '@repo/admin-config';
 import CollectionTable from './CollectionTable';
 import { useDebounceValue } from 'usehooks-ts';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbPage,
+} from '@/components/Breadcrumb';
 
 export default function ModelPage() {
   const { modelName } = useParams();
@@ -41,11 +49,18 @@ export default function ModelPage() {
 
   return (
     <div>
-      <PageHeader
-        heading={dashboard.name}
-        breadcrumbs={[{ href: '#', text: dashboard.name, current: true }]}
-        actions={actions}
-      />
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink to="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{dashboard.name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <PageHeader heading={dashboard.name} actions={actions} />
       <CollectionTable
         dashboard={dashboard}
         modelName={modelName}
