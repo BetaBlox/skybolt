@@ -10,6 +10,7 @@ import {
 import { classNames } from '@repo/utils';
 import { HOME, LOGOUT, PROFILE } from '@/common/routes';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/Avatar';
+import { AuthProvider } from '@repo/auth';
 
 type NavItem = {
   name: string;
@@ -27,6 +28,11 @@ const userNavigation: NavItem[] = [
 export default function RootLayout() {
   const isCurrentNavItem = (navItem: NavItem): boolean =>
     location.pathname === navItem.href;
+
+  const { user } = AuthProvider;
+  const imageUrl = user?.imageUrl || undefined;
+  const fullName = `${user?.firstName} ${user?.lastName}`;
+  const initials = `${user?.firstName[0]}${user?.lastName[0]}`;
 
   return (
     <div>
@@ -90,12 +96,9 @@ export default function RootLayout() {
                       <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        <Avatar>
-                          <AvatarImage
-                            src="https://github.com/shadcn.png"
-                            alt="@shadcn"
-                          />
-                          <AvatarFallback>CN</AvatarFallback>
+                        <Avatar className="bg-white">
+                          <AvatarImage src={imageUrl} alt={fullName} />
+                          <AvatarFallback>{initials}</AvatarFallback>
                         </Avatar>
                       </Menu.Button>
                     </div>
