@@ -1,5 +1,4 @@
 import { AdminRecordsPayload } from '@repo/types';
-import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import { Dashboard } from '@repo/admin-config';
 import { MODEL_RECORD, MODEL_RECORD_EDIT } from '@/common/routes';
 import CollectionViewField from '@/components/CollectionViewField';
@@ -8,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import PaginationRow from '@/components/PaginationRow';
 import { useState } from 'react';
+import { RecordApi } from '@/api/RecordApi';
 
 interface Props {
   modelName: string;
@@ -23,18 +23,10 @@ export default function CollectionTable({
   const [perPage, setPerPage] = useState(10);
   const modelQuery = useQuery({
     queryKey: ['records', modelName, search, page, perPage],
-    queryFn: async () => {
-      const url = routeWithParams('/api/records/:modelName', {
-        modelName,
-        search,
-        page: String(page),
-        perPage: String(perPage),
-      });
-      const { data } = await customFetch(url, {
-        method: HttpMethod.GET,
-      });
-      return data;
-    },
+    queryFn: async () =>
+      RecordApi.findMany(modelName, page, perPage, search).then(
+        ({ data }) => data,
+      ),
     placeholderData: keepPreviousData,
   });
 

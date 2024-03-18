@@ -1,15 +1,14 @@
 import { ChangeEvent } from 'react';
 import FieldLabel from '../FieldLabel';
 import { useQuery } from '@tanstack/react-query';
-import { routeWithParams } from '@repo/utils';
 import {
   AdminAttributeType,
   AdminModelField,
   AdminRecordsPayload,
   SelectOption,
 } from '@repo/types';
-import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import { getDashboard } from '@repo/admin-config';
+import { RecordApi } from '@/api/RecordApi';
 
 interface Props {
   field: AdminModelField;
@@ -29,17 +28,8 @@ export default function RelationshipHasOneField({
 
   const recordsQuery = useQuery({
     queryKey: ['hasOne', modelName],
-    queryFn: async () => {
-      const url = routeWithParams('/api/records/:modelName', {
-        modelName,
-        page: '1',
-        perPage: '1000', // Likely need to support searching AJAX instead of just loading everything
-      });
-      const { data } = await customFetch(url, {
-        method: HttpMethod.GET,
-      });
-      return data;
-    },
+    queryFn: async () =>
+      RecordApi.findMany(modelName!, 1, 1000).then(({ data }) => data), // Likely need to support searching AJAX instead of just loading everything
   });
 
   if (recordsQuery.isPending) return 'Loading...';

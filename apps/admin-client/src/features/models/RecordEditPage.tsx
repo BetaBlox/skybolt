@@ -6,24 +6,16 @@ import { routeWithParams } from '@repo/utils';
 import { MODEL } from '@/common/routes';
 import UpdateForm from '@/components/UpdateForm';
 import { AdminRecordPayload } from '@repo/types';
-import { HttpMethod, customFetch } from '@/common/custom-fetcher';
 import { getDashboard } from '@repo/admin-config';
+import { RecordApi } from '@/api/RecordApi';
 
 export default function RecordEditPage() {
   const { modelName, id } = useParams();
 
   const recordQuery = useQuery({
-    queryKey: [`${modelName}/${id}`],
-    queryFn: async () => {
-      const url = routeWithParams(`/api/records/:modelName/:id`, {
-        modelName,
-        id,
-      });
-      const { data } = await customFetch(url, {
-        method: HttpMethod.GET,
-      });
-      return data;
-    },
+    queryKey: [modelName, id],
+    queryFn: async () =>
+      RecordApi.findOne(modelName!, parseInt(id!)).then(({ data }) => data),
   });
 
   if (recordQuery.isPending) return 'Loading...';

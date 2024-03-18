@@ -16,7 +16,7 @@ import {
   AdminFieldType,
   AdminModelField,
 } from '@repo/types';
-import { HttpMethod, customFetch } from '@/common/custom-fetcher';
+import { RecordApi } from '@/api/RecordApi';
 // import { getDashboard } from '@repo/admin-config';
 
 interface Props {
@@ -54,13 +54,10 @@ export default function CreateForm({
       .forEach((key) => (payload[key] = data[key]));
 
     try {
-      const url = routeWithParams('/api/records/:modelName', {
+      const { response, data: json } = await RecordApi.create(
         modelName,
-      });
-      const { response, data: json } = await customFetch(url, {
-        method: HttpMethod.POST,
-        body: JSON.stringify(payload),
-      });
+        payload,
+      );
 
       if (response.ok) {
         Notify.success();
