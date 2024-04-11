@@ -20,7 +20,7 @@ export default ({ mode }) => {
       host: 'localhost',
       port: 5173,
       strictPort: true,
-      open: true,
+      open: false,
     },
     define: {
       'process.env': viteEnvVars,
