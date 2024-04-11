@@ -13,6 +13,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/Breadcrumb';
+import { Button } from '@/components/Button';
 
 export default function ModelPage() {
   const { modelName } = useParams();
@@ -35,14 +36,15 @@ export default function ModelPage() {
         />
       )}
       {dashboard.isCreatable() && (
-        <Link
-          to={routeWithParams(MODEL_RECORD_CREATE, {
-            modelName,
-          })}
-          className="rounded bg-green-600 px-3 py-2 font-medium text-white"
-        >
-          Add New
-        </Link>
+        <Button asChild>
+          <Link
+            to={routeWithParams(MODEL_RECORD_CREATE, {
+              modelName,
+            })}
+          >
+            Add New
+          </Link>
+        </Button>
       )}
     </div>
   );
