@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Router from './Router';
+import Router from './router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { loadFromStorage } from '@repo/auth';
 import { Toaster } from '@/components/toast/toaster';

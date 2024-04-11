@@ -1,6 +1,8 @@
 import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
 import { Button } from '@/components/button';
+import { Input } from '@/components/input';
+import { Label } from '@/components/label';
 import { useToast } from '@/components/toast/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -66,19 +68,13 @@ export default function PasswordResetPage() {
         <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
           <Form className="space-y-6" onSubmit={submit}>
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Password
-              </label>
+              <Label htmlFor="password">Password</Label>
               <div className="mt-2">
-                <input
+                <Input
                   id="password"
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   required
                   value={data.password}
                   onChange={(e) =>
@@ -91,19 +87,18 @@ export default function PasswordResetPage() {
               </div>
             </div>
             <div>
-              <label
+              <Label
                 htmlFor="password-confirmation"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Password Confirmation
-              </label>
+              </Label>
               <div className="mt-2">
-                <input
+                <Input
                   id="password-confirmation"
                   name="password-confirmation"
                   type="password"
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   required
                   value={data.passwordConfirmation}
                   onChange={(e) =>

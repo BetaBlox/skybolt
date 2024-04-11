@@ -1,29 +1,29 @@
 import { ChangeEvent } from 'react';
-import FieldLabel from '../record-field-label';
+import FieldLabel from '../../features/records/record-field-label';
 import { AdminModelField } from '@repo/types';
-import { Input } from '@/components/Input';
+import { Input } from '@/components/input';
 
 interface Props {
   field: AdminModelField;
   value: string;
-  onChange: (key: string, value: number) => void;
+  onChange: (key: string, value: string) => void;
 }
-export default function IntegerField({ field, value, onChange }: Props) {
+export default function PasswordField({ field, value, onChange }: Props) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.currentTarget.value, 10);
-    onChange(field.name, value);
+    onChange(field.name, e.currentTarget.value);
   };
 
   return (
     <div>
       <FieldLabel field={field} />
       <Input
-        type="number"
+        type="password"
         id={field.name}
         name={field.name}
         value={value || ''}
         required={field.isRequired}
         onChange={handleChange}
+        autoComplete="none"
       />
     </div>
   );

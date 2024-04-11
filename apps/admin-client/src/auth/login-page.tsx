@@ -1,7 +1,7 @@
 import { FORGOT_PASSWORD } from '@/common/routes';
-import { Alert, AlertDescription, AlertTitle } from '@/components/Alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/alert';
 import { Button } from '@/components/button';
-import { Input } from '@/components/Input';
+import { Input } from '@/components/input';
 import { Label } from '@/components/label';
 import { useState } from 'react';
 import {

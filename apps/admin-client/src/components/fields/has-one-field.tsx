@@ -1,4 +1,4 @@
-import FieldLabel from '../record-field-label';
+import FieldLabel from '../../features/records/record-field-label';
 import { useQuery } from '@tanstack/react-query';
 import {
   AdminAttributeType,
@@ -14,7 +14,7 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from '@/components/Select';
+} from '@/components/select';
 
 interface Props {
   field: AdminModelField;

@@ -1,4 +1,4 @@
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/page-header';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { routeWithParams } from '@repo/utils';
@@ -15,7 +15,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from '@/components/Card';
+} from '@/components/card';
 
 export default function HomePage() {
   const modelsQuery = useQuery({

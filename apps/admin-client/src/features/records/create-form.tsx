@@ -1,45 +1,41 @@
 import { FormEvent, useState } from 'react';
 // import JsonField from './fields/JsonField';
 import { routeWithParams } from '@repo/utils';
-import BooleanField from './fields/BooleanField';
-import IntegerField from './fields/IntegerField';
-import SelectField from './fields/SelectField';
-import StringField from './fields/StringField';
-import TextField from './fields/TextField';
-import PasswordField from './fields/PasswordField';
-import RelationshipHasOneField from './fields/RelationshipHasOneField';
-import { MODEL_RECORD } from '@/common/routes';
+import BooleanField from '../../components/fields/boolean-field';
+import IntegerField from '../../components/fields/integer-field';
+import SelectField from '../../components/fields/select-field';
+import StringField from '../../components/fields/string-field';
+import TextField from '../../components/fields/text-field';
+import PasswordField from '../../components/fields/password-field';
+import RelationshipHasOneField from '../../components/fields/has-one-field';
 import { useNavigate } from 'react-router-dom';
+import { MODEL_RECORD } from '@/common/routes';
 import {
   AdminAttributeType,
   AdminFieldType,
   AdminModelField,
 } from '@repo/types';
 import { RecordApi } from '@/api/RecordApi';
-import { Button } from './button';
+import { Button } from '../../components/button';
 import { useToast } from '@/components/toast/use-toast';
+// import { getDashboard } from '@repo/admin-config';
 
 interface Props {
   modelName: string;
   fields: AdminModelField[];
   attributeTypes: AdminAttributeType[];
   formAttributes: string[];
-  record: {
-    id: number;
-    [key: string]: any;
-  };
 }
 
-export default function UpdateForm({
+export default function CreateForm({
   modelName,
   fields,
-  record: defaultData,
   attributeTypes,
   formAttributes,
 }: Props) {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [data, setData] = useState(defaultData);
+  const [data, setData] = useState({});
   const [saving, setSaving] = useState(false);
 
   // const dashboard = getDashboard(modelName);
@@ -60,15 +56,14 @@ export default function UpdateForm({
       .forEach((key) => (payload[key] = data[key]));
 
     try {
-      const { response, data: json } = await RecordApi.update(
+      const { response, data: json } = await RecordApi.create(
         modelName,
-        data.id,
         payload,
       );
 
       if (response.ok) {
         toast({
-          title: 'Record updated.',
+          title: 'Record created.',
           description: 'Your data has been saved.',
         });
         const showUrl = routeWithParams(MODEL_RECORD, {
@@ -95,11 +90,16 @@ export default function UpdateForm({
     }
   };
 
-  const handleChange = (key: string, value: any) => {
-    setData({
+  const handleChange = (
+    key: string,
+    value: string | number | boolean | null,
+  ) => {
+    const newData = {
       ...data,
       [key]: value,
-    });
+    };
+
+    setData(newData);
   };
 
   return (
@@ -109,6 +109,7 @@ export default function UpdateForm({
           const attributeType = attributeTypes.find(
             (at) => at.name === attribute,
           );
+
           const field = fields.find(
             (f) => f.name.toLowerCase() === attribute.toLowerCase(),
           );

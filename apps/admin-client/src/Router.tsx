@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import protectedLoader from '@/auth/protectedLoader';
-import RootLayout from '@/layout/RootLayout';
+import protectedLoader from '@/auth/protected-loader';
+import RootLayout from '@/layout/root-layout';
 import {
   FORGOT_PASSWORD,
   HOME,
@@ -12,22 +12,24 @@ import {
   MODEL_RECORD_EDIT,
   PASSWORD_RESET,
 } from '@/common/routes';
-import HomePage from '@/features/home/HomePage';
-import ModelPage from '@/features/models/ModelPage';
-import RecordShowPage from '@/features/models/RecordShowPage';
-import RecordEditPage from './features/models/RecordEditPage';
-import RecordCreatePage from './features/models/RecordCreatePage';
-import loginAction from './auth/loginAction';
-import ForgotPasswordPage from './auth/ForgotPasswordPage';
-import Login from './auth/Login';
-import Logout from './auth/Logout';
-import PasswordResetPage from './auth/PasswordResetPage';
-import loginLoader from './auth/loginLoader';
+import HomePage from '@/features/home/home-page';
+import ModelPage from '@/features/models/model-page';
+import RecordShowPage from '@/features/records/record-show-page';
+import ErrorPage from '@/error-page';
+import ForgotPasswordPage from '@/auth/forgot-password-page';
+import loginAction from '@/auth/login-action';
+import loginLoader from '@/auth/login-loader';
+import Login from '@/auth/login-page';
+import Logout from '@/auth/logout-page';
+import PasswordResetPage from '@/auth/password-reset-page';
+import RecordCreatePage from '@/features/records/record-create-page';
+import RecordEditPage from '@/features/records/record-edit-page';
 
 const router = createBrowserRouter([
   {
     id: 'root',
     path: HOME,
+    errorElement: <ErrorPage />,
     Component: RootLayout,
     children: [
       {

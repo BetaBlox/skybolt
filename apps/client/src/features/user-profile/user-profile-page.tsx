@@ -3,6 +3,8 @@ import { useState, FormEvent } from 'react';
 import { AuthProvider, changePassword, updateUserProfile } from '@repo/auth';
 import { Button } from '@/components/button';
 import { useToast } from '@/components/toast/use-toast';
+import { Label } from '@/components/label';
+import { Input } from '@/components/input';
 
 export default function UserProfilePage() {
   const [data, setData] = useState<User>(AuthProvider.user!);
@@ -80,14 +82,9 @@ export default function UserProfilePage() {
           <div className="px-4 py-6 sm:p-8">
             <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-3">
-                <label
-                  htmlFor="first-name"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  First name *
-                </label>
+                <Label htmlFor="first-name">First name *</Label>
                 <div className="mt-2">
-                  <input
+                  <Input
                     type="text"
                     name="first-name"
                     id="first-name"
@@ -96,21 +93,15 @@ export default function UserProfilePage() {
                     onChange={(e) =>
                       handleChange('firstName', e.currentTarget.value)
                     }
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
                   />
                 </div>
               </div>
 
               <div className="sm:col-span-3">
-                <label
-                  htmlFor="last-name"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Last name *
-                </label>
+                <Label htmlFor="last-name">Last name *</Label>
                 <div className="mt-2">
-                  <input
+                  <Input
                     type="text"
                     name="last-name"
                     id="last-name"
@@ -119,21 +110,15 @@ export default function UserProfilePage() {
                     onChange={(e) =>
                       handleChange('lastName', e.currentTarget.value)
                     }
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
                   />
                 </div>
               </div>
 
               <div className="sm:col-span-3">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Email address *
-                </label>
+                <Label htmlFor="email">Email address *</Label>
                 <div className="mt-2">
-                  <input
+                  <Input
                     id="email"
                     name="email"
                     type="email"
@@ -142,7 +127,6 @@ export default function UserProfilePage() {
                     onChange={(e) =>
                       handleChange('email', e.currentTarget.value)
                     }
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
                   />
                 </div>
@@ -169,40 +153,28 @@ export default function UserProfilePage() {
           <div className="px-4 py-6 sm:p-8">
             <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-6">
-                <label
-                  htmlFor="new-password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  New password
-                </label>
+                <Label htmlFor="new-password">New password</Label>
                 <div className="mt-2">
-                  <input
+                  <Input
                     type="password"
                     name="new-password"
                     id="new-password"
                     value={password || ''}
                     onChange={(e) => setPassword(e.currentTarget.value)}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
                   />
                 </div>
               </div>
 
               <div className="sm:col-span-6">
-                <label
-                  htmlFor="confirm-password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Confirm your password
-                </label>
+                <Label htmlFor="confirm-password">Confirm your password</Label>
                 <div className="mt-2">
-                  <input
+                  <Input
                     type="password"
                     name="confirm-password"
                     id="confirm-password"
                     value={passwordConfirm || ''}
                     onChange={(e) => setPasswordConfirm(e.currentTarget.value)}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     required
                   />
                 </div>

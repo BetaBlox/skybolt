@@ -1,11 +1,11 @@
 import { AdminRecordsPayload } from '@repo/types';
 import { Dashboard } from '@repo/admin-config';
 import { MODEL_RECORD, MODEL_RECORD_EDIT } from '@/common/routes';
-import CollectionViewField from '@/components/CollectionViewField';
+import CollectionViewField from '@/features/models/collection-view-field';
 import { routeWithParams, captilalize } from '@repo/utils';
 import { Link } from 'react-router-dom';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import PaginationRow from '@/components/PaginationRow';
+import PaginationRow from '@/components/pagination-row';
 import { useState } from 'react';
 import { RecordApi } from '@/api/RecordApi';
 import { Button } from '@/components/button';

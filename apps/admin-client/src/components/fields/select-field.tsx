@@ -1,4 +1,4 @@
-import FieldLabel from '../record-field-label';
+import FieldLabel from '../../features/records/record-field-label';
 import { AdminModelField, SelectOption } from '@repo/types';
 import {
   Select,
@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/Select';
+} from '@/components/select';
 
 interface Props {
   field: AdminModelField;
