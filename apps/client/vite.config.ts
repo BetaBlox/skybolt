@@ -13,12 +13,12 @@ export default ({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: 'http://localhost:3000', // local Nest app
+          target: 'http://localhost:3001', // local Nest app
           changeOrigin: true,
         },
       },
       host: 'localhost',
-      port: 5173,
+      port: 3000,
       strictPort: true,
       open: true,
     },

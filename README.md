@@ -4,8 +4,8 @@ This is our base project template for web applications, APIs, and administrative
 
 ### Demo Apps
 
-* App - https://nestjs-react-app-demo.up.railway.app
-* Admin - https://nestjs-react-admin-demo.up.railway.app
+- App - https://nestjs-react-app-demo.up.railway.app
+- Admin - https://nestjs-react-admin-demo.up.railway.app
 
 _Email john@betablox.com to have create your personal demo account_
 
@@ -61,8 +61,8 @@ $ npm run dev
 
 ### App
 
-- Client: http://localhost:5173/
-- Api: http://localhost:3000/api
+- Client: http://localhost:3000/
+- Api: http://localhost:3001/api
 
 ### Admin
 
