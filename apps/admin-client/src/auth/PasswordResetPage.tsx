@@ -1,6 +1,7 @@
 import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
 import { Button } from '@/components/Button';
+import { Input } from '@/components/Input';
 import { useToast } from '@/components/toast/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -73,12 +74,11 @@ export default function PasswordResetPage() {
                 Password
               </label>
               <div className="mt-2">
-                <input
+                <Input
                   id="password"
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   required
                   value={data.password}
                   onChange={(e) =>
@@ -98,12 +98,11 @@ export default function PasswordResetPage() {
                 Password Confirmation
               </label>
               <div className="mt-2">
-                <input
+                <Input
                   id="password-confirmation"
                   name="password-confirmation"
                   type="password"
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   required
                   value={data.passwordConfirmation}
                   onChange={(e) =>
