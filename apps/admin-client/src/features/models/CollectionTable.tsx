@@ -8,6 +8,8 @@ import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import PaginationRow from '@/components/PaginationRow';
 import { useState } from 'react';
 import { RecordApi } from '@/api/RecordApi';
+import { Button } from '@/components/Button';
+import { EyeIcon, PencilIcon } from 'lucide-react';
 
 interface Props {
   modelName: string;
@@ -77,25 +79,27 @@ export default function CollectionTable({
                 </td>
               ))}
               <td className="flex flex-row gap-2 px-6 py-4 text-gray-900">
-                <Link
-                  to={routeWithParams(MODEL_RECORD, {
-                    modelName,
-                    id: String(record.id),
-                  })}
-                  className="rounded px-3 py-2 font-medium text-slate-500 hover:bg-slate-500 hover:text-white"
-                >
-                  Show
-                </Link>
-                {dashboard.isEditable(record) && (
+                <Button asChild variant="secondary" size="sm">
                   <Link
-                    to={routeWithParams(MODEL_RECORD_EDIT, {
+                    to={routeWithParams(MODEL_RECORD, {
                       modelName,
                       id: String(record.id),
                     })}
-                    className="rounded px-3 py-2 font-medium text-indigo-500 hover:bg-indigo-500 hover:text-white"
                   >
-                    Edit
+                    <EyeIcon className="mr-1 h-3 w-3" /> Show
                   </Link>
+                </Button>
+                {dashboard.isEditable(record) && (
+                  <Button asChild variant="outline" size="sm">
+                    <Link
+                      to={routeWithParams(MODEL_RECORD_EDIT, {
+                        modelName,
+                        id: String(record.id),
+                      })}
+                    >
+                      <PencilIcon className="mr-1 h-3 w-3" /> Edit
+                    </Link>
+                  </Button>
                 )}
                 {/* <DeleteButton modelName={modelName} record={record} /> */}
               </td>
