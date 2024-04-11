@@ -2,6 +2,7 @@ import { User } from '@repo/database';
 import { useState, FormEvent } from 'react';
 import { Notify } from '@/features/notification/notification.service';
 import { AuthProvider, changePassword, updateUserProfile } from '@repo/auth';
+import { Button } from '@/components/button';
 
 export default function UserProfilePage() {
   const [data, setData] = useState<User>(AuthProvider.user!);
@@ -132,12 +133,7 @@ export default function UserProfilePage() {
             </div>
           </div>
           <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
-            <button
-              type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Save
-            </button>
+            <Button type="submit">Save</Button>
           </div>
         </form>
       </div>
@@ -197,12 +193,7 @@ export default function UserProfilePage() {
             </div>
           </div>
           <div className="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
-            <button
-              type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Save
-            </button>
+            <Button type="submit">Save</Button>
           </div>
         </form>
       </div>

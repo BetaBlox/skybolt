@@ -12,6 +12,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { classNames } from '@repo/utils';
 import { HOME, LOGOUT, PROFILE } from '../common/routes';
 import { AuthProvider } from '@repo/auth';
+import { Button } from '@/components/button';
 
 type NavItem = {
   name: string;
@@ -78,8 +79,9 @@ export default function SidebarLayout() {
                     leaveTo="opacity-0"
                   >
                     <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                      <button
+                      <Button
                         type="button"
+                        size="icon"
                         className="-m-2.5 p-2.5"
                         onClick={() => setSidebarOpen(false)}
                       >
@@ -88,7 +90,7 @@ export default function SidebarLayout() {
                           className="h-6 w-6 text-white"
                           aria-hidden="true"
                         />
-                      </button>
+                      </Button>
                     </div>
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -201,14 +203,15 @@ export default function SidebarLayout() {
 
         <div className="lg:pl-72">
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-            <button
+            <Button
               type="button"
+              size="icon"
               className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-            </button>
+            </Button>
 
             {/* Separator */}
             <div
@@ -234,13 +237,14 @@ export default function SidebarLayout() {
                 /> */}
               </form>
               <div className="flex items-center gap-x-4 lg:gap-x-6">
-                <button
+                <Button
                   type="button"
+                  size="icon"
                   className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
                 >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+                </Button>
 
                 {/* Separator */}
                 <div
