@@ -1,11 +1,10 @@
-import PageHeader from "@/components/PageHeader";
+import PageHeader from '@/components/page-header';
 
 function HomePage() {
-
   return (
     <div>
       <PageHeader heading="Home" />
-      </div>
+    </div>
   );
 }
 

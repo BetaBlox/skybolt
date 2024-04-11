@@ -1,7 +1,7 @@
 import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
 import { Button } from '@/components/button';
-import { Notify } from '@/features/notification/notification.service';
+import { useToast } from '@/components/toast/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Form, useNavigate, useParams } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { Form, useNavigate, useParams } from 'react-router-dom';
 export default function PasswordResetPage() {
   const { token } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [data, setData] = useState({
     password: '',
     passwordConfirmation: '',
@@ -33,7 +34,10 @@ export default function PasswordResetPage() {
       }
     },
     onSuccess: () => {
-      Notify.success('Password saved! Please log in again');
+      toast({
+        title: 'Password saved!',
+        description: 'Please login to reauthenticate your account',
+      });
       navigate(LOGIN);
     },
   });

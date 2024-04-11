@@ -1,12 +1,13 @@
 import { User } from '@repo/database';
 import { useState, FormEvent } from 'react';
-import { Notify } from '@/features/notification/notification.service';
 import { AuthProvider, changePassword, updateUserProfile } from '@repo/auth';
 import { Button } from '@/components/button';
+import { useToast } from '@/components/toast/use-toast';
 
 export default function UserProfilePage() {
   const [data, setData] = useState<User>(AuthProvider.user!);
   const [password, setPassword] = useState('');
+  const { toast } = useToast();
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const savePersonalInfo = async (e: FormEvent<HTMLFormElement>) => {
@@ -14,10 +15,16 @@ export default function UserProfilePage() {
 
     try {
       await updateUserProfile(data);
-      Notify.success();
+      toast({
+        title: 'Profile saved.',
+      });
     } catch (error) {
       console.error(error);
-      Notify.error();
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -27,13 +34,23 @@ export default function UserProfilePage() {
     try {
       const res = await changePassword(password);
       if (res.ok) {
-        Notify.success('Password updated');
+        toast({
+          title: 'Password udpated.',
+        });
       } else {
-        Notify.error();
+        toast({
+          title: 'Uh oh! Something went wrong.',
+          description: 'There was a problem with your request.',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error(error);
-      Notify.error();
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+        variant: 'destructive',
+      });
     }
   };
 
