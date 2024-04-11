@@ -78,7 +78,10 @@ export default function CreateForm({
     }
   };
 
-  const handleChange = (key: string, value: string | number | null) => {
+  const handleChange = (
+    key: string,
+    value: string | number | boolean | null,
+  ) => {
     const newData = {
       ...data,
       [key]: value,
