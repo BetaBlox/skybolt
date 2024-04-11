@@ -1,6 +1,6 @@
 import FieldLabel from '../FieldLabel';
 import { AdminModelField } from '@repo/types';
-import { Checkbox } from '@/components/Checkbox';
+import { Switch } from '@/components/Switch';
 
 interface Props {
   field: AdminModelField;
@@ -15,7 +15,7 @@ export default function BooleanField({
   return (
     <div>
       <FieldLabel field={field} required={false} />
-      <Checkbox
+      <Switch
         id={field.name}
         name={field.name}
         checked={value === true}
