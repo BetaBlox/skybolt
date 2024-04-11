@@ -81,6 +81,7 @@ export default function SidebarLayout() {
                     <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
                       <Button
                         type="button"
+                        variant="ghost"
                         size="icon"
                         className="-m-2.5 p-2.5"
                         onClick={() => setSidebarOpen(false)}
@@ -205,6 +206,7 @@ export default function SidebarLayout() {
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
             <Button
               type="button"
+              variant="ghost"
               size="icon"
               className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
               onClick={() => setSidebarOpen(true)}
@@ -239,6 +241,7 @@ export default function SidebarLayout() {
               <div className="flex items-center gap-x-4 lg:gap-x-6">
                 <Button
                   type="button"
+                  variant="ghost"
                   size="icon"
                   className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
                 >

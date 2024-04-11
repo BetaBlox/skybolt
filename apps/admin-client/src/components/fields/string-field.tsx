@@ -1,22 +1,23 @@
 import { ChangeEvent } from 'react';
 import { AdminModelField } from '@repo/types';
-import FieldLabel from '@/components/record-field-label';
-import { Textarea } from '@/components/Textarea';
+import FieldLabel from '@/features/records/record-field-label';
+import { Input } from '@/components/input';
 
 interface Props {
   field: AdminModelField;
   value: string;
   onChange: (key: string, value: string) => void;
 }
-export default function TextField({ field, value, onChange }: Props) {
-  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+export default function StringField({ field, value, onChange }: Props) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(field.name, e.currentTarget.value);
   };
 
   return (
     <div>
       <FieldLabel field={field} />
-      <Textarea
+      <Input
+        type="text"
         id={field.name}
         name={field.name}
         value={value || ''}

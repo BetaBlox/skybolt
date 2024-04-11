@@ -1,7 +1,7 @@
 import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
 import { Button } from '@/components/button';
-import { Input } from '@/components/Input';
+import { Input } from '@/components/input';
 import { Label } from '@/components/label';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';

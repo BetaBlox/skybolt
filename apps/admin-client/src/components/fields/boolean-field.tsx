@@ -1,6 +1,6 @@
-import FieldLabel from '../record-field-label';
+import FieldLabel from '../../features/records/record-field-label';
 import { AdminModelField } from '@repo/types';
-import { Switch } from '@/components/Switch';
+import { Switch } from '@/components/switch';
 
 interface Props {
   field: AdminModelField;

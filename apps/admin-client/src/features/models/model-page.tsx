@@ -1,9 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/page-header';
 import { MODEL_RECORD_CREATE } from '@/common/routes';
 import { getDashboard } from '@repo/admin-config';
-import CollectionTable from './CollectionTable';
+import CollectionTable from './collection-table';
 import { useDebounceValue } from 'usehooks-ts';
 import {
   Breadcrumb,
@@ -12,7 +12,7 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
   BreadcrumbPage,
-} from '@/components/Breadcrumb';
+} from '@/components/breadcrumb';
 import { Button } from '@/components/button';
 
 export default function ModelPage() {

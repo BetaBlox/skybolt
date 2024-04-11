@@ -1,11 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { captilalize, routeWithParams } from '@repo/utils';
-import PageHeader from '@/components/PageHeader';
+import PageHeader from '@/components/page-header';
 import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
 import { AdminRecordPayload, AdminFieldType } from '@repo/types';
-import DeleteButton from './DeleteButton';
-import ShowViewField from '@/components/ShowViewField';
+import DeleteButton from './delete-record-button';
 import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { RecordApi } from '@/api/RecordApi';
 import {
@@ -15,7 +14,7 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
   BreadcrumbPage,
-} from '@/components/Breadcrumb';
+} from '@/components/breadcrumb';
 import { Button } from '@/components/button';
 import {
   Card,
@@ -23,7 +22,8 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from '@/components/Card';
+} from '@/components/card';
+import ShowViewField from '@/features/records/show-view-field';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();

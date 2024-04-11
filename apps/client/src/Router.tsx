@@ -1,11 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ErrorPage from './ErrorPage';
-import HomePage from '@/features/home/HomePage';
-import Login from '@/auth/Login';
-import loginAction from '@/auth/loginAction';
-import loginLoader from '@/auth/loginLoader';
-import protectedLoader from '@/auth/protectedLoader';
-import Logout from '@/auth/Logout';
+import HomePage from '@/features/home/home-page';
+import Login from '@/auth/login-page';
+import loginAction from '@/auth/login-action';
+import loginLoader from '@/auth/login-loader';
+import protectedLoader from '@/auth/protected-loader';
+import Logout from '@/auth/logout-page';
 import {
   FORGOT_PASSWORD,
   HOME,
@@ -14,10 +13,11 @@ import {
   PASSWORD_RESET,
   PROFILE,
 } from '@/common/routes';
-import SidebarLayout from '@/layouts/SidebarLayout';
-import UserProfilePage from './features/user-profile/UserProfilePage';
-import ForgotPasswordPage from './auth/ForgotPasswordPage';
-import PasswordResetPage from './auth/PasswordResetPage';
+import SidebarLayout from '@/layouts/sidebar-layout';
+import UserProfilePage from '@/features/user-profile/user-profile-page';
+import ForgotPasswordPage from '@/auth/forgot-password-page';
+import PasswordResetPage from '@/auth/password-reset-page';
+import ErrorPage from '@/error-page';
 
 const router = createBrowserRouter([
   {
