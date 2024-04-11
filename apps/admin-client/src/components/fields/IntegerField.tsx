@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import FieldLabel from '../FieldLabel';
+import FieldLabel from '../record-field-label';
 import { AdminModelField } from '@repo/types';
 import { Input } from '@/components/Input';
 

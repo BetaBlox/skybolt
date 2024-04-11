@@ -2,6 +2,7 @@ import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { Label } from '@/components/label';
 import { useToast } from '@/components/toast/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -67,12 +68,7 @@ export default function PasswordResetPage() {
         <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
           <Form className="space-y-6" onSubmit={submit}>
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Password
-              </label>
+              <Label htmlFor="password">Password</Label>
               <div className="mt-2">
                 <Input
                   id="password"
@@ -91,12 +87,7 @@ export default function PasswordResetPage() {
               </div>
             </div>
             <div>
-              <label
-                htmlFor="password-confirmation"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Password Confirmation
-              </label>
+              <Label htmlFor="password-confirmation">Password Confirm</Label>
               <div className="mt-2">
                 <Input
                   id="password-confirmation"
