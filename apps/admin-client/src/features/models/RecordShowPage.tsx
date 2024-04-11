@@ -16,7 +16,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/Breadcrumb';
-import { Button } from '@/components/Button';
+import { Button } from '@/components/button';
 import {
   Card,
   CardHeader,

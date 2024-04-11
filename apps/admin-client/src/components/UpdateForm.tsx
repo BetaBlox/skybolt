@@ -16,7 +16,7 @@ import {
   AdminModelField,
 } from '@repo/types';
 import { RecordApi } from '@/api/RecordApi';
-import { Button } from './Button';
+import { Button } from './button';
 import { useToast } from '@/components/toast/use-toast';
 
 interface Props {

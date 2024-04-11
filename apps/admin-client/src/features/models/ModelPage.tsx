@@ -13,7 +13,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/Breadcrumb';
-import { Button } from '@/components/Button';
+import { Button } from '@/components/button';
 
 export default function ModelPage() {
   const { modelName } = useParams();
