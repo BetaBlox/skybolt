@@ -6,7 +6,6 @@ import IntegerField from './fields/IntegerField';
 import SelectField from './fields/SelectField';
 import StringField from './fields/StringField';
 import TextField from './fields/TextField';
-import { Notify } from '@/config/notification/notification.service';
 import PasswordField from './fields/PasswordField';
 import RelationshipHasOneField from './fields/RelationshipHasOneField';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +17,7 @@ import {
 } from '@repo/types';
 import { RecordApi } from '@/api/RecordApi';
 import { Button } from './Button';
+import { useToast } from '@/components/toast/use-toast';
 // import { getDashboard } from '@repo/admin-config';
 
 interface Props {
@@ -34,6 +34,7 @@ export default function CreateForm({
   formAttributes,
 }: Props) {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [data, setData] = useState({});
   const [saving, setSaving] = useState(false);
 
@@ -61,18 +62,29 @@ export default function CreateForm({
       );
 
       if (response.ok) {
-        Notify.success();
+        toast({
+          title: 'Record created.',
+          description: 'Your data has been saved.',
+        });
         const showUrl = routeWithParams(MODEL_RECORD, {
           modelName,
           id: json.record.id,
         });
         navigate(showUrl);
       } else {
-        Notify.error();
+        toast({
+          title: 'Uh oh! Something went wrong.',
+          description: 'There was a problem with your request.',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error(error);
-      Notify.error();
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+        variant: 'destructive',
+      });
     } finally {
       setSaving(false);
     }
