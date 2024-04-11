@@ -17,6 +17,13 @@ import {
   BreadcrumbPage,
 } from '@/components/Breadcrumb';
 import { Button } from '@/components/Button';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/Card';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();
@@ -74,56 +81,59 @@ export default function RecordShowPage() {
       </Breadcrumb>
       <PageHeader heading={getDisplayName(record)} actions={actions} />
 
-      <div className="mt-6 border-t border-gray-100 bg-white px-4 shadow-md sm:rounded-lg">
-        <dl className="divide-y divide-gray-100">
-          {showAttributes.map((attribute) => {
-            const attributeType = getAttributeType(modelName, attribute);
+      <Card className="mt-6">
+        <CardContent>
+          <dl className="divide-y divide-gray-100">
+            {showAttributes.map((attribute) => {
+              const attributeType = getAttributeType(modelName, attribute);
 
-            return (
-              <div
-                key={attributeType.name}
-                className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
-              >
-                <dt className="text-sm font-bold leading-6 text-gray-900">
-                  {captilalize(attributeType.name)}
-                </dt>
-                {attributeType.type === AdminFieldType.JSON ? (
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    <pre>
+              return (
+                <div
+                  key={attributeType.name}
+                  className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                >
+                  <dt className="text-sm font-bold leading-6 text-gray-900">
+                    {captilalize(attributeType.name)}
+                  </dt>
+                  {attributeType.type === AdminFieldType.JSON ? (
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      <pre>
+                        <ShowViewField
+                          record={record}
+                          modelName={modelName}
+                          attribute={attribute}
+                        />
+                      </pre>
+                    </dd>
+                  ) : (
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                       <ShowViewField
                         record={record}
                         modelName={modelName}
                         attribute={attribute}
                       />
-                    </pre>
-                  </dd>
-                ) : (
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    <ShowViewField
-                      record={record}
-                      modelName={modelName}
-                      attribute={attribute}
-                    />
-                  </dd>
-                )}
-              </div>
-            );
-          })}
-        </dl>
-      </div>
+                    </dd>
+                  )}
+                </div>
+              );
+            })}
+          </dl>
+        </CardContent>
+      </Card>
 
       {dashboard.isDeletable(record) && (
-        <div className="mt-6 border-t border-gray-100 bg-white px-4 py-6 shadow-md sm:rounded-lg">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-red-500">Danger Zone</h2>
-            <p className="mt-4 text-gray-500">
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle className="text-red-500">Danger Zone</CardTitle>
+            <CardDescription>
               This action <strong>CANNOT</strong> be undone. This will
               permanently delete the {modelName} record
-            </p>
-          </div>
-
-          <DeleteButton payload={data} />
-        </div>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <DeleteButton payload={data} />
+          </CardContent>
+        </Card>
       )}
     </div>
   );
