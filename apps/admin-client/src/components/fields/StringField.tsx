@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react';
 import { AdminModelField } from '@repo/types';
-import FieldLabel from '@/components/FieldLabel';
+import FieldLabel from '@/components/record-field-label';
 import { Input } from '@/components/Input';
 
 interface Props {

@@ -2,6 +2,7 @@ import { FORGOT_PASSWORD } from '@/common/routes';
 import { Alert, AlertDescription, AlertTitle } from '@/components/Alert';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { Label } from '@/components/label';
 import { useState } from 'react';
 import {
   useLocation,
@@ -44,12 +45,7 @@ function Login() {
             <input type="hidden" name="redirectTo" value={from} />
 
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email
-              </label>
+              <Label htmlFor="email">Email</Label>
               <div className="mt-2">
                 <Input
                   id="email"
@@ -69,12 +65,7 @@ function Login() {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Password
-              </label>
+              <Label htmlFor="password">Password</Label>
               <div className="mt-2">
                 <Input
                   id="password"

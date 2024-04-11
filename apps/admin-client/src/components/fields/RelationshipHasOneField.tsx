@@ -1,4 +1,4 @@
-import FieldLabel from '../FieldLabel';
+import FieldLabel from '../record-field-label';
 import { useQuery } from '@tanstack/react-query';
 import {
   AdminAttributeType,

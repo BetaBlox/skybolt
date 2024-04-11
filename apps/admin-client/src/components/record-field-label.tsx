@@ -1,3 +1,4 @@
+import { Label } from '@/components/label';
 import { AdminModelField } from '@repo/types';
 import { captilalize } from '@repo/utils';
 
@@ -22,8 +23,8 @@ export default function FieldLabel({ field, required }: Props) {
   };
 
   return (
-    <label className="mb-2 block text-sm font-bold text-gray-700">
+    <Label>
       {captilalize(field.name)} {renderRequiredAsterisk()}
-    </label>
+    </Label>
   );
 }
