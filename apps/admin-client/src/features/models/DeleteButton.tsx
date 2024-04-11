@@ -1,5 +1,6 @@
 import { RecordApi } from '@/api/RecordApi';
 import { MODEL } from '@/common/routes';
+import { Button } from '@/components/Button';
 import { Notify } from '@/config/notification/notification.service';
 import { getDashboard } from '@repo/admin-config';
 import { AdminRecordPayload } from '@repo/types';
@@ -45,12 +46,8 @@ export default function DeleteButton({ payload }: Props) {
   };
 
   return (
-    <button
-      onClick={handleClick}
-      className="rounded bg-red-500 px-3 py-2 font-medium text-white hover:bg-red-600"
-      disabled={saving}
-    >
+    <Button onClick={handleClick} variant="destructive" disabled={saving}>
       Delete {dashboard.getDisplayName(record)}
-    </button>
+    </Button>
   );
 }

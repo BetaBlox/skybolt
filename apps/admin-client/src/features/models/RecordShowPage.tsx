@@ -16,6 +16,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/Breadcrumb';
+import { Button } from '@/components/Button';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();
@@ -36,15 +37,16 @@ export default function RecordShowPage() {
   const { showAttributes, getDisplayName } = dashboard;
 
   const actions = dashboard.isEditable(record) ? (
-    <Link
-      to={routeWithParams(MODEL_RECORD_EDIT, {
-        modelName,
-        id: record.id,
-      })}
-      className="rounded bg-indigo-500 px-3 py-2 font-medium text-white"
-    >
-      Edit
-    </Link>
+    <Button asChild>
+      <Link
+        to={routeWithParams(MODEL_RECORD_EDIT, {
+          modelName,
+          id: record.id,
+        })}
+      >
+        Edit
+      </Link>
+    </Button>
   ) : null;
 
   return (

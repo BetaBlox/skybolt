@@ -17,6 +17,7 @@ import {
   AdminModelField,
 } from '@repo/types';
 import { RecordApi } from '@/api/RecordApi';
+import { Button } from './Button';
 // import { getDashboard } from '@repo/admin-config';
 
 interface Props {
@@ -155,13 +156,10 @@ export default function CreateForm({
             </div>
           );
         })}
-        <button
-          type="submit"
-          className="rounded bg-indigo-600 px-3 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={saving}
-        >
+        <hr className="my-10" />
+        <Button type="submit" disabled={saving}>
           Submit
-        </button>
+        </Button>
         {/* {error && <FormError error={error} />} */}
       </div>
     </form>
