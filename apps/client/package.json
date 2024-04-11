@@ -13,15 +13,20 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
+    "@repo/auth": "*",
+    "@repo/paginator": "*",
+    "@repo/utils": "*",
     "@tailwindcss/forms": "^0.5.7",
     "@tanstack/react-query": "^5.24.1",
-    "@repo/paginator": "*",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.367.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.1",
     "react-toastify": "^10.0.4",
-    "@repo/auth": "*",
-    "@repo/utils": "*"
+    "tailwind-merge": "^2.2.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@repo/types": "*",

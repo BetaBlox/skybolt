@@ -1,5 +1,6 @@
 import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
+import { Button } from '@/components/button';
 import { Notify } from '@/features/notification/notification.service';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -112,13 +113,13 @@ export default function PasswordResetPage() {
             </div>
 
             <div>
-              <button
+              <Button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="w-full"
                 disabled={resetMutation.isPending}
               >
                 {resetMutation.isPending ? '...' : 'Reset Password'}
-              </button>
+              </Button>
             </div>
 
             {resetMutation.error ? (
