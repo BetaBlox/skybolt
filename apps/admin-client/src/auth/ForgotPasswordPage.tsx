@@ -1,5 +1,6 @@
 import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
+import { Button } from '@/components/Button';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Form, Link } from 'react-router-dom';
@@ -75,13 +76,13 @@ export default function ForgotPasswordPage() {
             </div>
 
             <div>
-              <button
+              <Button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 disabled={sendResetMutation.isPending}
+                className="w-full"
               >
                 {sendResetMutation.isPending ? 'Sending...' : 'Send'}
-              </button>
+              </Button>
             </div>
 
             {msg ? <p className="text-center text-green-500">{msg}</p> : null}

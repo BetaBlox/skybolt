@@ -46,7 +46,9 @@ export default function RecordEditPage() {
               to={routeWithParams(MODEL, {
                 modelName,
               })}
-            ></BreadcrumbLink>
+            >
+              {dashboard.name}
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
