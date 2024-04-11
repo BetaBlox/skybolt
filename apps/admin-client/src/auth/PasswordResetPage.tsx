@@ -1,6 +1,6 @@
 import { HttpMethod } from '@/common/custom-fetcher';
 import { LOGIN } from '@/common/routes';
-import { Button } from '@/components/Button';
+import { Button } from '@/components/button';
 import { Input } from '@/components/Input';
 import { useToast } from '@/components/toast/use-toast';
 import { useMutation } from '@tanstack/react-query';

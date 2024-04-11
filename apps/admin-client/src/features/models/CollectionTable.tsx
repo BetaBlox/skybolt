@@ -8,7 +8,7 @@ import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import PaginationRow from '@/components/PaginationRow';
 import { useState } from 'react';
 import { RecordApi } from '@/api/RecordApi';
-import { Button } from '@/components/Button';
+import { Button } from '@/components/button';
 import { EyeIcon, PencilIcon } from 'lucide-react';
 
 interface Props {
