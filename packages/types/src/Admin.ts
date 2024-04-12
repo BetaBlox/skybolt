@@ -1,6 +1,6 @@
 export type SelectOption = { label: string; value: string };
 
-export const enum AdminFieldType {
+export enum AdminFieldType {
   STRING = 'string',
   TEXT = 'text',
   PASSWORD = 'password',
