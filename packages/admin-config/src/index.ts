@@ -4,18 +4,18 @@
  * @see https://administrate-demo.herokuapp.com
  */
 import { AdminAttributeType } from '@repo/types';
-import { UserDashboard } from './dashboards/UserDashboard';
-import { PostDashboard } from './dashboards/PostDashboard';
-import { ColorDashboard } from './dashboards/ColorDashboard';
-import Dashboard from './dashboards/Dashboard';
+import { createUserDashboard } from './dashboards/user.dashboard';
+import { createPostDashboard } from './dashboards/post.dashboard';
+import { Dashboard } from './dashboard';
+import { createColorDashboard } from './dashboards/color.dashboard';
 
 export { Dashboard };
 
-export function getDashboards(): Dashboard[] {
-  return [new UserDashboard(), new PostDashboard(), new ColorDashboard()];
+export function getDashboards(): Dashboard<unknown>[] {
+  return [createUserDashboard(), createPostDashboard(), createColorDashboard()];
 }
 
-export function getDashboard(modelName: string): Dashboard {
+export function getDashboard(modelName: string): Dashboard<unknown> {
   const dashboards = getDashboards();
   const dashboard = dashboards.find(
     (d) => d.modelName.toLowerCase() === modelName.toLowerCase(),

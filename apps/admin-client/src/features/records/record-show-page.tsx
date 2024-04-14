@@ -41,9 +41,9 @@ export default function RecordShowPage() {
   const dashboard = getDashboard(data.modelName);
 
   const { record } = data;
-  const { showAttributes, getDisplayName } = dashboard;
+  const { showAttributes, getDisplayName, isEditable, isDeletable } = dashboard;
 
-  const actions = dashboard.isEditable(record) ? (
+  const actions = isEditable(record) ? (
     <Button asChild>
       <Link
         to={routeWithParams(MODEL_RECORD_EDIT, {
@@ -121,7 +121,7 @@ export default function RecordShowPage() {
         </CardContent>
       </Card>
 
-      {dashboard.isDeletable(record) && (
+      {isDeletable(record) && (
         <Card className="mt-6">
           <CardHeader>
             <CardTitle className="text-red-500">Danger Zone</CardTitle>

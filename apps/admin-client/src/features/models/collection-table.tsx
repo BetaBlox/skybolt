@@ -13,7 +13,7 @@ import { EyeIcon, PencilIcon } from 'lucide-react';
 
 interface Props {
   modelName: string;
-  dashboard: Dashboard;
+  dashboard: Dashboard<unknown>;
   search: string;
 }
 export default function CollectionTable({
@@ -37,7 +37,7 @@ export default function CollectionTable({
 
   const data = modelQuery.data as AdminRecordsPayload;
 
-  const { collectionAttributes } = dashboard;
+  const { collectionAttributes, isEditable } = dashboard;
   const { paginatedResult } = data;
 
   return (
@@ -89,7 +89,7 @@ export default function CollectionTable({
                     <EyeIcon className="mr-1 h-3 w-3" /> Show
                   </Link>
                 </Button>
-                {dashboard.isEditable(record) && (
+                {isEditable(record) && (
                   <Button asChild variant="outline" size="sm">
                     <Link
                       to={routeWithParams(MODEL_RECORD_EDIT, {
