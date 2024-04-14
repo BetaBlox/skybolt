@@ -1,10 +1,11 @@
 {
   "name": "@repo/database",
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "npm run build -- --watch",
-    "build": "tsc --build",
+    "build": "tsup src/index.ts --format cjs,esm --dts",
     "postbuild": "npm run db:generate",
     "test": "echo 'No tests specificed'",
     "db:generate": "prisma generate",
@@ -24,6 +25,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.6.0",
+    "tsup": "^8.0.1",
     "typescript": "5.3.2"
   },
   "devDependencies": {
