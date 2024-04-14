@@ -23,9 +23,11 @@ export default function ModelPage() {
 
   const dashboard = getDashboard(modelName);
 
+  const { searchAttributes = [], isCreatable } = dashboard;
+
   const actions = (
     <div className="flex flex-row gap-x-4">
-      {dashboard.searchAttributes.length > 0 && (
+      {searchAttributes.length > 0 && (
         <input
           type="text"
           id="search"
@@ -35,7 +37,7 @@ export default function ModelPage() {
           onChange={(e) => setSearch(e.currentTarget.value)}
         />
       )}
-      {dashboard.isCreatable() && (
+      {isCreatable() && (
         <Button asChild>
           <Link
             to={routeWithParams(MODEL_RECORD_CREATE, {
