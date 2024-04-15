@@ -44,7 +44,7 @@ export const customFetch = async (
     throw new Error('Invalid fetch, no url provided');
   }
 
-  const accessToken = getAccessTokenFromStorage();
+  let accessToken = getAccessTokenFromStorage();
 
   if (!accessToken) {
     console.log('Unable to find user access token');
@@ -60,6 +60,9 @@ export const customFetch = async (
     // Even if a bunch of API requests fire off at once.
     refreshPromise = refreshPromise || refreshTokens();
     await refreshPromise;
+
+    // grab the new access token from local storage after refresh is complete
+    accessToken = getAccessTokenFromStorage();
   }
 
   const defaultHeaders = {
