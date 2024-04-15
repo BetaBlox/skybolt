@@ -56,7 +56,9 @@ export default function CollectionTable({
             <TableRow>
               <TableHead>Id</TableHead>
               {collectionAttributes.map((attribute) => (
-                <TableHead key={attribute}>{captilalize(attribute)}</TableHead>
+                <TableHead key={attribute} className="whitespace-nowrap">
+                  {captilalize(attribute)}
+                </TableHead>
               ))}
               <TableHead>Actions</TableHead>
             </TableRow>
