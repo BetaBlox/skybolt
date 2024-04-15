@@ -4,7 +4,6 @@ import { captilalize, routeWithParams } from '@repo/utils';
 import PageHeader from '@/components/page-header';
 import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
 import { AdminRecordPayload, AdminFieldType } from '@repo/types';
-import DeleteButton from './delete-record-button';
 import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { RecordApi } from '@/api/RecordApi';
 import {
@@ -16,14 +15,9 @@ import {
   BreadcrumbPage,
 } from '@/components/breadcrumb';
 import { Button } from '@/components/button';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from '@/components/card';
+import { Card, CardContent } from '@/components/card';
 import ShowViewField from '@/features/records/show-view-field';
+import DeleteRecordCard from '@/features/records/delete-record-card';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();
@@ -122,18 +116,7 @@ export default function RecordShowPage() {
       </Card>
 
       {isDeletable(record) && (
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle className="text-red-500">Danger Zone</CardTitle>
-            <CardDescription>
-              This action <strong>CANNOT</strong> be undone. This will
-              permanently delete the {modelName} record
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <DeleteButton payload={data} />
-          </CardContent>
-        </Card>
+        <DeleteRecordCard record={data.record} modelName={modelName} />
       )}
     </div>
   );
