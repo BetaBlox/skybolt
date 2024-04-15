@@ -10,6 +10,14 @@ import { useState } from 'react';
 import { RecordApi } from '@/api/RecordApi';
 import { Button } from '@/components/button';
 import { EyeIcon, PencilIcon } from 'lucide-react';
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from '@/components/table';
 
 interface Props {
   modelName: string;
@@ -41,72 +49,60 @@ export default function CollectionTable({
   const { paginatedResult } = data;
 
   return (
-    <div className="relative overflow-x-auto bg-white shadow-md sm:rounded-lg">
-      <table className="w-full text-left text-sm text-gray-50">
-        <thead className="bg-gray-600 text-xs text-white">
-          <tr>
-            <th scope="col" className="px-6 py-3">
-              Id
-            </th>
-            {collectionAttributes.map((attribute) => (
-              <th
-                scope="col"
-                key={attribute}
-                className="whitespace-nowrap px-6 py-3"
-              >
-                {captilalize(attribute)}
-              </th>
-            ))}
-            <th scope="col" className="px-6 py-3">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedResult.data.map((record) => (
-            <tr key={record.id}>
-              <td className="px-6 py-4 text-gray-900">{record.id}</td>
+    <div className="bg-white shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Id</TableHead>
               {collectionAttributes.map((attribute) => (
-                <td
-                  key={attribute}
-                  className="whitespace-nowrap px-6 py-4 text-gray-900"
-                >
-                  <CollectionViewField
-                    record={record}
-                    modelName={modelName}
-                    attribute={attribute}
-                  />
-                </td>
+                <TableHead key={attribute}>{captilalize(attribute)}</TableHead>
               ))}
-              <td className="flex flex-row gap-2 px-6 py-4 text-gray-900">
-                <Button asChild variant="secondary" size="sm">
-                  <Link
-                    to={routeWithParams(MODEL_RECORD, {
-                      modelName,
-                      id: String(record.id),
-                    })}
-                  >
-                    <EyeIcon className="mr-1 h-3 w-3" /> Show
-                  </Link>
-                </Button>
-                {isEditable(record) && (
-                  <Button asChild variant="outline" size="sm">
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paginatedResult.data.map((record) => (
+              <TableRow key={record.id}>
+                <TableCell>{record.id}</TableCell>
+                {collectionAttributes.map((attribute) => (
+                  <TableCell key={attribute}>
+                    <CollectionViewField
+                      record={record}
+                      modelName={modelName}
+                      attribute={attribute}
+                    />
+                  </TableCell>
+                ))}
+                <TableCell className="flex flex-row gap-2">
+                  <Button asChild variant="secondary" size="sm">
                     <Link
-                      to={routeWithParams(MODEL_RECORD_EDIT, {
+                      to={routeWithParams(MODEL_RECORD, {
                         modelName,
                         id: String(record.id),
                       })}
                     >
-                      <PencilIcon className="mr-1 h-3 w-3" /> Edit
+                      <EyeIcon className="mr-1 h-3 w-3" /> Show
                     </Link>
                   </Button>
-                )}
-                {/* <DeleteButton modelName={modelName} record={record} /> */}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  {isEditable(record) && (
+                    <Button asChild variant="outline" size="sm">
+                      <Link
+                        to={routeWithParams(MODEL_RECORD_EDIT, {
+                          modelName,
+                          id: String(record.id),
+                        })}
+                      >
+                        <PencilIcon className="mr-1 h-3 w-3" /> Edit
+                      </Link>
+                    </Button>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
       <PaginationRow
         paginatedResult={paginatedResult}
         onPageChange={setPage}
