@@ -1,6 +1,6 @@
-import { HOME } from "@/common/routes";
-import { ChevronRightIcon, HomeIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { HOME } from '@/common/routes';
+import { ChevronRightIcon, HomeIcon } from '@heroicons/react/20/solid';
+import { Link } from 'react-router-dom';
 
 export type Breadcrumb = {
   href: string;
@@ -44,7 +44,7 @@ export default function PageHeader({
                   <Link
                     to={page.href}
                     className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                    aria-current={page.current ? "page" : undefined}
+                    aria-current={page.current ? 'page' : undefined}
                   >
                     {page.text}
                   </Link>
@@ -56,7 +56,7 @@ export default function PageHeader({
       )}
       <div className="mt-4 md:flex md:items-center md:justify-between">
         <div className="min-w-0 flex-1">
-          <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+          <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-5xl sm:tracking-tight">
             {heading}
           </h1>
         </div>

@@ -68,4 +68,22 @@ export const RecordApi = {
       method: HttpMethod.DELETE,
     });
   },
+
+  registrations: async (modelName: string) => {
+    const url = routeWithParams('/api/records/:modelName/registrations', {
+      modelName,
+    });
+    return customFetch(url, {
+      method: HttpMethod.GET,
+    });
+  },
+
+  kpis: async (modelName: string) => {
+    const url = routeWithParams('/api/records/:modelName/kpis', {
+      modelName,
+    });
+    return customFetch(url, {
+      method: HttpMethod.GET,
+    });
+  },
 };

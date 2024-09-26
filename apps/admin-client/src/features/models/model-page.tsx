@@ -15,6 +15,8 @@ import {
 } from '@/components/breadcrumb';
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
+import { RecordRegistrationsChart } from '@/charts/record-registrations-chart';
+import { KpiCards } from '@/features/models/kpi-cards';
 
 export default function ModelPage() {
   const { modelName } = useParams();
@@ -28,15 +30,6 @@ export default function ModelPage() {
 
   const actions = (
     <div className="flex flex-row gap-x-4">
-      {searchAttributes.length > 0 && (
-        <Input
-          type="search"
-          id="search"
-          name="search"
-          placeholder="Search"
-          onChange={(e) => setSearch(e.currentTarget.value)}
-        />
-      )}
       {isCreatable() && (
         <Button asChild>
           <Link
@@ -65,6 +58,33 @@ export default function ModelPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <PageHeader heading={dashboard.name} actions={actions} />
+
+      <div className="mb-20">
+        <KpiCards modelName={modelName} />
+      </div>
+
+      <div className="mb-20">
+        <RecordRegistrationsChart
+          modelName={modelName}
+          title="This Year By Month"
+        />
+      </div>
+
+      <div className="mb-8">
+        <h2 className="mb-4 text-2xl font-semibold leading-none tracking-tight">
+          All Records
+        </h2>
+        {searchAttributes.length > 0 && (
+          <Input
+            type="search"
+            id="search"
+            name="search"
+            placeholder="Search"
+            onChange={(e) => setSearch(e.currentTarget.value)}
+            className="max-w-[300px]"
+          />
+        )}
+      </div>
       <CollectionTable
         dashboard={dashboard}
         modelName={modelName}
