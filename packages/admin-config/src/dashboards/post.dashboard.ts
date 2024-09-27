@@ -21,6 +21,7 @@ export function createPostDashboard(): Dashboard<Post> {
       { name: 'updatedAt', type: AdminFieldType.DATETIME },
     ],
     collectionAttributes: ['title', 'author', 'createdAt', 'updatedAt'],
+    collectionFilterAttributes: [],
     showAttributes: ['title', 'author', 'content', 'createdAt', 'updatedAt'],
     createFormAttributes: ['title', 'content', 'author'],
     editFormAttributes: ['title', 'content', 'author'],

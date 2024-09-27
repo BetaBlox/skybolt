@@ -14,6 +14,7 @@ export function createColorDashboard(): Dashboard<Color> {
       { name: 'updatedAt', type: AdminFieldType.DATETIME },
     ],
     collectionAttributes: ['label', 'hex', 'createdAt', 'updatedAt'],
+    collectionFilterAttributes: [],
     showAttributes: ['label', 'hex', 'createdAt', 'updatedAt'],
     createFormAttributes: ['label', 'hex'],
     editFormAttributes: ['label', 'hex'],

@@ -5,6 +5,7 @@ export interface Dashboard<T> {
   modelName: string;
   attributeTypes: AdminAttributeType[];
   collectionAttributes: string[];
+  collectionFilterAttributes: string[];
   showAttributes: string[];
   createFormAttributes: string[];
   editFormAttributes: string[];
@@ -18,11 +19,13 @@ export interface Dashboard<T> {
   beforeCreate: (data: object) => object;
 }
 
+// Extendable options used when creating a dashboard
 export type DashboardOptions<T> = {
   name: string;
   modelName: string;
   attributeTypes: AdminAttributeType[];
   collectionAttributes: string[];
+  collectionFilterAttributes: string[];
   showAttributes: string[];
   createFormAttributes: string[];
   editFormAttributes: string[];

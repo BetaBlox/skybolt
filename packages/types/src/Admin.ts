@@ -12,6 +12,22 @@ export enum AdminFieldType {
   DATETIME = 'datetime',
 }
 
+export enum AdminFilterType {
+  TEXT = 'text',
+  NUMBER = 'number',
+  BOOLEAN = 'boolean',
+  DATE = 'date',
+}
+
+export enum AdminFilterOperator {
+  EQUALS = 'equals',
+  CONTAINS = 'contains',
+  STARTS_WITH = 'startsWith',
+  ENDS_WITH = 'endsWith',
+  GREATER_THAN = 'greaterThan',
+  LESS_THAN = 'lessThan',
+}
+
 export type AdminAttributeType = {
   name: string;
   type: AdminFieldType;

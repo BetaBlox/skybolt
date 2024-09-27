@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import {
   AdminFieldType,
+  AdminFilterOperator,
   AdminModelField,
   AdminRecordPayload,
   AdminRecordsPayload,
@@ -18,14 +19,12 @@ const paginate: PaginateFunction = paginator();
 export class RecordsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // TODO: need a test for searching
-  // TODO: need a test for pagination
-  // TODO: need a test for included models
   async findMany(
     modelName: string,
     search: string,
     page: number,
     perPage: number,
+    filters: unknown[] = [{}],
   ): Promise<AdminRecordsPayload> {
     const dashboard = getDashboard(modelName);
     let where = {};
@@ -38,6 +37,34 @@ export class RecordsService {
         })),
       };
     }
+
+    // Apply filters
+    (filters as { field: string; operator: string; value: string }[]).forEach(
+      (filter) => {
+        const { field, operator, value } = filter;
+
+        switch (operator) {
+          case AdminFilterOperator.EQUALS:
+            where[field] = value;
+            break;
+          case AdminFilterOperator.CONTAINS:
+            where[field] = { contains: value, mode: 'insensitive' };
+            break;
+          case AdminFilterOperator.GREATER_THAN:
+            where[field] = { gt: value };
+            break;
+          case AdminFilterOperator.LESS_THAN:
+            where[field] = { lt: value };
+            break;
+          case AdminFilterOperator.STARTS_WITH:
+            where[field] = { startsWith: value };
+            break;
+          case AdminFilterOperator.ENDS_WITH:
+            where[field] = { endsWith: value };
+            break;
+        }
+      },
+    );
 
     // Dynamically include related models
     const include = {};
