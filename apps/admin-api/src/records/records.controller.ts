@@ -33,6 +33,20 @@ export class RecordsController {
   }
 
   @UseGuards(AccessTokenGuard)
+  @Get('/:modelName/registrations')
+  async getRecordRegistrationsByMonth(
+    @Param('modelName') modelName: string,
+  ): Promise<number[]> {
+    return this.recordsService.getRecordRegistrationsByMonth(modelName);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('/:modelName/kpis')
+  async getKpis(@Param('modelName') modelName: string) {
+    return this.recordsService.getKpis(modelName);
+  }
+
+  @UseGuards(AccessTokenGuard)
   @Get('/:modelName/:id')
   async findOne(
     @Param('modelName') modelName: string,

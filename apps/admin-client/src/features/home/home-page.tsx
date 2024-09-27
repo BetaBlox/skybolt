@@ -16,6 +16,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/card';
+import { RecordRegistrationsChart } from '@/charts/record-registrations-chart';
 
 export default function HomePage() {
   const modelsQuery = useQuery({
@@ -30,62 +31,71 @@ export default function HomePage() {
 
   return (
     <div>
-      <PageHeader heading="Home" />
+      <PageHeader heading="Dashboard" />
+      <div className="mb-20">
+        <RecordRegistrationsChart title="Users This Year" modelName={'user'} />
+      </div>
 
-      <div className="grid-col-2 mx-auto my-5 grid gap-4 md:grid-cols-3">
-        {data.map(({ modelName, count, recentRecords }) => {
-          const dashboard = getDashboard(modelName);
+      <div className="mb-20">
+        <h2 className="mb-4 text-2xl font-semibold leading-none tracking-tight">
+          Datasets
+        </h2>
+        <div className="grid-col-2 mx-auto my-5 grid gap-4 md:grid-cols-3">
+          {data.map(({ modelName, count, recentRecords }) => {
+            const dashboard = getDashboard(modelName);
 
-          return (
-            <Card key={dashboard.name}>
-              <CardHeader>
-                <CardTitle>
-                  <Link
-                    to={routeWithParams(MODEL, {
-                      modelName,
-                    })}
-                  >
-                    {dashboard.name}
-                  </Link>
-                </CardTitle>
-                <CardDescription>{count} records</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <h3 className="mb-1 text-xs font-bold uppercase">
-                  Recent Records
-                </h3>
-                <div>
-                  {(recentRecords || []).map((record) => (
-                    <div key={record.id}>
-                      <Link
-                        to={routeWithParams(MODEL_RECORD, {
-                          modelName,
-                          id: record.id,
-                        })}
-                      >
-                        <div className="flex flex-row justify-between gap-4 py-1 text-xs text-gray-500 hover:text-gray-800">
-                          <p className="truncate">{record.displayName}</p>
-                          <span className="whitespace-nowrap underline">
-                            See Details
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-              <CardFooter>
-                <div className="flex w-full flex-row justify-end">
-                  <Link to={routeWithParams(MODEL, { modelName })}>
-                    <Button size={'sm'}>
-                      See All <ArrowRightCircleIcon className="ml-2 h-6 w-6" />
-                    </Button>
-                  </Link>
-                </div>
-              </CardFooter>
-            </Card>
-          );
-        })}
+            return (
+              <Card key={dashboard.name}>
+                <CardHeader>
+                  <CardTitle>
+                    <Link
+                      to={routeWithParams(MODEL, {
+                        modelName,
+                      })}
+                    >
+                      {dashboard.name}
+                    </Link>
+                  </CardTitle>
+                  <CardDescription>{count} records</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <h3 className="mb-1 text-xs font-bold uppercase">
+                    Recent Records
+                  </h3>
+                  <div>
+                    {(recentRecords || []).map((record) => (
+                      <div key={record.id}>
+                        <Link
+                          to={routeWithParams(MODEL_RECORD, {
+                            modelName,
+                            id: record.id,
+                          })}
+                        >
+                          <div className="flex flex-row justify-between gap-4 py-1 text-xs text-gray-500 hover:text-gray-800">
+                            <p className="truncate">{record.displayName}</p>
+                            <span className="whitespace-nowrap underline">
+                              See Details
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <div className="flex w-full flex-row justify-end">
+                    <Link to={routeWithParams(MODEL, { modelName })}>
+                      <Button size={'sm'}>
+                        See All{' '}
+                        <ArrowRightCircleIcon className="ml-2 h-6 w-6" />
+                      </Button>
+                    </Link>
+                  </div>
+                </CardFooter>
+              </Card>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
