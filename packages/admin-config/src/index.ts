@@ -8,11 +8,17 @@ import { createUserDashboard } from './dashboards/user.dashboard';
 import { createPostDashboard } from './dashboards/post.dashboard';
 import { Dashboard } from './dashboard';
 import { createColorDashboard } from './dashboards/color.dashboard';
+import { createProductDashboard } from './dashboards/product.dashboard';
 
 export { Dashboard };
 
 export function getDashboards(): Dashboard<unknown>[] {
-  return [createUserDashboard(), createPostDashboard(), createColorDashboard()];
+  return [
+    createUserDashboard(),
+    createProductDashboard(),
+    createPostDashboard(),
+    createColorDashboard(),
+  ];
 }
 
 export function getDashboard(modelName: string): Dashboard<unknown> {

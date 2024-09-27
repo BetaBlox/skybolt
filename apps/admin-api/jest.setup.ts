@@ -35,7 +35,7 @@ global.createFixture = async <T>(fileName: string, key: string): Promise<T> => {
 };
 
 async function truncateDatabase() {
-  const tableNames = ['User', 'PasswordReset'];
+  const tableNames = ['User', 'PasswordReset', 'Product', 'Post', 'Color'];
 
   for (const tableName of tableNames) {
     await prisma.$queryRawUnsafe(

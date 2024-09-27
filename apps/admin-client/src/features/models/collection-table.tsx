@@ -80,7 +80,7 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
   const { collectionAttributes, isEditable } = dashboard;
   const { paginatedResult } = data;
 
-  const applyFilter = (filter) => {
+  const applyFilter = (filter: Filter) => {
     setFilters([...filters, filter]);
     setPage(1); // Reset to the first page when applying new filters
   };
@@ -90,7 +90,7 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
     setPage(1); // Reset to the first page when clearing filters
   };
 
-  const removeFilter = (indexToRemove) => {
+  const removeFilter = (indexToRemove: number) => {
     const newFilters = filters.filter((_, index) => index !== indexToRemove);
     setFilters(newFilters);
     setPage(1); // Reset to the first page when removing a filter
@@ -98,11 +98,13 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
 
   return (
     <div className="bg-white shadow-md sm:rounded-lg">
-      <FilterForm
-        dashboard={dashboard}
-        onApplyFilter={applyFilter}
-        onClearFilters={clearFilters}
-      />
+      {dashboard.collectionFilterAttributes.length > 0 && (
+        <FilterForm
+          dashboard={dashboard}
+          onApplyFilter={applyFilter}
+          onClearFilters={clearFilters}
+        />
+      )}
 
       {/* Display Active Filters */}
       {filters.length > 0 && (

@@ -15,6 +15,7 @@ import { RecordsService } from './records.service';
 import { AdminRecordPayload } from '@repo/types';
 import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 import { defaultPerPage } from '@repo/paginator';
+import { Filter } from '@/records/types';
 
 @Controller('records')
 export class RecordsController {
@@ -30,8 +31,7 @@ export class RecordsController {
     perPage: number,
     @Query('filters') filters: string, // Accept filters as a query parameter
   ) {
-    const parsedFilters: { field: string; operator: string; value: string }[] =
-      filters ? JSON.parse(filters) : [];
+    const parsedFilters: Filter[] = filters ? JSON.parse(filters) : [];
     return this.recordsService.findMany(
       modelName,
       search,

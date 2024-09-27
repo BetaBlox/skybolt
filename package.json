@@ -23,6 +23,7 @@
     "db:seed": "dotenv -- npm run db:seed --workspace=@repo/database",
     "db:studio": "dotenv -- npm run db:studio --workspace=@repo/database",
     "db:reset": "dotenv -- npm run db:reset --workspace=@repo/database",
+    "db:reset:test": "dotenv -e .env.test -- npm run db:reset --workspace=@repo/database",
     "prisma:format": "dotenv -- npm run prisma:format --workspace=@repo/database",
     "migrate:dev": "dotenv -- npm run migrate:dev --workspace=@repo/database",
     "migrate:deploy": "dotenv -- npm run migrate:deploy --workspace=@repo/database",
