@@ -30,7 +30,7 @@ export default function PageHeader({
                     className="h-5 w-5 flex-shrink-0"
                     aria-hidden="true"
                   />
-                  <span className="sr-only">Home</span>
+                  <span className="sr-only">Dashboard</span>
                 </Link>
               </div>
             </li>

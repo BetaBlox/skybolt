@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { captilalize, routeWithParams } from '@repo/utils';
 import PageHeader from '@/components/page-header';
-import { MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
+import { HOME, MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
 import { AdminRecordPayload, AdminFieldType } from '@repo/types';
 import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { RecordApi } from '@/api/RecordApi';
@@ -55,7 +55,7 @@ export default function RecordShowPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink to="/">Home</BreadcrumbLink>
+            <BreadcrumbLink to={HOME}>Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

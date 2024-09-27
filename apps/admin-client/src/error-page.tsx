@@ -1,3 +1,4 @@
+import { HOME } from '@/common/routes';
 import { Button } from '@/components/button';
 
 export default function ErrorPage() {
@@ -9,7 +10,7 @@ export default function ErrorPage() {
           Sorry, an unexpected error has occurred.
         </p>
         <Button asChild className="mt-4">
-          <a href="/"> Go back to Home </a>
+          <a href={HOME}>Go back home</a>
         </Button>
       </div>
     </div>

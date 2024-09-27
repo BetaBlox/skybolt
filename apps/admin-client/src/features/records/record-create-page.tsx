@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import PageHeader from '@/components/page-header';
 import { useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
-import { MODEL } from '@/common/routes';
+import { HOME, MODEL } from '@/common/routes';
 import CreateForm from '@/features/records/create-form';
 import { getDashboard } from '@repo/admin-config';
 import { AdminRecordPayload } from '@repo/types';
@@ -36,7 +36,7 @@ export default function RecordCreatePage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink to="/">Home</BreadcrumbLink>
+            <BreadcrumbLink to={HOME}>Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
