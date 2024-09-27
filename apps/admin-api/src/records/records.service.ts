@@ -3,6 +3,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import {
   AdminFieldType,
   AdminFilterOperator,
+  AdminFilterType,
   AdminModelField,
   AdminRecordPayload,
   AdminRecordsPayload,
@@ -12,6 +13,7 @@ import {
 import { getDashboard } from '@repo/admin-config';
 import { paginator } from '@repo/paginator';
 import { PrismaAdapter } from '@repo/database';
+import { Filter } from '@/records/types';
 
 const paginate: PaginateFunction = paginator();
 
@@ -24,47 +26,49 @@ export class RecordsService {
     search: string,
     page: number,
     perPage: number,
-    filters: unknown[] = [{}],
+    filters: Filter[] = [],
   ): Promise<AdminRecordsPayload> {
     const dashboard = getDashboard(modelName);
-    let where = {};
+    const where = buildWhereClause(filters);
 
-    // Build a filter clause including all searchable attributes
-    if (search && dashboard.searchAttributes.length > 0) {
-      where = {
-        OR: dashboard.searchAttributes.map((attribute) => ({
-          [attribute]: { contains: search, mode: 'insensitive' },
-        })),
-      };
-    }
+    // // Build a filter clause including all searchable attributes
+    // if (search && dashboard.searchAttributes.length > 0) {
+    //   where = {
+    //     OR: dashboard.searchAttributes.map((attribute) => ({
+    //       [attribute]: { contains: search, mode: 'insensitive' },
+    //     })),
+    //   };
+    // }
 
-    // Apply filters
-    (filters as { field: string; operator: string; value: string }[]).forEach(
-      (filter) => {
-        const { field, operator, value } = filter;
+    // // Apply filters
+    // (filters as Filter[]).forEach((filter) => {
+    //   const { field, operator, value, type } = filter;
 
-        switch (operator) {
-          case AdminFilterOperator.EQUALS:
-            where[field] = value;
-            break;
-          case AdminFilterOperator.CONTAINS:
-            where[field] = { contains: value, mode: 'insensitive' };
-            break;
-          case AdminFilterOperator.GREATER_THAN:
-            where[field] = { gt: value };
-            break;
-          case AdminFilterOperator.LESS_THAN:
-            where[field] = { lt: value };
-            break;
-          case AdminFilterOperator.STARTS_WITH:
-            where[field] = { startsWith: value };
-            break;
-          case AdminFilterOperator.ENDS_WITH:
-            where[field] = { endsWith: value };
-            break;
-        }
-      },
-    );
+    //   if (type === AdminFilterType.BOOLEAN) {
+    //     where[field] = value === 'true';
+    //   } else {
+    //     switch (operator) {
+    //       case AdminFilterOperator.EQUALS:
+    //         where[field] = value;
+    //         break;
+    //       case AdminFilterOperator.CONTAINS:
+    //         where[field] = { contains: value, mode: 'insensitive' };
+    //         break;
+    //       case AdminFilterOperator.GREATER_THAN:
+    //         where[field] = { gt: value };
+    //         break;
+    //       case AdminFilterOperator.LESS_THAN:
+    //         where[field] = { lt: value };
+    //         break;
+    //       case AdminFilterOperator.STARTS_WITH:
+    //         where[field] = { startsWith: value };
+    //         break;
+    //       case AdminFilterOperator.ENDS_WITH:
+    //         where[field] = { endsWith: value };
+    //         break;
+    //     }
+    //   }
+    // });
 
     // Dynamically include related models
     const include = {};
@@ -74,7 +78,7 @@ export class RecordsService {
       }
     });
 
-    const paginatedResult: PaginatedResult<any> = await paginate(
+    const paginatedResult: PaginatedResult<unknown> = await paginate(
       this.prisma[modelName],
       {
         include,
@@ -386,4 +390,60 @@ function filterRecordPayload(fields: AdminModelField[], data: object): object {
   });
 
   return filtered;
+}
+
+function buildWhereClause(filters: Filter[]) {
+  const where: any = {};
+
+  filters.forEach((filter) => {
+    const { field, operator, value, type } = filter;
+
+    let formattedValue;
+
+    if (type === AdminFilterType.DATE && value) {
+      // Convert the date string to a Date object to help prisma parse and filter later
+      const dateValue = new Date(value);
+
+      if (operator === AdminFilterOperator.EQUALS) {
+        formattedValue = dateValue;
+      } else if (operator === AdminFilterOperator.GREATER_THAN) {
+        formattedValue = { gt: dateValue };
+      } else if (operator === AdminFilterOperator.LESS_THAN) {
+        formattedValue = { lt: dateValue };
+      }
+    } else if (type === AdminFilterType.BOOLEAN) {
+      formattedValue = value === 'true';
+    } else if (type === AdminFilterType.NUMBER) {
+      if (operator === AdminFilterOperator.EQUALS) {
+        formattedValue = parseFloat(value);
+      } else if (operator === AdminFilterOperator.GREATER_THAN) {
+        formattedValue = { gt: parseFloat(value) };
+      } else if (operator === AdminFilterOperator.LESS_THAN) {
+        formattedValue = { lt: parseFloat(value) };
+      }
+    } else {
+      // Handle other types and operators
+      switch (operator) {
+        case AdminFilterOperator.CONTAINS:
+          formattedValue = { contains: value, mode: 'insensitive' };
+          break;
+        case AdminFilterOperator.STARTS_WITH:
+          formattedValue = { startsWith: value, mode: 'insensitive' };
+          break;
+        case AdminFilterOperator.ENDS_WITH:
+          formattedValue = { endsWith: value, mode: 'insensitive' };
+          break;
+        case AdminFilterOperator.EQUALS:
+          formattedValue = value;
+          break;
+        default:
+          formattedValue = value;
+          break;
+      }
+    }
+
+    where[field] = formattedValue;
+  });
+
+  return where;
 }

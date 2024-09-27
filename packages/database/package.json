@@ -24,6 +24,7 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.0.3",
     "@prisma/client": "^5.6.0",
     "tsup": "^8.0.1",
     "typescript": "5.3.2"

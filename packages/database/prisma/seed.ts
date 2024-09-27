@@ -1,8 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
-import colors from './fixtures/colors';
+import { faker } from '@faker-js/faker';
 
 const prisma = new PrismaClient();
+
+const startOfYear = `${new Date().getFullYear()}-01-01`;
+const endOfYear = `${new Date().getFullYear()}-12-31`;
 
 function hashData(data: string): string {
   const salt = bcrypt.genSaltSync(10);
@@ -11,104 +14,10 @@ function hashData(data: string): string {
 
 (async function main() {
   try {
-    /**
-     * Users
-     */
-    const user = await prisma.user.upsert({
-      where: {
-        id: 1,
-      },
-      update: {},
-      create: {
-        firstName: 'John',
-        lastName: 'Rake',
-        email: 'john@betablox.com',
-        password: hashData('password'),
-        isAdmin: true,
-      },
-    });
-
-    const admin = await prisma.user.upsert({
-      where: {
-        id: 2,
-      },
-      update: {},
-      create: {
-        firstName: 'Admin',
-        lastName: 'User',
-        email: 'admin@betablox.com',
-        password: hashData('password'),
-        isAdmin: true,
-      },
-    });
-
-    const standardUser = await prisma.user.upsert({
-      where: {
-        id: 3,
-      },
-      update: {},
-      create: {
-        firstName: 'Standard',
-        lastName: 'User',
-        email: 'user@betablox.com',
-        password: hashData('password'),
-        isAdmin: false,
-      },
-    });
-
-    /**
-     * Posts
-     */
-    await prisma.post.upsert({
-      where: {
-        id: 1,
-      },
-      update: {},
-      create: {
-        title:
-          'TypeScript vs. JavaScript: Understanding the Differences and Benefits',
-        content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec vulputate libero, eu varius nisl. Mauris imperdiet pharetra lectus, ac malesuada elit consequat sit amet. Quisque at sapien ultricies ante facilisis malesuada. Aliquam commodo lectus at sapien malesuada fermentum. Duis sed fermentum est, ut feugiat nunc. Morbi arcu risus, egestas ac erat a, egestas pretium lectus. Fusce at dolor at lectus sollicitudin fermentum vitae eget mauris. Donec nec massa arcu. Nunc eleifend risus non augue lobortis lacinia. Vivamus pretium sit amet mi quis consequat. Proin in tincidunt velit, quis sollicitudin magna. Sed vel tempus tellus, in suscipit velit.',
-        authorId: user.id,
-      },
-    });
-    await prisma.post.upsert({
-      where: {
-        id: 2,
-      },
-      update: {},
-      create: {
-        title: 'Mastering TypeScript: Advanced Tips and Tricks for Developers',
-        content:
-          'Fusce neque turpis, auctor ac ultricies sit amet, sollicitudin nec odio. Integer lobortis felis a ultricies iaculis. Fusce dapibus molestie purus non ultricies. Aenean venenatis pellentesque tempus. Vestibulum auctor efficitur cursus. Quisque at lacus augue. Sed arcu enim, tincidunt eget ultricies a, aliquam sed mi. Etiam malesuada eleifend pharetra. Ut id felis quis diam rutrum aliquam. Sed sem quam, interdum non tempor ut, pulvinar vitae lorem. Nullam maximus, ex id lacinia dapibus, ex odio vestibulum metus, euismod rutrum ante nunc vestibulum justo. Duis velit tortor, tincidunt at odio et, rhoncus placerat ligula. Phasellus eget neque vehicula nisl consectetur iaculis nec non erat.',
-        authorId: user.id,
-      },
-    });
-
-    await prisma.post.upsert({
-      where: {
-        id: 3,
-      },
-      update: {},
-      create: {
-        title: 'Top Reasons Why Every Developer Should Learn TypeScript Today',
-        content:
-          'Ut pharetra, mauris in dignissim cursus, est libero vehicula ante, id fermentum enim diam non leo. Pellentesque vehicula, odio volutpat vestibulum dictum, turpis justo tincidunt arcu, at varius purus eros eget augue. Mauris a efficitur metus. Quisque at egestas sapien, eu facilisis tortor. Quisque ut dolor nisl. Fusce diam nunc, lacinia a mollis et, aliquam sed eros. Aliquam lacinia dui sapien, vitae posuere erat blandit ut. Donec nec mollis enim. Aliquam in nibh posuere, venenatis eros vel, molestie sapien. Sed nec sapien gravida, lobortis leo at, interdum orci. Aliquam ac arcu justo. Integer faucibus turpis felis, sed ultrices neque pretium convallis.',
-        authorId: user.id,
-      },
-    });
-
-    /**
-     * Generate 100 random colors to test pagintation in admin
-     */
-    await prisma.color.deleteMany();
-
-    await prisma.color.createMany({
-      data: colors.map((c) => ({
-        label: c[1],
-        hex: c[0],
-      })),
-    });
+    await seedUsers();
+    await seedColors();
+    await seedPosts();
+    await seedProducts();
   } catch (e) {
     console.error(e);
     process.exit(1);
@@ -116,3 +25,124 @@ function hashData(data: string): string {
     await prisma.$disconnect();
   }
 })();
+
+async function seedUsers() {
+  console.log('Seeding default users...');
+
+  // Always create these specific users
+  await prisma.user.upsert({
+    where: {
+      id: 1,
+    },
+    update: {},
+    create: {
+      firstName: 'John',
+      lastName: 'Rake',
+      email: 'john@betablox.com',
+      password: hashData('password'),
+      isAdmin: true,
+    },
+  });
+
+  await prisma.user.upsert({
+    where: {
+      id: 2,
+    },
+    update: {},
+    create: {
+      firstName: 'Admin',
+      lastName: 'User',
+      email: 'admin@betablox.com',
+      password: hashData('password'),
+      isAdmin: true,
+    },
+  });
+
+  await prisma.user.upsert({
+    where: {
+      id: 3,
+    },
+    update: {},
+    create: {
+      firstName: 'Standard',
+      lastName: 'User',
+      email: 'user@betablox.com',
+      password: hashData('password'),
+      isAdmin: false,
+    },
+  });
+
+  console.log('Seeding random users...');
+
+  const randomUsers = Array.from({ length: 50 }, () => ({
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    email: faker.internet.email(),
+    password: hashData('password'), // Set a default password for all random users
+    isAdmin: faker.datatype.boolean(),
+    createdAt: faker.date.between({ from: startOfYear, to: endOfYear }),
+    updatedAt: faker.date.between({ from: startOfYear, to: endOfYear }),
+  }));
+
+  await prisma.user.createMany({
+    data: randomUsers,
+    skipDuplicates: true, // Ensures no duplicate entries
+  });
+}
+
+async function seedColors() {
+  console.log('Seeding random colors...');
+
+  const colors = Array.from({ length: 200 }, () => ({
+    label: faker.color.human(), // Generate a random color label
+    hex: faker.color.rgb({ format: 'hex' }), // Generate a random hex color
+    createdAt: faker.date.between({ from: startOfYear, to: endOfYear }),
+    updatedAt: faker.date.between({ from: startOfYear, to: endOfYear }),
+  }));
+
+  await prisma.color.createMany({
+    data: colors,
+  });
+}
+
+async function seedProducts() {
+  console.log('Seeding products...');
+
+  const products = Array.from({ length: 20 }, () => ({
+    name: faker.commerce.productName(),
+    price: faker.number.int({ min: 10, max: 500 }), // Random price between 10 and 500
+    stock: faker.number.int({ min: 1, max: 100 }), // Random stock between 1 and 100
+    createdAt: faker.date.between({ from: startOfYear, to: endOfYear }),
+    updatedAt: faker.date.between({ from: startOfYear, to: endOfYear }),
+  }));
+
+  await prisma.product.createMany({
+    data: products,
+  });
+}
+
+async function seedPosts() {
+  console.log('Seeding posts...');
+
+  // Fetch existing user IDs to associate with posts
+  const users = await prisma.user.findMany({
+    select: { id: true },
+  });
+
+  if (users.length === 0) {
+    console.warn('No users found in the database. Please seed users first.');
+    return;
+  }
+
+  const posts = Array.from({ length: 100 }, () => ({
+    title: faker.lorem.sentence(),
+    content: faker.lorem.paragraphs(3),
+    authorId: faker.helpers.arrayElement(users).id, // Assign a random existing user as the author
+    createdAt: faker.date.between({ from: startOfYear, to: endOfYear }),
+    updatedAt: faker.date.between({ from: startOfYear, to: endOfYear }),
+  }));
+
+  await prisma.post.createMany({
+    data: posts,
+  });
+}
