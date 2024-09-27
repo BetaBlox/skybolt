@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
 import PageHeader from '@/components/page-header';
-import { MODEL_RECORD_CREATE } from '@/common/routes';
+import { HOME, MODEL_RECORD_CREATE } from '@/common/routes';
 import { getDashboard } from '@repo/admin-config';
 import CollectionTable from './collection-table';
 import { useDebounceValue } from 'usehooks-ts';
@@ -49,7 +49,7 @@ export default function ModelPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink to="/">Home</BreadcrumbLink>
+            <BreadcrumbLink to={HOME}>Dashboard</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>

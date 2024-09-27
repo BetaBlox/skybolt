@@ -19,7 +19,9 @@ type NavItem = {
   icon?: any;
 };
 
-const navigation: NavItem[] = [{ name: 'Home', href: HOME, icon: HomeIcon }];
+const navigation: NavItem[] = [
+  { name: 'Dashboard', href: HOME, icon: HomeIcon },
+];
 const userNavigation: NavItem[] = [
   { name: 'Your profile', href: PROFILE },
   { name: 'Sign out', href: LOGOUT },
