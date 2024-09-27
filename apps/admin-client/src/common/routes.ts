@@ -6,6 +6,7 @@ export const SETTINGS = '/settings';
 export const FORGOT_PASSWORD = '/forgot-password';
 export const PASSWORD_RESET = '/password-reset/:token';
 
+export const DATASETS = '/datasets';
 export const MODEL = '/models/:modelName';
 export const MODEL_RECORD_CREATE = '/models/:modelName/new';
 export const MODEL_RECORD_EDIT = '/models/:modelName/:id/edit';

@@ -15,6 +15,8 @@ import {
 import { Button } from '@/components/button';
 import { RecordRegistrationsChart } from '@/charts/record-registrations-chart';
 import { KpiCards } from '@/features/models/kpi-cards';
+import { PageSection } from '@/components/page-section';
+import { PageSectionHeader } from '@/components/page-section-header';
 
 export default function ModelPage() {
   const { modelName } = useParams();
@@ -56,22 +58,16 @@ export default function ModelPage() {
       </Breadcrumb>
       <PageHeader heading={dashboard.name} actions={actions} />
 
-      <div className="mb-20">
+      <PageSection>
         <KpiCards modelName={modelName} />
-      </div>
+      </PageSection>
 
-      <div className="mb-20">
-        <RecordRegistrationsChart
-          modelName={modelName}
-          title="This Year By Month"
-        />
-      </div>
+      <PageSection>
+        <PageSectionHeader>This Year By Month</PageSectionHeader>
+        <RecordRegistrationsChart modelName={'user'} />
+      </PageSection>
 
-      <div className="mb-8">
-        <h2 className="mb-4 text-2xl font-semibold leading-none tracking-tight">
-          All Records
-        </h2>
-      </div>
+      <PageSectionHeader>All Records</PageSectionHeader>
       <CollectionTable dashboard={dashboard} modelName={modelName} />
     </div>
   );

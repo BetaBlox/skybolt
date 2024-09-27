@@ -1,6 +1,7 @@
 import { AdminAttributeType } from '@repo/types';
 
 export interface Dashboard<T> {
+  pinnedOnHome: boolean;
   name: string;
   modelName: string;
   attributeTypes: AdminAttributeType[];
@@ -21,6 +22,7 @@ export interface Dashboard<T> {
 
 // Extendable options used when creating a dashboard
 export type DashboardOptions<T> = {
+  pinnedOnHome?: boolean;
   name: string;
   modelName: string;
   attributeTypes: AdminAttributeType[];
@@ -45,6 +47,7 @@ export type DashboardOptions<T> = {
  */
 export function createDashboard<T>(options: DashboardOptions<T>): Dashboard<T> {
   return {
+    pinnedOnHome: false,
     isDeletable: () => true,
     isEditable: () => true,
     isCreatable: () => true,

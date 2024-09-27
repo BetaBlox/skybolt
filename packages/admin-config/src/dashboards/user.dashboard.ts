@@ -1,11 +1,11 @@
 import { User } from '@repo/database';
 import { AdminFieldType } from '@repo/types';
-// import * as bcrypt from 'bcryptjs';
 import * as bcrypt from 'bcryptjs';
 import { Dashboard, createDashboard } from '../dashboard';
 
 export function createUserDashboard(): Dashboard<User> {
   return createDashboard<User>({
+    pinnedOnHome: true,
     name: 'User',
     modelName: 'User',
 

@@ -8,9 +8,10 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import { classNames } from '@repo/utils';
-import { HOME, LOGOUT, PROFILE } from '@/common/routes';
+import { HOME, DATASETS, LOGOUT, PROFILE } from '@/common/routes';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/avatar';
 import { AuthProvider } from '@repo/auth';
+import { DatabaseIcon } from 'lucide-react';
 
 type NavItem = {
   name: string;
@@ -21,6 +22,7 @@ type NavItem = {
 
 const navigation: NavItem[] = [
   { name: 'Dashboard', href: HOME, icon: HomeIcon },
+  { name: 'Datasets', href: DATASETS, icon: DatabaseIcon },
 ];
 const userNavigation: NavItem[] = [
   { name: 'Your profile', href: PROFILE },

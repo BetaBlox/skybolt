@@ -27,9 +27,8 @@ ChartJS.register(
 
 interface Props {
   modelName: string;
-  title: string;
 }
-export const RecordRegistrationsChart = ({ modelName, title }: Props) => {
+export const RecordRegistrationsChart = ({ modelName }: Props) => {
   const registrationsQuery = useQuery({
     queryKey: ['records', 'registrations', modelName],
     queryFn: async () =>
@@ -106,23 +105,18 @@ export const RecordRegistrationsChart = ({ modelName, title }: Props) => {
   };
 
   return (
-    <div>
-      <h2 className="mb-4 text-2xl font-semibold leading-none tracking-tight">
-        {title}
-      </h2>
-      <Card>
-        <CardContent>
-          <div
-            style={{
-              backgroundColor: '#fff',
-              padding: '20px',
-              borderRadius: '8px',
-            }}
-          >
-            <Line data={chartData} options={options} />
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    <Card>
+      <CardContent>
+        <div
+          style={{
+            backgroundColor: '#fff',
+            padding: '20px',
+            borderRadius: '8px',
+          }}
+        >
+          <Line data={chartData} options={options} />
+        </div>
+      </CardContent>
+    </Card>
   );
 };

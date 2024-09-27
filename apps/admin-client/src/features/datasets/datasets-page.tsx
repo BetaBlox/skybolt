@@ -16,12 +16,13 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/card';
-import { RecordRegistrationsChart } from '@/charts/record-registrations-chart';
 import { PageSection } from '@/components/page-section';
-import { PageSectionHeader } from '@/components/page-section-header';
-import { PinIcon, UserIcon } from 'lucide-react';
+import { useState } from 'react';
+import { Input } from '@/components/input';
 
-export default function HomePage() {
+export default function DatasetsPage() {
+  const [search, setSearch] = useState('');
+
   const modelsQuery = useQuery({
     queryKey: ['models'],
     queryFn: async () => ModelApi.findMany().then(({ data }) => data),
@@ -31,33 +32,31 @@ export default function HomePage() {
   if (modelsQuery.isError) return 'Error loading data';
 
   const data = modelsQuery.data as AdminModelPayload[];
-  const pinnedDatasets = data.filter((dataset) => {
-    const dashboard = getDashboard(dataset.modelName);
-    return dashboard.pinnedOnHome;
-  });
+  const sortedDatasets = data.sort((a, b) =>
+    a.modelName.localeCompare(b.modelName),
+  );
+  const filteredDatasets = sortedDatasets.filter((dataset) =>
+    dataset.modelName.toLowerCase().includes(search.toLowerCase()),
+  );
+
+  const actions = (
+    <div className="flex flex-row gap-x-4">
+      <Input
+        placeholder="Search datasets..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+    </div>
+  );
 
   return (
     <div>
-      <PageHeader heading="Dashboard" />
-      <PageSection>
-        <PageSectionHeader>
-          <div className="flex flex-row gap-2">
-            <UserIcon className="h-6 w-6" />
-            Users This Year
-          </div>
-        </PageSectionHeader>
-        <RecordRegistrationsChart modelName={'user'} />
-      </PageSection>
+      <PageHeader heading="Datasets" actions={actions} />
 
       <PageSection>
-        <PageSectionHeader>
-          <div className="flex flex-row gap-2">
-            <PinIcon className="h-6 w-6" />
-            Pinned Datasets
-          </div>
-        </PageSectionHeader>
+        <div className="flex flex-row justify-end"></div>
         <div className="grid-col-2 mx-auto my-5 grid gap-4 md:grid-cols-3">
-          {pinnedDatasets.map(({ modelName, count, recentRecords }) => {
+          {filteredDatasets.map(({ modelName, count, recentRecords }) => {
             const dashboard = getDashboard(modelName);
 
             return (

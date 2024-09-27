@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import protectedLoader from '@/auth/protected-loader';
 import RootLayout from '@/layout/root-layout';
 import {
+  DATASETS,
   FORGOT_PASSWORD,
   HOME,
   LOGIN,
@@ -24,6 +25,7 @@ import Logout from '@/auth/logout-page';
 import PasswordResetPage from '@/auth/password-reset-page';
 import RecordCreatePage from '@/features/records/record-create-page';
 import RecordEditPage from '@/features/records/record-edit-page';
+import DatasetsPage from '@/features/datasets/datasets-page';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,11 @@ const router = createBrowserRouter([
         path: HOME,
         loader: protectedLoader,
         element: <HomePage />,
+      },
+      {
+        path: DATASETS,
+        loader: protectedLoader,
+        element: <DatasetsPage />,
       },
       {
         path: MODEL,

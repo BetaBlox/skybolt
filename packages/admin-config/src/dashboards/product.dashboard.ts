@@ -4,6 +4,7 @@ import { Dashboard, createDashboard } from '../dashboard';
 
 export function createProductDashboard(): Dashboard<Product> {
   return createDashboard<Product>({
+    pinnedOnHome: true,
     name: 'Product',
     modelName: 'Product',
 
