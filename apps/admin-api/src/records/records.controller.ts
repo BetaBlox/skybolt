@@ -12,7 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { RecordsService } from './records.service';
-import { AdminRecordPayload, AdminRecordsPayload } from '@repo/types';
+import { AdminRecordPayload } from '@repo/types';
 import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 import { defaultPerPage } from '@repo/paginator';
 
@@ -24,12 +24,21 @@ export class RecordsController {
   @Get('/:modelName')
   async findMany(
     @Param('modelName') modelName: string,
-    @Query('search') search: string,
+    @Query('search') search: string, // Existing search term
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('perPage', new DefaultValuePipe(defaultPerPage), ParseIntPipe)
     perPage: number,
-  ): Promise<AdminRecordsPayload> {
-    return this.recordsService.findMany(modelName, search, page, perPage);
+    @Query('filters') filters: string, // Accept filters as a query parameter
+  ) {
+    const parsedFilters: { field: string; operator: string; value: string }[] =
+      filters ? JSON.parse(filters) : [];
+    return this.recordsService.findMany(
+      modelName,
+      search,
+      page,
+      perPage,
+      parsedFilters,
+    );
   }
 
   @UseGuards(AccessTokenGuard)

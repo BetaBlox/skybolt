@@ -22,6 +22,7 @@ export function createUserDashboard(): Dashboard<User> {
       { name: 'updatedAt', type: AdminFieldType.DATETIME },
     ],
     collectionAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
+    collectionFilterAttributes: ['firstName', 'lastName', 'email'],
     showAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
     createFormAttributes: [
       'firstName',

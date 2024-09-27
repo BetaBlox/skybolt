@@ -14,13 +14,13 @@ export const RecordApi = {
     modelName: string,
     page: number = 1,
     perPage: number = 20,
-    search: string = '',
+    filters: unknown[] = [],
   ) => {
     const url = routeWithParams('/api/records/:modelName', {
       modelName,
       page: String(page),
       perPage: String(perPage),
-      search,
+      filters: JSON.stringify(filters),
     });
     return customFetch(url, {
       method: HttpMethod.GET,
