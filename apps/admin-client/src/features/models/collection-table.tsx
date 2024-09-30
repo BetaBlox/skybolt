@@ -116,7 +116,8 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
                 className="flex items-center rounded-full bg-gray-200 px-3 py-1 text-gray-700"
               >
                 <span className="mr-2 text-sm">
-                  {captilalize(filter.field)} {filter.operator} "{filter.value}"
+                  {captilalize(filter.field)}{' '}
+                  {captilalize(filter.operator).toLowerCase()} "{filter.value}"
                 </span>
                 <Button
                   size="icon"
