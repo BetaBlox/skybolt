@@ -141,7 +141,6 @@ describe('RecordsController - Unit Test with Filter Types', () => {
     it(description, async () => {
       const page = 1;
       const perPage = 10;
-      const search = '';
       const filters = [filter];
 
       // Mock the service response
@@ -150,7 +149,6 @@ describe('RecordsController - Unit Test with Filter Types', () => {
       // Call the controller's method
       const result = await controller.findMany(
         modelName,
-        search,
         page,
         perPage,
         JSON.stringify(filters),
@@ -159,7 +157,6 @@ describe('RecordsController - Unit Test with Filter Types', () => {
       // Verify that the service's findMany method was called with the correct arguments
       expect(service.findMany).toHaveBeenCalledWith(
         modelName,
-        search,
         page,
         perPage,
         filters,

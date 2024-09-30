@@ -25,7 +25,6 @@ export class RecordsController {
   @Get('/:modelName')
   async findMany(
     @Param('modelName') modelName: string,
-    @Query('search') search: string, // Existing search term
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('perPage', new DefaultValuePipe(defaultPerPage), ParseIntPipe)
     perPage: number,
@@ -34,7 +33,6 @@ export class RecordsController {
     const parsedFilters: Filter[] = filters ? JSON.parse(filters) : [];
     return this.recordsService.findMany(
       modelName,
-      search,
       page,
       perPage,
       parsedFilters,

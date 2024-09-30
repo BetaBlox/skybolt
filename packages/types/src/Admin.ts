@@ -28,13 +28,21 @@ export enum AdminFilterOperator {
   LESS_THAN = 'lessThan',
 }
 
+// Attribute type for each field in your model
 export type AdminAttributeType = {
   name: string;
   type: AdminFieldType;
   options?: SelectOption[];
-  modelName?: string;
-  sourceKey?: string;
+  modelName?: string; // Model name for relationships
+  sourceKey?: string; // For relationships
   defaultValue?: any;
+  relatedAttributes?: RelatedAttribute[]; // Include relatedAttributes property here
+};
+
+// Declaration of RelatedAttribute type
+export type RelatedAttribute = {
+  name: string; // Field name of the related attribute
+  type: AdminFieldType; // Data type of the related attribute
 };
 
 export type AdminModelField = {
