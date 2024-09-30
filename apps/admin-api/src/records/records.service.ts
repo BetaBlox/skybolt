@@ -10,10 +10,11 @@ import {
   PaginateFunction,
   PaginatedResult,
 } from '@repo/types';
-import { getDashboard } from '@repo/admin-config';
+import { Dashboard, getDashboard } from '@repo/admin-config';
 import { paginator } from '@repo/paginator';
 import { PrismaAdapter } from '@repo/database';
 import { Filter } from '@/records/types';
+import { snakeCase } from '@repo/utils';
 
 const paginate: PaginateFunction = paginator();
 
@@ -23,60 +24,13 @@ export class RecordsService {
 
   async findMany(
     modelName: string,
-    search: string,
     page: number,
     perPage: number,
     filters: Filter[] = [],
   ): Promise<AdminRecordsPayload> {
     const dashboard = getDashboard(modelName);
-    const where = buildWhereClause(filters);
-
-    // // Build a filter clause including all searchable attributes
-    // if (search && dashboard.searchAttributes.length > 0) {
-    //   where = {
-    //     OR: dashboard.searchAttributes.map((attribute) => ({
-    //       [attribute]: { contains: search, mode: 'insensitive' },
-    //     })),
-    //   };
-    // }
-
-    // // Apply filters
-    // (filters as Filter[]).forEach((filter) => {
-    //   const { field, operator, value, type } = filter;
-
-    //   if (type === AdminFilterType.BOOLEAN) {
-    //     where[field] = value === 'true';
-    //   } else {
-    //     switch (operator) {
-    //       case AdminFilterOperator.EQUALS:
-    //         where[field] = value;
-    //         break;
-    //       case AdminFilterOperator.CONTAINS:
-    //         where[field] = { contains: value, mode: 'insensitive' };
-    //         break;
-    //       case AdminFilterOperator.GREATER_THAN:
-    //         where[field] = { gt: value };
-    //         break;
-    //       case AdminFilterOperator.LESS_THAN:
-    //         where[field] = { lt: value };
-    //         break;
-    //       case AdminFilterOperator.STARTS_WITH:
-    //         where[field] = { startsWith: value };
-    //         break;
-    //       case AdminFilterOperator.ENDS_WITH:
-    //         where[field] = { endsWith: value };
-    //         break;
-    //     }
-    //   }
-    // });
-
-    // Dynamically include related models
-    const include = {};
-    dashboard.attributeTypes.forEach((at) => {
-      if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
-        include[at.name] = true;
-      }
-    });
+    const where = buildWhereClause(filters, modelName);
+    const include = buildIncludeClause(dashboard);
 
     const paginatedResult: PaginatedResult<unknown> = await paginate(
       this.prisma[modelName],
@@ -101,14 +55,7 @@ export class RecordsService {
 
   async getRecord(modelName: string, id: number): Promise<AdminRecordPayload> {
     const dashboard = getDashboard(modelName);
-
-    // Dynamically include related models
-    const include = {};
-    dashboard.attributeTypes.forEach((at) => {
-      if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
-        include[at.name] = true;
-      }
-    });
+    const include = buildIncludeClause(dashboard);
 
     const record = await this.prisma[modelName].findFirst({
       where: {
@@ -392,18 +339,18 @@ function filterRecordPayload(fields: AdminModelField[], data: object): object {
   return filtered;
 }
 
-function buildWhereClause(filters: Filter[]) {
+function buildWhereClause(filters: Filter[], currentModelName: string) {
   const where: any = {};
 
   filters.forEach((filter) => {
     const { field, operator, value, type } = filter;
+    const modelName = snakeCase(filter.modelName);
 
-    let formattedValue;
+    let formattedValue: unknown;
 
+    // Handle the date filter type
     if (type === AdminFilterType.DATE && value) {
-      // Convert the date string to a Date object to help prisma parse and filter later
       const dateValue = new Date(value);
-
       if (operator === AdminFilterOperator.EQUALS) {
         formattedValue = dateValue;
       } else if (operator === AdminFilterOperator.GREATER_THAN) {
@@ -442,8 +389,27 @@ function buildWhereClause(filters: Filter[]) {
       }
     }
 
-    where[field] = formattedValue;
+    if (modelName.toLowerCase() === currentModelName.toLowerCase()) {
+      // Assume that his filter is for our current model. We don't need to nest it
+      where[field] = formattedValue;
+    } else {
+      // Set the filter into the correct nested object if it's a related model field
+      where[modelName] = {
+        ...where[modelName],
+        [field]: formattedValue,
+      };
+    }
   });
 
   return where;
+}
+function buildIncludeClause(dashboard: Dashboard<unknown>) {
+  const include = {};
+  dashboard.attributeTypes.forEach((at) => {
+    if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
+      include[at.name] = true;
+    }
+  });
+
+  return include;
 }
