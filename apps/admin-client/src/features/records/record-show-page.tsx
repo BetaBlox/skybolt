@@ -3,7 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { captilalize, routeWithParams } from '@repo/utils';
 import PageHeader from '@/components/page-header';
 import { HOME, MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
-import { AdminRecordPayload, AdminFieldType } from '@repo/types';
+import {
+  AdminRecordPayload,
+  AdminFieldType,
+  AdminHasManyAttributeType,
+} from '@repo/types';
 import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { RecordApi } from '@/api/RecordApi';
 import {
@@ -20,7 +24,7 @@ import ShowViewField from '@/features/records/show-view-field';
 import DeleteRecordCard from '@/features/records/delete-record-card';
 import { PageSection } from '@/components/page-section';
 import { PageSectionHeading } from '@/components/page-section-heading';
-import CollectionHasManyTable from '@/features/models/collection-has-many-table';
+import CollectionHasManyTable from '@/features/records/collection-has-many-table';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();
@@ -53,9 +57,9 @@ export default function RecordShowPage() {
     </Button>
   ) : null;
 
-  const relatedCollections = dashboard.attributeTypes.filter(
+  const hasManyAttributes = dashboard.attributeTypes.filter(
     (attr) => attr.type === AdminFieldType.RELATIONSHIP_HAS_MANY,
-  );
+  ) as AdminHasManyAttributeType[];
 
   return (
     <div>
@@ -125,17 +129,15 @@ export default function RecordShowPage() {
       </PageSection>
 
       {/* Display related records using CollectionTable */}
-      {relatedCollections.map((relatedModel) => {
+      {hasManyAttributes.map((attributeType) => {
         return (
-          <PageSection key={relatedModel.name}>
+          <PageSection key={attributeType.name}>
             <PageSectionHeading>
-              {captilalize(relatedModel.name)}
+              {captilalize(attributeType.name)}
             </PageSectionHeading>
             <CollectionHasManyTable
-              dashboard={getDashboard(relatedModel.modelName!)}
-              modelName={relatedModel.modelName!}
+              attributeType={attributeType}
               record={record}
-              relationField={relatedModel.relationField!}
             />
           </PageSection>
         );

@@ -1,7 +1,6 @@
 import FieldLabel from '../../features/records/record-field-label';
 import { useQuery } from '@tanstack/react-query';
 import {
-  AdminAttributeType,
   AdminModelField,
   AdminRecordsPayload,
   SelectOption,
@@ -15,12 +14,13 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/select';
+import { AdminHasOneAttributeType } from '@repo/types/src/Admin';
 
 interface Props {
   field: AdminModelField;
   modelName: string;
   attribute: string;
-  attributeType: AdminAttributeType;
+  attributeType: AdminHasOneAttributeType;
   value: string;
   onChange: (key: string, value: string | number) => void;
 }

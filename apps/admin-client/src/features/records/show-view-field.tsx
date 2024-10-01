@@ -2,11 +2,15 @@ import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { AdminFieldType } from '@repo/types';
 
 interface Props {
-  record: any;
+  record: Record<string, unknown>;
   modelName: string;
   attribute: string;
 }
-export default function ShowViewField({ record, modelName, attribute }: Props) {
+export default function ShowViewField({
+  record,
+  modelName,
+  attribute,
+}: Props): React.ReactNode {
   const attributeType = getAttributeType(modelName, attribute);
   const { type } = attributeType;
   const value = record[attributeType.name];
@@ -30,6 +34,6 @@ export default function ShowViewField({ record, modelName, attribute }: Props) {
     const relationshipDashboard = getDashboard(relationshipModelName);
     return relationshipDashboard.getDisplayName(relationshipRecord);
   } else {
-    return record[attributeType.name];
+    return String(record[attributeType.name]);
   }
 }

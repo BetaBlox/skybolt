@@ -24,7 +24,7 @@ export default function CollectionViewField({
     return <DateTimeWithTooltip date={String(value)} />;
   } else if (type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
     // Should we even be using modelName here? Shouldn't we simply use the attributeType.name
-    const relationshipModelName = attributeType.modelName!;
+    const relationshipModelName = attributeType.modelName;
     const relationshipRecord =
       record[relationshipModelName] || record[attributeType.name];
 
