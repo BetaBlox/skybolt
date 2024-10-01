@@ -18,6 +18,17 @@ export function createUserDashboard(): Dashboard<User> {
       { name: 'email', type: AdminFieldType.STRING },
       { name: 'isAdmin', type: AdminFieldType.BOOLEAN },
       { name: 'password', type: AdminFieldType.PASSWORD },
+      {
+        name: 'Posts',
+        type: AdminFieldType.RELATIONSHIP_HAS_MANY,
+        modelName: 'Post',
+        relationField: 'authorId',
+        relatedAttributes: [
+          { name: 'firstName', type: AdminFieldType.STRING },
+          { name: 'lastName', type: AdminFieldType.STRING },
+          { name: 'email', type: AdminFieldType.STRING },
+        ],
+      },
       { name: 'createdAt', type: AdminFieldType.DATETIME },
       { name: 'updatedAt', type: AdminFieldType.DATETIME },
     ],

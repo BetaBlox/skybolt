@@ -64,7 +64,7 @@ export default function DeleteRecordCard({ modelName, record }: Props) {
   };
 
   return (
-    <Card className="mt-6">
+    <Card>
       <CardHeader>
         <CardTitle className="text-red-500">Danger Zone</CardTitle>
         <CardDescription>

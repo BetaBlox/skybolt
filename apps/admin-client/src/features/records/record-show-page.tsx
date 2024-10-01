@@ -18,6 +18,9 @@ import { Button } from '@/components/button';
 import { Card, CardContent } from '@/components/card';
 import ShowViewField from '@/features/records/show-view-field';
 import DeleteRecordCard from '@/features/records/delete-record-card';
+import { PageSection } from '@/components/page-section';
+import { PageSectionHeading } from '@/components/page-section-heading';
+import CollectionHasManyTable from '@/features/models/collection-has-many-table';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();
@@ -50,6 +53,10 @@ export default function RecordShowPage() {
     </Button>
   ) : null;
 
+  const relatedCollections = dashboard.attributeTypes.filter(
+    (attr) => attr.type === AdminFieldType.RELATIONSHIP_HAS_MANY,
+  );
+
   return (
     <div>
       <Breadcrumb>
@@ -75,48 +82,69 @@ export default function RecordShowPage() {
       </Breadcrumb>
       <PageHeader heading={getDisplayName(record)} actions={actions} />
 
-      <Card className="mt-6">
-        <CardContent>
-          <dl className="divide-y divide-gray-100">
-            {showAttributes.map((attribute) => {
-              const attributeType = getAttributeType(modelName, attribute);
+      <PageSection>
+        <Card>
+          <CardContent>
+            <dl className="divide-y divide-gray-100">
+              {showAttributes.map((attribute) => {
+                const attributeType = getAttributeType(modelName, attribute);
 
-              return (
-                <div
-                  key={attributeType.name}
-                  className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
-                >
-                  <dt className="text-sm font-bold leading-6 text-gray-900">
-                    {captilalize(attributeType.name)}
-                  </dt>
-                  {attributeType.type === AdminFieldType.JSON ? (
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      <pre>
+                return (
+                  <div
+                    key={attributeType.name}
+                    className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
+                  >
+                    <dt className="text-sm font-bold leading-6 text-gray-900">
+                      {captilalize(attributeType.name)}
+                    </dt>
+                    {attributeType.type === AdminFieldType.JSON ? (
+                      <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <pre>
+                          <ShowViewField
+                            record={record}
+                            modelName={modelName}
+                            attribute={attribute}
+                          />
+                        </pre>
+                      </dd>
+                    ) : (
+                      <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         <ShowViewField
                           record={record}
                           modelName={modelName}
                           attribute={attribute}
                         />
-                      </pre>
-                    </dd>
-                  ) : (
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      <ShowViewField
-                        record={record}
-                        modelName={modelName}
-                        attribute={attribute}
-                      />
-                    </dd>
-                  )}
-                </div>
-              );
-            })}
-          </dl>
-        </CardContent>
-      </Card>
+                      </dd>
+                    )}
+                  </div>
+                );
+              })}
+            </dl>
+          </CardContent>
+        </Card>
+      </PageSection>
+
+      {/* Display related records using CollectionTable */}
+      {relatedCollections.map((relatedModel) => {
+        return (
+          <PageSection key={relatedModel.name}>
+            <PageSectionHeading>
+              {captilalize(relatedModel.name)}
+            </PageSectionHeading>
+            <CollectionHasManyTable
+              dashboard={getDashboard(relatedModel.modelName!)}
+              modelName={relatedModel.modelName!}
+              record={record}
+              relationField={relatedModel.relationField!}
+            />
+          </PageSection>
+        );
+      })}
 
       {isDeletable(record) && (
-        <DeleteRecordCard record={data.record} modelName={modelName} />
+        <PageSection>
+          <DeleteRecordCard record={data.record} modelName={modelName} />
+        </PageSection>
       )}
     </div>
   );

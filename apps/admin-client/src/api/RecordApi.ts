@@ -1,4 +1,5 @@
 import { customFetch, HttpMethod } from '@/common/custom-fetcher';
+import { Filter } from '@/features/models/filter-form';
 import { routeWithParams } from '@repo/utils';
 
 type ApiCreatePayload = {
@@ -14,7 +15,7 @@ export const RecordApi = {
     modelName: string,
     page: number = 1,
     perPage: number = 20,
-    filters: unknown[] = [],
+    filters: Filter[] = [],
   ) => {
     const url = routeWithParams('/api/records/:modelName', {
       modelName,

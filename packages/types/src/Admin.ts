@@ -9,6 +9,7 @@ export enum AdminFieldType {
   SELECT = 'select',
   JSON = 'json',
   RELATIONSHIP_HAS_ONE = 'relationship_has_one',
+  RELATIONSHIP_HAS_MANY = 'relationship_has_many',
   DATETIME = 'datetime',
 }
 
@@ -33,8 +34,9 @@ export type AdminAttributeType = {
   name: string;
   type: AdminFieldType;
   options?: SelectOption[];
-  modelName?: string; // Model name for relationships
-  sourceKey?: string; // For relationships
+  modelName?: string; // Model name for has one and has many relationships
+  sourceKey?: string; // For has one relationships
+  relationField?: string; // For has many relationships
   defaultValue?: any;
   relatedAttributes?: RelatedAttribute[]; // Include relatedAttributes property here
 };
