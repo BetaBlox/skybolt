@@ -30,5 +30,8 @@ export function createPostDashboard(): Dashboard<Post> {
     showAttributes: ['title', 'author', 'content', 'createdAt', 'updatedAt'],
     createFormAttributes: ['title', 'content', 'author'],
     editFormAttributes: ['title', 'content', 'author'],
+
+    // Text searchable attributes. Only supports String attribute types
+    searchAttributes: ['title'],
   });
 }
