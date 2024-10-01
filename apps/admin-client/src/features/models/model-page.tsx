@@ -16,7 +16,7 @@ import { Button } from '@/components/button';
 import { RecordRegistrationsChart } from '@/charts/record-registrations-chart';
 import { KpiCards } from '@/features/models/kpi-cards';
 import { PageSection } from '@/components/page-section';
-import { PageSectionHeader } from '@/components/page-section-header';
+import { PageSectionHeading } from '@/components/page-section-heading';
 
 export default function ModelPage() {
   const { modelName } = useParams();
@@ -63,11 +63,11 @@ export default function ModelPage() {
       </PageSection>
 
       <PageSection>
-        <PageSectionHeader>This Year By Month</PageSectionHeader>
+        <PageSectionHeading>This Year By Month</PageSectionHeading>
         <RecordRegistrationsChart modelName={'user'} />
       </PageSection>
 
-      <PageSectionHeader>All Records</PageSectionHeader>
+      <PageSectionHeading>All Records</PageSectionHeading>
       <CollectionTable dashboard={dashboard} modelName={modelName} />
     </div>
   );

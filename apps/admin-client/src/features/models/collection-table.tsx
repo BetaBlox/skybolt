@@ -3,7 +3,7 @@ import { Dashboard } from '@repo/admin-config';
 import { MODEL_RECORD, MODEL_RECORD_EDIT } from '@/common/routes';
 import CollectionViewField from '@/features/models/collection-view-field';
 import { routeWithParams, captilalize } from '@repo/utils';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import PaginationRow from '@/components/pagination-row';
 import { useEffect, useState } from 'react';
@@ -26,6 +26,7 @@ interface Props {
 }
 
 export default function CollectionTable({ dashboard, modelName }: Props) {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [filters, setFilters] = useState<Filter[]>([]);
@@ -148,7 +149,18 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
           </TableHeader>
           <TableBody>
             {paginatedResult.data.map((record) => (
-              <TableRow key={record.id}>
+              <TableRow
+                key={record.id}
+                onMouseDown={() =>
+                  navigate(
+                    routeWithParams(MODEL_RECORD, {
+                      modelName,
+                      id: String(record.id),
+                    }),
+                  )
+                }
+                className="cursor-pointer"
+              >
                 <TableCell>{record.id}</TableCell>
                 {collectionAttributes.map((attribute) => (
                   <TableCell key={attribute}>

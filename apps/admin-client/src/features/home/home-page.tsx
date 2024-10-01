@@ -18,7 +18,7 @@ import {
 } from '@/components/card';
 import { RecordRegistrationsChart } from '@/charts/record-registrations-chart';
 import { PageSection } from '@/components/page-section';
-import { PageSectionHeader } from '@/components/page-section-header';
+import { PageSectionHeading } from '@/components/page-section-heading';
 import { PinIcon, UserIcon } from 'lucide-react';
 
 export default function HomePage() {
@@ -40,22 +40,22 @@ export default function HomePage() {
     <div>
       <PageHeader heading="Dashboard" />
       <PageSection>
-        <PageSectionHeader>
+        <PageSectionHeading>
           <div className="flex flex-row gap-2">
             <UserIcon className="h-6 w-6" />
             Users This Year
           </div>
-        </PageSectionHeader>
+        </PageSectionHeading>
         <RecordRegistrationsChart modelName={'user'} />
       </PageSection>
 
       <PageSection>
-        <PageSectionHeader>
+        <PageSectionHeading>
           <div className="flex flex-row gap-2">
             <PinIcon className="h-6 w-6" />
             Pinned Datasets
           </div>
-        </PageSectionHeader>
+        </PageSectionHeading>
         <div className="grid-col-2 mx-auto my-5 grid gap-4 md:grid-cols-3">
           {pinnedDatasets.map(({ modelName, count, recentRecords }) => {
             const dashboard = getDashboard(modelName);

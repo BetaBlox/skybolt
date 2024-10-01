@@ -1,8 +1,9 @@
+import DateTimeWithTooltip from '@/components/datetime-with-tooltip';
 import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { AdminFieldType } from '@repo/types';
 
 interface Props {
-  record: any;
+  record: Record<string, unknown>;
   modelName: string;
   attribute: string;
 }
@@ -10,7 +11,7 @@ export default function CollectionViewField({
   record,
   modelName,
   attribute,
-}: Props) {
+}: Props): React.ReactNode {
   const attributeType = getAttributeType(modelName, attribute);
   const { type } = attributeType;
   const value = record[attributeType.name];
@@ -19,6 +20,8 @@ export default function CollectionViewField({
     return JSON.stringify(value, null, 2);
   } else if (type === AdminFieldType.BOOLEAN) {
     return value === true ? 'yes' : 'no';
+  } else if (type === AdminFieldType.DATETIME) {
+    return <DateTimeWithTooltip date={String(value)} />;
   } else if (type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
     // Should we even be using modelName here? Shouldn't we simply use the attributeType.name
     const relationshipModelName = attributeType.modelName!;
@@ -34,6 +37,6 @@ export default function CollectionViewField({
     const { getDisplayName } = getDashboard(relationshipModelName);
     return getDisplayName(relationshipRecord) as string;
   } else {
-    return record[attributeType.name];
+    return String(record[attributeType.name]);
   }
 }
