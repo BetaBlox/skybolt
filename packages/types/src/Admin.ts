@@ -29,17 +29,51 @@ export enum AdminFilterOperator {
   LESS_THAN = 'lessThan',
 }
 
-// Attribute type for each field in your model
-export type AdminAttributeType = {
-  name: string;
-  type: AdminFieldType;
-  options?: SelectOption[];
-  modelName?: string; // Model name for has one and has many relationships
-  sourceKey?: string; // For has one relationships
-  relationField?: string; // For has many relationships
-  defaultValue?: any;
-  relatedAttributes?: RelatedAttribute[]; // Include relatedAttributes property here
-};
+export type AdminAttributeType =
+  // Basic types with no additional properties
+  | {
+      name: string;
+      type:
+        | AdminFieldType.STRING
+        | AdminFieldType.TEXT
+        | AdminFieldType.PASSWORD
+        | AdminFieldType.BOOLEAN
+        | AdminFieldType.INTEGER
+        | AdminFieldType.JSON
+        | AdminFieldType.DATETIME;
+    }
+  // Select type with options
+  | {
+      name: string;
+      type: AdminFieldType.SELECT;
+      options: SelectOption[]; // Required for the SELECT type
+    }
+  // Has One relationship
+  | {
+      name: string;
+      type: AdminFieldType.RELATIONSHIP_HAS_ONE;
+      modelName: string; // The related model's name
+      sourceKey: string; // The field in the related model
+      relatedAttributes?: RelatedAttribute[];
+    }
+  // Has Many relationship
+  | {
+      name: string;
+      type: AdminFieldType.RELATIONSHIP_HAS_MANY;
+      modelName: string; // The related model's name
+      relationField: string; // The field in the related model
+      relatedAttributes?: RelatedAttribute[];
+    };
+
+export type AdminHasOneAttributeType = Extract<
+  AdminAttributeType,
+  { type: AdminFieldType.RELATIONSHIP_HAS_ONE }
+>;
+
+export type AdminHasManyAttributeType = Extract<
+  AdminAttributeType,
+  { type: AdminFieldType.RELATIONSHIP_HAS_MANY }
+>;
 
 // Declaration of RelatedAttribute type
 export type RelatedAttribute = {

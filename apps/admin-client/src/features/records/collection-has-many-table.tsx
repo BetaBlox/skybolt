@@ -1,9 +1,10 @@
 import {
   AdminFilterOperator,
   AdminFilterType,
+  AdminHasManyAttributeType,
   AdminRecordsPayload,
 } from '@repo/types';
-import { Dashboard } from '@repo/admin-config';
+import { getDashboard } from '@repo/admin-config';
 import { MODEL_RECORD } from '@/common/routes';
 import CollectionViewField from '@/features/models/collection-view-field';
 import { routeWithParams, captilalize } from '@repo/utils';
@@ -23,17 +24,13 @@ import {
 import { cn } from '@/lib/utils';
 
 interface Props {
-  modelName: string;
-  dashboard: Dashboard<unknown>;
   record: Record<string, unknown>;
-  relationField: string; // Add a prop for specifying the relation field
+  attributeType: AdminHasManyAttributeType;
 }
 
 export default function CollectionHasManyTable({
-  dashboard,
-  modelName,
   record,
-  relationField, // The field in the child model pointing to the parent record
+  attributeType,
 }: Props) {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
@@ -41,6 +38,8 @@ export default function CollectionHasManyTable({
 
   // Assuming the primary key is `id` for the parent model record
   const parentRecordId = record['id'];
+  const { modelName, relationField } = attributeType;
+  const dashboard = getDashboard(modelName);
 
   const modelQuery = useQuery({
     queryKey: ['records', modelName, page, perPage, parentRecordId],
