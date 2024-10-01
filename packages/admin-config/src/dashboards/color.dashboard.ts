@@ -18,5 +18,8 @@ export function createColorDashboard(): Dashboard<Color> {
     showAttributes: ['label', 'hex', 'createdAt', 'updatedAt'],
     createFormAttributes: ['label', 'hex'],
     editFormAttributes: ['label', 'hex'],
+
+    // Text searchable attributes. Only supports String attribute types
+    searchAttributes: ['label'],
   });
 }

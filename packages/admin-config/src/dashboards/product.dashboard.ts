@@ -20,5 +20,8 @@ export function createProductDashboard(): Dashboard<Product> {
     showAttributes: ['name', 'price', 'stock'],
     createFormAttributes: ['name', 'price', 'stock'],
     editFormAttributes: ['name', 'price', 'stock'],
+
+    // Text searchable attributes. Only supports String attribute types
+    searchAttributes: ['name'],
   });
 }

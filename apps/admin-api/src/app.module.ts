@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ModelsModule } from './models/models.module';
 import { RecordsModule } from './records/records.module';
 import { PasswordResetModule } from './password-reset/password-reset.module';
+import { SearchModule } from '@/search/search.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PasswordResetModule } from './password-reset/password-reset.module';
     PasswordResetModule,
     ModelsModule,
     RecordsModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
