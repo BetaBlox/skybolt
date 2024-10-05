@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { AdminFieldType, AdminModelPayload } from '@repo/types';
-import { getDashboard, getDashboards } from '@repo/admin-config';
+import { Dashboard, getDashboard, getDashboards } from '@repo/admin-config';
 import { PrismaAdapter } from '@repo/database';
 
 @Injectable()
@@ -18,14 +18,7 @@ export class ModelsService {
 
   async getModel(modelName: string): Promise<AdminModelPayload> {
     const dashboard = getDashboard(modelName);
-
-    // Dynamically include related models
-    const include = {};
-    dashboard.attributeTypes.forEach((at) => {
-      if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
-        include[at.name] = true;
-      }
-    });
+    const include = buildIncludeClause(dashboard);
 
     const count = await this.prisma[modelName].count();
     const recentRecords = await this.prisma[modelName].findMany({
@@ -50,4 +43,15 @@ export class ModelsService {
       })),
     };
   }
+}
+
+function buildIncludeClause(dashboard: Dashboard<unknown>) {
+  const include = {};
+  dashboard.attributeTypes.forEach((at) => {
+    if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
+      include[at.name] = true;
+    }
+  });
+
+  return include;
 }
