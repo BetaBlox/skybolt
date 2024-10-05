@@ -16,6 +16,7 @@ export function createUserDashboard(): Dashboard<User> {
       { name: 'firstName', type: AdminFieldType.STRING },
       { name: 'lastName', type: AdminFieldType.STRING },
       { name: 'email', type: AdminFieldType.STRING },
+      { name: 'imageUrl', type: AdminFieldType.URL },
       { name: 'isAdmin', type: AdminFieldType.BOOLEAN },
       { name: 'password', type: AdminFieldType.PASSWORD },
       {
@@ -34,11 +35,12 @@ export function createUserDashboard(): Dashboard<User> {
     ],
     collectionAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
     collectionFilterAttributes: ['firstName', 'lastName', 'email'],
-    showAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
+    showAttributes: ['firstName', 'lastName', 'email', 'imageUrl', 'isAdmin'],
     createFormAttributes: [
       'firstName',
       'lastName',
       'email',
+      'imageUrl',
       'password',
       'isAdmin',
     ],
@@ -46,6 +48,7 @@ export function createUserDashboard(): Dashboard<User> {
       'firstName',
       'lastName',
       'email',
+      'imageUrl',
       // 'password', // need to figure out how to hash this first
       'isAdmin',
     ],

@@ -1,5 +1,6 @@
 import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { AdminFieldType } from '@repo/types';
+import { ExternalLinkIcon } from 'lucide-react';
 
 interface Props {
   record: Record<string, unknown>;
@@ -33,6 +34,18 @@ export default function ShowViewField({
 
     const relationshipDashboard = getDashboard(relationshipModelName);
     return relationshipDashboard.getDisplayName(relationshipRecord);
+  } else if (type === AdminFieldType.URL) {
+    if (!value) return null;
+    return (
+      <a
+        href={String(value)}
+        target="_blank"
+        className="flex flex-row items-center gap-x-2 underline"
+      >
+        <span className="line-clamp-1">{String(value)}</span>
+        <ExternalLinkIcon className="h-4 w-4" />
+      </a>
+    );
   } else {
     return String(record[attributeType.name]);
   }

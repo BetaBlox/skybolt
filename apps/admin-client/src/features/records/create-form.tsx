@@ -18,6 +18,7 @@ import {
 import { RecordApi } from '@/api/RecordApi';
 import { Button } from '../../components/button';
 import { useToast } from '@/components/toast/use-toast';
+import UrlField from '@/components/fields/url-field';
 // import { getDashboard } from '@repo/admin-config';
 
 interface Props {
@@ -136,6 +137,9 @@ export default function CreateForm({
             <div key={attributeType.name} className="mb-4">
               {attributeType.type === AdminFieldType.STRING && (
                 <StringField {...defaultFieldProps} />
+              )}
+              {attributeType.type === AdminFieldType.URL && (
+                <UrlField {...defaultFieldProps} />
               )}
               {attributeType.type === AdminFieldType.PASSWORD && (
                 <PasswordField {...defaultFieldProps} />
