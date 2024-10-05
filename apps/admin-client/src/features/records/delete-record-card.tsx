@@ -1,5 +1,3 @@
-import { RecordApi } from '@/api/RecordApi';
-import { MODEL } from '@/common/routes';
 import {
   AlertDialogHeader,
   AlertDialogFooter,
@@ -12,7 +10,6 @@ import {
   CardDescription,
   CardContent,
 } from '@/components/card';
-import { useToast } from '@/components/toast/use-toast';
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -22,46 +19,22 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/components/alert-dialog';
-import { getDashboard } from '@repo/admin-config';
 import { AdminRecordPayload } from '@repo/types';
-import { routeWithParams } from '@repo/utils';
-import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { getDashboard } from '@repo/admin-config';
 
 interface Props {
   modelName: string;
   record: AdminRecordPayload['record'];
+  onDelete: () => void;
+  disabled: boolean;
 }
-export default function DeleteRecordCard({ modelName, record }: Props) {
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const deleteMutation = useMutation({
-    mutationKey: ['delete', modelName, record.id],
-    mutationFn: async () => RecordApi.delete(modelName, record.id),
-  });
-
+export default function DeleteRecordCard({
+  modelName,
+  record,
+  onDelete,
+  disabled = false,
+}: Props) {
   const dashboard = getDashboard(modelName);
-
-  const deleteRecord = async () => {
-    const { response } = await deleteMutation.mutateAsync();
-
-    if (response.ok) {
-      toast({
-        title: 'Record deleted',
-        description: 'Your data has been removed.',
-      });
-      const modelUrl = routeWithParams(MODEL, {
-        modelName,
-      });
-      navigate(modelUrl);
-    } else {
-      toast({
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
-        variant: 'destructive',
-      });
-    }
-  };
 
   return (
     <Card>
@@ -75,7 +48,7 @@ export default function DeleteRecordCard({ modelName, record }: Props) {
       <CardContent>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="destructive" disabled={deleteMutation.isPending}>
+            <Button variant="destructive" disabled={disabled}>
               Delete {dashboard.getDisplayName(record)}
             </Button>
           </AlertDialogTrigger>
@@ -89,9 +62,7 @@ export default function DeleteRecordCard({ modelName, record }: Props) {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={deleteRecord}>
-                Continue
-              </AlertDialogAction>
+              <AlertDialogAction onClick={onDelete}>Continue</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
