@@ -380,6 +380,68 @@ describe('RecordsService - Integration Test with Filter Types', () => {
     },
   );
 
+  const sortTestCases = [
+    {
+      description:
+        'should return users sorted by id in descending order by default',
+      sortField: 'id',
+      sortOrder: 'desc',
+      expectedResults: [
+        { firstName: 'Alice', lastName: 'Johnson', email: 'alice@example.com' },
+        { firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com' },
+        { firstName: 'John', lastName: 'Doe', email: 'john@example.com' },
+      ],
+      expectedTotal: 3,
+    },
+    {
+      description: 'should return users sorted by firstName in ascending order',
+      sortField: 'firstName',
+      sortOrder: 'asc',
+      expectedResults: [
+        { firstName: 'Alice', lastName: 'Johnson', email: 'alice@example.com' },
+        { firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com' },
+        { firstName: 'John', lastName: 'Doe', email: 'john@example.com' },
+      ],
+      expectedTotal: 3,
+    },
+  ];
+
+  sortTestCases.forEach(
+    ({ description, sortField, sortOrder, expectedResults, expectedTotal }) => {
+      it(description, async () => {
+        const modelName = 'user';
+        const page = 1;
+        const perPage = 10;
+        const filters = []; // No filters, only sorting
+
+        // Call the service's findMany method with sorting
+        const result = await service.findMany(
+          modelName,
+          page,
+          perPage,
+          filters,
+          sortField,
+          sortOrder as 'asc' | 'desc',
+        );
+
+        // Validate the sorted results
+        expect(result.paginatedResult.data).toIncludeAllPartialMembers(
+          expectedResults,
+        );
+
+        // Validate pagination metadata
+        expect(result.paginatedResult.meta).toEqual({
+          currentPage: 1,
+          lastPage: 1,
+          next: null,
+          perPage: 10,
+          prev: null,
+          total: expectedTotal,
+        });
+      });
+    },
+  );
+
   const nestedTestCases = [
     {
       description:

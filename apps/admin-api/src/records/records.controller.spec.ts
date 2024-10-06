@@ -160,10 +160,154 @@ describe('RecordsController - Unit Test with Filter Types', () => {
         page,
         perPage,
         filters,
+        'id',
+        'desc',
       );
 
       // Verify that the result matches the mock result
       expect(result).toEqual(baseMockResult);
     });
+  });
+
+  it('should return sorted results by id in descending order by default', async () => {
+    const modelName = 'user';
+    const page = 1;
+    const perPage = 10;
+    const sortField = 'id'; // Default sortField
+    const sortOrder = 'desc'; // Default sortOrder
+    const filters = [];
+
+    const mockResult: AdminRecordsPayload = {
+      modelName: 'User',
+      fields: [],
+      paginatedResult: {
+        data: [
+          {
+            id: 3,
+            firstName: 'Alice',
+            lastName: 'Johnson',
+            email: 'alice@example.com',
+            isAdmin: false,
+          },
+          {
+            id: 2,
+            firstName: 'Jane',
+            lastName: 'Smith',
+            email: 'jane@example.com',
+            isAdmin: true,
+          },
+          {
+            id: 1,
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john@example.com',
+            isAdmin: false,
+          },
+        ],
+        meta: {
+          currentPage: 1,
+          lastPage: 1,
+          next: null,
+          perPage: 10,
+          prev: null,
+          total: 3,
+        },
+      },
+    };
+
+    jest.spyOn(service, 'findMany').mockResolvedValue(mockResult);
+
+    const result = await controller.findMany(
+      modelName,
+      page,
+      perPage,
+      JSON.stringify(filters),
+      sortField,
+      sortOrder,
+    );
+
+    expect(service.findMany).toHaveBeenCalledWith(
+      modelName,
+      page,
+      perPage,
+      filters,
+      sortField,
+      sortOrder,
+    );
+
+    expect(result.paginatedResult.data[0].id).toBe(3);
+    expect(result.paginatedResult.data[1].id).toBe(2);
+    expect(result.paginatedResult.data[2].id).toBe(1);
+  });
+
+  it('should return sorted results by a custom field and order', async () => {
+    const modelName = 'user';
+    const page = 1;
+    const perPage = 10;
+    const sortField = 'firstName'; // Custom sortField
+    const sortOrder = 'asc'; // Custom sortOrder
+    const filters = [];
+
+    const mockResult: AdminRecordsPayload = {
+      modelName: 'User',
+      fields: [],
+      paginatedResult: {
+        data: [
+          {
+            id: 1,
+            firstName: 'Alice',
+            lastName: 'Johnson',
+            email: 'alice@example.com',
+            isAdmin: false,
+          },
+          {
+            id: 2,
+            firstName: 'Jane',
+            lastName: 'Smith',
+            email: 'jane@example.com',
+            isAdmin: true,
+          },
+          {
+            id: 3,
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john@example.com',
+            isAdmin: false,
+          },
+        ],
+        meta: {
+          currentPage: 1,
+          lastPage: 1,
+          next: null,
+          perPage: 10,
+          prev: null,
+          total: 3,
+        },
+      },
+    };
+
+    jest.spyOn(service, 'findMany').mockResolvedValue(mockResult);
+
+    const result = await controller.findMany(
+      modelName,
+      page,
+      perPage,
+      JSON.stringify(filters),
+      sortField,
+      sortOrder,
+    );
+
+    expect(service.findMany).toHaveBeenCalledWith(
+      modelName,
+      page,
+      perPage,
+      filters,
+      sortField,
+      sortOrder,
+    );
+
+    expect(result.paginatedResult.data[0].firstName).toBe('Alice');
+    expect(result.paginatedResult.data[1].firstName).toBe('Jane');
+    expect(result.paginatedResult.data[2].firstName).toBe('John');
   });
 });
