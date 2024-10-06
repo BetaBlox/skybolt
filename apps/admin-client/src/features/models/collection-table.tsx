@@ -1,4 +1,4 @@
-import { AdminRecordsPayload } from '@repo/types';
+import { AdminRecordsPayload, SortDirection, SortOrder } from '@repo/types';
 import { Dashboard } from '@repo/admin-config';
 import { MODEL_RECORD, MODEL_RECORD_EDIT } from '@/common/routes';
 import CollectionViewField from '@/features/models/collection-view-field';
@@ -19,6 +19,7 @@ import {
   TableCell,
 } from '@/components/table';
 import FilterForm, { Filter } from '@/features/models/filter-form';
+import { SortableTableHeader } from '@/components/sortable-table-header';
 
 interface Props {
   modelName: string;
@@ -30,19 +31,27 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [filters, setFilters] = useState<Filter[]>([]);
+  const [sortField, setSortField] = useState('id');
+  const [sortOrder, setSortOrder] = useState<SortOrder>(SortDirection.DESC);
 
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Sync filters from URL on initial load
   useEffect(() => {
-    const urlFilters = searchParams.get('filters');
-    if (urlFilters) {
+    const filtersParam = searchParams.get('filters');
+    const sortFieldParam = searchParams.get('sortField');
+    const sortOrderParam = searchParams.get('sortOrder');
+
+    if (filtersParam) {
       try {
-        setFilters(JSON.parse(urlFilters));
+        setFilters(JSON.parse(filtersParam));
       } catch (error) {
         console.error('Invalid filter format in URL');
       }
     }
+
+    if (sortFieldParam) setSortField(sortFieldParam);
+    if (sortOrderParam) setSortOrder(sortOrderParam as SortOrder);
 
     // Set initial page and perPage if available in URL
     const pageParam = searchParams.get('page');
@@ -52,24 +61,38 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
     if (perPageParam) setPerPage(parseInt(perPageParam, 10));
   }, []);
 
-  // Update URL whenever filters, page, or perPage change
+  // Update URL whenever filters, page, perPage, sortField, or sortOrder change
   useEffect(() => {
     const params = {
       filters: JSON.stringify(filters),
       page: String(page),
       perPage: String(perPage),
+      sortField,
+      sortOrder,
     };
 
-    // Update search params without reloading the page
     setSearchParams(params);
-  }, [filters, page, perPage, setSearchParams]);
+  }, [filters, page, perPage, sortField, sortOrder, setSearchParams]);
 
   const modelQuery = useQuery({
-    queryKey: ['records', modelName, page, perPage, filters],
+    queryKey: [
+      'records',
+      modelName,
+      page,
+      perPage,
+      filters,
+      sortField,
+      sortOrder,
+    ],
     queryFn: async () =>
-      RecordApi.findMany(modelName, page, perPage, filters).then(
-        ({ data }) => data,
-      ),
+      RecordApi.findMany(
+        modelName,
+        page,
+        perPage,
+        filters,
+        sortField,
+        sortOrder,
+      ).then(({ data }) => data),
     placeholderData: keepPreviousData,
   });
 
@@ -95,6 +118,20 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
     const newFilters = filters.filter((_, index) => index !== indexToRemove);
     setFilters(newFilters);
     setPage(1); // Reset to the first page when removing a filter
+  };
+
+  const handleSort = (attribute: string) => {
+    // Toggle the sort order if the same field is clicked
+    if (attribute === sortField) {
+      setSortOrder(
+        sortOrder === SortDirection.ASC
+          ? SortDirection.DESC
+          : SortDirection.ASC,
+      );
+    } else {
+      setSortField(attribute);
+      setSortOrder(SortDirection.ASC);
+    }
   };
 
   return (
@@ -138,11 +175,15 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Id</TableHead>
-              {collectionAttributes.map((attribute) => (
-                <TableHead key={attribute} className="whitespace-nowrap">
-                  {captilalize(attribute)}
-                </TableHead>
+              {['id', ...collectionAttributes].map((attribute) => (
+                <SortableTableHeader
+                  key={attribute}
+                  attribute={attribute}
+                  dashboard={dashboard}
+                  sortField={sortField}
+                  sortOrder={sortOrder}
+                  onClick={() => handleSort(attribute)}
+                />
               ))}
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -200,6 +241,7 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
           </TableBody>
         </Table>
       </div>
+
       <PaginationRow
         paginatedResult={paginatedResult}
         onPageChange={setPage}

@@ -1,5 +1,6 @@
 import { customFetch, HttpMethod } from '@/common/custom-fetcher';
 import { Filter } from '@/features/models/filter-form';
+import { SortDirection, SortOrder } from '@repo/types';
 import { routeWithParams } from '@repo/utils';
 
 type ApiCreatePayload = {
@@ -16,12 +17,16 @@ export const RecordApi = {
     page: number = 1,
     perPage: number = 20,
     filters: Filter[] = [],
+    sortField: string = 'id',
+    sortOrder: SortOrder = SortDirection.DESC,
   ) => {
     const url = routeWithParams('/api/records/:modelName', {
       modelName,
       page: String(page),
       perPage: String(perPage),
       filters: JSON.stringify(filters),
+      sortField,
+      sortOrder,
     });
     return customFetch(url, {
       method: HttpMethod.GET,

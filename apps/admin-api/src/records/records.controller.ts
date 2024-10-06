@@ -12,7 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { RecordsService } from './records.service';
-import { AdminRecordPayload } from '@repo/types';
+import { AdminRecordPayload, SortDirection, SortOrder } from '@repo/types';
 import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 import { defaultPerPage } from '@repo/paginator';
 
@@ -27,9 +27,9 @@ export class RecordsController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('perPage', new DefaultValuePipe(defaultPerPage), ParseIntPipe)
     perPage: number,
-    @Query('filters') filters: string = '[]', // Accept filters as a query parameter
-    @Query('sortField') sortField = 'id', // Default sort field is 'id'
-    @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'desc', // Default sort order is 'desc'
+    @Query('filters') filters: string = '[]',
+    @Query('sortField') sortField = 'id',
+    @Query('sortOrder') sortOrder: SortOrder = SortDirection.ASC,
   ) {
     const parsedFilters = JSON.parse(filters);
     return this.recordsService.findMany(

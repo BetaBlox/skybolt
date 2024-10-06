@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '@/prisma/prisma.service';
 import { RecordsService } from '@/records/records.service';
-import { AdminFilterOperator, AdminFilterType } from '@repo/types';
+import {
+  AdminFilterOperator,
+  AdminFilterType,
+  SortDirection,
+} from '@repo/types';
 
 describe('RecordsService - Integration Test with Filter Types', () => {
   let service: RecordsService;
@@ -385,7 +389,7 @@ describe('RecordsService - Integration Test with Filter Types', () => {
       description:
         'should return users sorted by id in descending order by default',
       sortField: 'id',
-      sortOrder: 'desc',
+      sortOrder: SortDirection.DESC,
       expectedResults: [
         { firstName: 'Alice', lastName: 'Johnson', email: 'alice@example.com' },
         { firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com' },
@@ -396,7 +400,7 @@ describe('RecordsService - Integration Test with Filter Types', () => {
     {
       description: 'should return users sorted by firstName in ascending order',
       sortField: 'firstName',
-      sortOrder: 'asc',
+      sortOrder: SortDirection.ASC,
       expectedResults: [
         { firstName: 'Alice', lastName: 'Johnson', email: 'alice@example.com' },
         { firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com' },
@@ -421,7 +425,7 @@ describe('RecordsService - Integration Test with Filter Types', () => {
           perPage,
           filters,
           sortField,
-          sortOrder as 'asc' | 'desc',
+          sortOrder,
         );
 
         // Validate the sorted results

@@ -3,11 +3,13 @@ import {
   AdminFilterType,
   AdminHasManyAttributeType,
   AdminRecordsPayload,
+  SortDirection,
+  SortOrder,
 } from '@repo/types';
 import { getDashboard } from '@repo/admin-config';
 import { MODEL_RECORD } from '@/common/routes';
 import CollectionViewField from '@/features/models/collection-view-field';
-import { routeWithParams, captilalize } from '@repo/utils';
+import { routeWithParams } from '@repo/utils';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import PaginationRow from '@/components/pagination-row';
@@ -17,11 +19,11 @@ import {
   Table,
   TableHeader,
   TableRow,
-  TableHead,
   TableBody,
   TableCell,
 } from '@/components/table';
 import { cn } from '@/lib/utils';
+import { SortableTableHeader } from '@/components/sortable-table-header';
 
 interface Props {
   record: Record<string, unknown>;
@@ -35,6 +37,8 @@ export default function CollectionHasManyTable({
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const [sortField, setSortField] = useState('id');
+  const [sortOrder, setSortOrder] = useState<SortOrder>(SortDirection.DESC);
 
   // Assuming the primary key is `id` for the parent model record
   const parentRecordId = record['id'];
@@ -42,17 +46,32 @@ export default function CollectionHasManyTable({
   const dashboard = getDashboard(modelName);
 
   const modelQuery = useQuery({
-    queryKey: ['records', modelName, page, perPage, parentRecordId],
+    queryKey: [
+      'records',
+      modelName,
+      page,
+      perPage,
+      sortField,
+      sortOrder,
+      parentRecordId,
+    ],
     queryFn: async () =>
-      RecordApi.findMany(modelName, page, perPage, [
-        {
-          modelName: modelName,
-          field: relationField,
-          operator: AdminFilterOperator.EQUALS,
-          value: String(parentRecordId),
-          type: AdminFilterType.NUMBER,
-        },
-      ]).then(({ data }) => data),
+      RecordApi.findMany(
+        modelName,
+        page,
+        perPage,
+        [
+          {
+            modelName: modelName,
+            field: relationField,
+            operator: AdminFilterOperator.EQUALS,
+            value: String(parentRecordId),
+            type: AdminFilterType.NUMBER,
+          },
+        ],
+        sortField,
+        sortOrder,
+      ).then(({ data }) => data),
     placeholderData: keepPreviousData,
   });
 
@@ -64,6 +83,20 @@ export default function CollectionHasManyTable({
   const { collectionAttributes } = dashboard;
   const { paginatedResult } = data;
 
+  const handleSort = (attribute: string) => {
+    // Toggle the sort order if the same field is clicked
+    if (attribute === sortField) {
+      setSortOrder(
+        sortOrder === SortDirection.ASC
+          ? SortDirection.DESC
+          : SortDirection.ASC,
+      );
+    } else {
+      setSortField(attribute);
+      setSortOrder(SortDirection.ASC);
+    }
+  };
+
   return (
     <div className="bg-white shadow-md sm:rounded-lg">
       <div className="relative overflow-x-auto">
@@ -72,9 +105,14 @@ export default function CollectionHasManyTable({
             <TableHeader>
               <TableRow>
                 {collectionAttributes.map((attribute) => (
-                  <TableHead key={attribute} className="whitespace-nowrap">
-                    {captilalize(attribute)}
-                  </TableHead>
+                  <SortableTableHeader
+                    key={attribute}
+                    attribute={attribute}
+                    dashboard={dashboard}
+                    sortField={sortField}
+                    sortOrder={sortOrder}
+                    onClick={() => handleSort(attribute)}
+                  />
                 ))}
               </TableRow>
             </TableHeader>
