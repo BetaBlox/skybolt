@@ -15,7 +15,6 @@ import { RecordsService } from './records.service';
 import { AdminRecordPayload } from '@repo/types';
 import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 import { defaultPerPage } from '@repo/paginator';
-import { Filter } from '@/records/types';
 
 @Controller('records')
 export class RecordsController {
@@ -28,14 +27,18 @@ export class RecordsController {
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('perPage', new DefaultValuePipe(defaultPerPage), ParseIntPipe)
     perPage: number,
-    @Query('filters') filters: string, // Accept filters as a query parameter
+    @Query('filters') filters: string = '[]', // Accept filters as a query parameter
+    @Query('sortField') sortField = 'id', // Default sort field is 'id'
+    @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'desc', // Default sort order is 'desc'
   ) {
-    const parsedFilters: Filter[] = filters ? JSON.parse(filters) : [];
+    const parsedFilters = JSON.parse(filters);
     return this.recordsService.findMany(
       modelName,
       page,
       perPage,
       parsedFilters,
+      sortField,
+      sortOrder,
     );
   }
 
