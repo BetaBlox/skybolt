@@ -7,6 +7,18 @@ import {
 import { redirect } from 'react-router-dom';
 import { HOME } from './routes';
 
+export const ContentType = {
+  JSON: 'application/json',
+  FORM: 'application/x-www-form-urlencoded',
+  MULTIPART: 'multipart/form-data',
+  PDF: 'application/pdf',
+};
+export const ResponseType = {
+  JSON: 'json',
+  TEXT: 'text',
+  BLOB: 'blob',
+};
+
 export const HttpMethod = {
   GET: 'GET',
   POST: 'POST',
@@ -20,24 +32,44 @@ type CustomFetchResponse = {
   /* eslint-disable  @typescript-eslint/no-explicit-any */
   data: any;
 };
+
 type FetchConfig = {
   /* eslint-disable  @typescript-eslint/no-explicit-any */
   [key: string]: any;
 };
+
+// Handles the actual request
 const originalRequest = async (
   url: string,
   config: FetchConfig,
 ): Promise<CustomFetchResponse> => {
   const response = await fetch(url, config);
-  const data = await response.json();
-  return { response, data };
+
+  if (response.ok) {
+    // Handle response based on responseType
+    let data;
+    const responseType = config.responseType || ResponseType.JSON; // Default to 'json' if not provided
+    if (responseType === ResponseType.BLOB) {
+      data = await response.blob(); // Handle binary data like PDFs
+    } else if (responseType === ResponseType.JSON) {
+      data = await response.json(); // Default: handle JSON
+    } else {
+      data = await response.text(); // Fallback for text responses
+    }
+
+    return { response, data };
+  } else {
+    console.error('Error fetching data', response);
+    return { response, data: null };
+  }
 };
 
-let refreshPromise: Promise<void> | null = null;
 export const customFetch = async (
   url: string,
   config: FetchConfig = {
     headers: {},
+    responseType: ResponseType.JSON, // Default to 'json' but can be overridden
+    method: HttpMethod.GET, // Default to 'GET' but can be overridden
   },
 ): Promise<CustomFetchResponse> => {
   if (!url) {
@@ -56,22 +88,21 @@ export const customFetch = async (
   if (tokenIsExpired(accessToken)) {
     console.warn('Access token is expired. Attempting to refresh token now.');
 
-    // Make sure we only try to refresh once.
-    // Even if a bunch of API requests fire off at once.
-    refreshPromise = refreshPromise || refreshTokens();
-    await refreshPromise;
+    await refreshTokens();
 
     // grab the new access token from local storage after refresh is complete
     accessToken = getAccessTokenFromStorage();
   }
 
   const defaultHeaders = {
-    'Content-Type': 'application/json',
     Authorization: `Bearer ${accessToken}`,
+    'Content-Type': ContentType.JSON,
   };
+
   const headerOverrides = {
     ...(config.headers || {}),
   };
+
   config.headers = removeEmpty({
     ...defaultHeaders,
     ...headerOverrides,

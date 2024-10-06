@@ -8,6 +8,11 @@ interface AuthProvider {
   user: User | null;
 }
 
+export type RefreshTokensResponse = {
+  accessToken: string | null;
+  refreshToken: string | null;
+};
+
 export const AUTH_TOKENS = 'authTokens';
 
 export const AuthProvider: AuthProvider = {
@@ -78,10 +83,13 @@ export async function loadUserProfile(): Promise<void> {
     const json = await response.json();
     AuthProvider.user = json;
     AuthProvider.email = json.email;
+  } else {
+    await signout();
+    window.location.href = '/';
   }
 }
 
-export async function updateUserProfile(updates: object): Promise<void> {
+export async function updateUserProfile(updates: object): Promise<Response> {
   const token = getAccessTokenFromStorage();
 
   const response = await fetch('/api/auth/profile', {
@@ -98,6 +106,8 @@ export async function updateUserProfile(updates: object): Promise<void> {
     AuthProvider.user = json;
     AuthProvider.email = json.email;
   }
+
+  return response;
 }
 
 export async function signout() {
@@ -117,31 +127,58 @@ export async function signout() {
   localStorage.removeItem(AUTH_TOKENS);
 }
 
-export async function refreshTokens(): Promise<void> {
+let refreshPromise: Promise<RefreshTokensResponse> | null = null;
+export async function refreshTokens(): Promise<RefreshTokensResponse> {
+  // Make sure we only try to refresh once.
+  // Even if a bunch of API requests fire off at once.
+  if (refreshPromise) {
+    console.log('existing refresh promise found, returning it');
+    return refreshPromise;
+  }
+
   const token = getRefreshTokenFromStorage();
 
   console.log('user token is expired. Attempting to refresh.');
-  const response = await fetch('/api/auth/refresh', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
 
-  if (response.ok) {
-    console.log('user token successfully refreshed');
-    const { accessToken, refreshToken } = await response.json();
-    localStorage.setItem(
-      AUTH_TOKENS,
-      JSON.stringify({
+  refreshPromise = new Promise(async (resolve) => {
+    const response = await fetch('/api/auth/refresh', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      console.log('user token successfully refreshed');
+      const { accessToken, refreshToken } = await response.json();
+      localStorage.setItem(
+        AUTH_TOKENS,
+        JSON.stringify({
+          accessToken,
+          refreshToken,
+        }),
+      );
+
+      return resolve({
         accessToken,
         refreshToken,
-      }),
-    );
-  } else {
-    await signout();
-  }
+      });
+    } else {
+      await signout();
+      return resolve({
+        accessToken: null,
+        refreshToken: null,
+      });
+    }
+  });
+
+  // Make sure to wipe this once resolved so we can refresh again later
+  refreshPromise.then(() => {
+    refreshPromise = null;
+  });
+
+  return refreshPromise;
 }
 
 export function tokenIsExpired(token: string) {
