@@ -4,21 +4,16 @@
  * @see https://administrate-demo.herokuapp.com
  */
 import { AdminAttributeType } from '@repo/types';
-import { createUserDashboard } from './dashboards/user.dashboard';
-import { createPostDashboard } from './dashboards/post.dashboard';
-import { Dashboard } from './dashboard';
-import { createColorDashboard } from './dashboards/color.dashboard';
-import { createProductDashboard } from './dashboards/product.dashboard';
+import { Dashboard } from './dashboard.types';
+import { UserDashboard } from './dashboards/user.dashboard';
+import { ColorDashboard } from './dashboards/color.dashboard';
+import { PostDashboard } from './dashboards/post.dashboard';
+import { ProductDashboard } from './dashboards/product.dashboard';
 
 export { Dashboard };
 
 export function getDashboards(): Dashboard<unknown>[] {
-  return [
-    createUserDashboard(),
-    createProductDashboard(),
-    createPostDashboard(),
-    createColorDashboard(),
-  ];
+  return [UserDashboard, ProductDashboard, PostDashboard, ColorDashboard];
 }
 
 export function getDashboard(modelName: string): Dashboard<unknown> {
