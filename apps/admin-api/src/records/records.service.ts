@@ -9,6 +9,8 @@ import {
   AdminRecordsPayload,
   PaginateFunction,
   PaginatedResult,
+  SortDirection,
+  SortOrder,
 } from '@repo/types';
 import { Dashboard, getDashboard } from '@repo/admin-config';
 import { paginator } from '@repo/paginator';
@@ -27,26 +29,20 @@ export class RecordsService {
     page: number,
     perPage: number,
     filters: Filter[] = [],
-    sortField: string = 'id', // Default sort field is 'id'
-    sortOrder: 'asc' | 'desc' = 'desc', // Default sort order is 'desc'
+    sortField: string = 'id',
+    sortOrder: SortOrder = SortDirection.DESC,
   ): Promise<AdminRecordsPayload> {
     const dashboard = getDashboard(modelName);
     const where = buildWhereClause(filters, modelName);
     const include = buildIncludeClause(dashboard);
-
-    // Ensure that the sortField exists within the model's attributes or use the default 'id' field
-    const isValidSortField = dashboard.collectionAttributes.includes(
-      sortField || 'id',
-    );
+    const orderBy = buildOrderByClause(sortField, sortOrder, dashboard);
 
     const paginatedResult: PaginatedResult<unknown> = await paginate(
       this.prisma[modelName],
       {
         include,
         where,
-        orderBy: isValidSortField
-          ? { [sortField!]: sortOrder } // Apply sorting based on the provided or default sortField and sortOrder
-          : { id: 'desc' }, // Default sorting by id in descending order
+        orderBy,
       },
       {
         page,
@@ -280,7 +276,7 @@ export class RecordsService {
     // Fetch the most recent record creation date
     const lastRecord = await this.prisma[modelName].findFirst({
       orderBy: {
-        createdAt: 'desc',
+        createdAt: SortDirection.DESC,
       },
       select: {
         createdAt: true,
@@ -423,4 +419,22 @@ function buildIncludeClause(dashboard: Dashboard<unknown>) {
   });
 
   return include;
+}
+
+function buildOrderByClause(
+  sortField: string,
+  sortOrder: SortOrder,
+  dashboard: Dashboard<unknown>,
+) {
+  // Ensure that the sortField exists within the model's attributes or use the default 'id' field
+  const sortableAttributes = ['id', ...dashboard.collectionAttributes];
+
+  const isValid = sortableAttributes.includes(sortField);
+
+  if (!isValid) {
+    console.warn(`Invalid sortField: ${sortField}. Defaulting to 'id' field`);
+    return { id: SortDirection.DESC };
+  }
+
+  return { [sortField]: sortOrder };
 }

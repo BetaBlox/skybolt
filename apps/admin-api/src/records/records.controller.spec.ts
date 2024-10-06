@@ -5,6 +5,7 @@ import {
   AdminFilterOperator,
   AdminFilterType,
   AdminRecordsPayload,
+  SortDirection,
 } from '@repo/types';
 
 describe('RecordsController - Unit Test with Filter Types', () => {
@@ -161,7 +162,7 @@ describe('RecordsController - Unit Test with Filter Types', () => {
         perPage,
         filters,
         'id',
-        'desc',
+        SortDirection.ASC,
       );
 
       // Verify that the result matches the mock result
@@ -173,8 +174,8 @@ describe('RecordsController - Unit Test with Filter Types', () => {
     const modelName = 'user';
     const page = 1;
     const perPage = 10;
-    const sortField = 'id'; // Default sortField
-    const sortOrder = 'desc'; // Default sortOrder
+    const sortField = 'id';
+    const sortOrder = SortDirection.ASC;
     const filters = [];
 
     const mockResult: AdminRecordsPayload = {
