@@ -1,78 +1,70 @@
 import { User } from '@repo/database';
 import { AdminFieldType } from '@repo/types';
 import * as bcrypt from 'bcryptjs';
-import { Dashboard, createDashboard } from '../dashboard';
+import { createDashboard } from '../create-dashboard';
 
-export function createUserDashboard(): Dashboard<User> {
-  return createDashboard<User>({
-    pinnedOnHome: true,
-    name: 'User',
-    modelName: 'User',
+export const UserDashboard = createDashboard<User>({
+  name: 'User',
+  modelName: 'User',
 
-    getDisplayName: (record: User): string =>
-      `${record.firstName} ${record.lastName} (${record.email})`,
+  pinnedOnHome: true,
 
-    attributeTypes: [
-      { name: 'firstName', type: AdminFieldType.STRING },
-      { name: 'lastName', type: AdminFieldType.STRING },
-      { name: 'email', type: AdminFieldType.STRING },
-      { name: 'imageUrl', type: AdminFieldType.URL },
-      { name: 'isAdmin', type: AdminFieldType.BOOLEAN },
-      { name: 'password', type: AdminFieldType.PASSWORD },
-      {
-        name: 'Posts',
-        type: AdminFieldType.RELATIONSHIP_HAS_MANY,
-        modelName: 'Post',
-        relationField: 'authorId',
-        relatedAttributes: [
-          { name: 'firstName', type: AdminFieldType.STRING },
-          { name: 'lastName', type: AdminFieldType.STRING },
-          { name: 'email', type: AdminFieldType.STRING },
-        ],
-      },
-      { name: 'createdAt', type: AdminFieldType.DATETIME },
-      { name: 'updatedAt', type: AdminFieldType.DATETIME },
-    ],
-    collectionAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
-    collectionFilterAttributes: ['firstName', 'lastName', 'email'],
-    showAttributes: ['firstName', 'lastName', 'email', 'imageUrl', 'isAdmin'],
-    createFormAttributes: [
-      'firstName',
-      'lastName',
-      'email',
-      'imageUrl',
-      'password',
-      'isAdmin',
-    ],
-    editFormAttributes: [
-      'firstName',
-      'lastName',
-      'email',
-      'imageUrl',
-      // 'password', // need to figure out how to hash this first
-      'isAdmin',
-    ],
-    // Text searchable attributes. Only supports String attribute types
-    searchAttributes: ['firstName', 'lastName', 'email'],
+  getDisplayName: (record: User): string =>
+    `${record.firstName} ${record.lastName} (${record.email})`,
 
-    isDeletable(record: User): boolean {
-      return record.isAdmin === false;
+  attributeTypes: [
+    { name: 'firstName', type: AdminFieldType.STRING },
+    { name: 'lastName', type: AdminFieldType.STRING },
+    { name: 'email', type: AdminFieldType.STRING },
+    { name: 'imageUrl', type: AdminFieldType.URL },
+    { name: 'isAdmin', type: AdminFieldType.BOOLEAN },
+    { name: 'password', type: AdminFieldType.PASSWORD },
+    {
+      name: 'Posts',
+      type: AdminFieldType.RELATIONSHIP_HAS_MANY,
+      modelName: 'Post',
+      relationField: 'authorId',
+      relatedAttributes: [
+        { name: 'firstName', type: AdminFieldType.STRING },
+        { name: 'lastName', type: AdminFieldType.STRING },
+        { name: 'email', type: AdminFieldType.STRING },
+      ],
     },
+    { name: 'createdAt', type: AdminFieldType.DATETIME },
+    { name: 'updatedAt', type: AdminFieldType.DATETIME },
+  ],
+  collectionAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
+  collectionFilterAttributes: ['firstName', 'lastName', 'email'],
+  showAttributes: ['firstName', 'lastName', 'email', 'imageUrl', 'isAdmin'],
+  createFormAttributes: [
+    'firstName',
+    'lastName',
+    'email',
+    'imageUrl',
+    'password',
+    'isAdmin',
+  ],
+  editFormAttributes: [
+    'firstName',
+    'lastName',
+    'email',
+    'imageUrl',
+    // 'password', // need to figure out how to hash this first
+    'isAdmin',
+  ],
+  // Text searchable attributes. Only supports String attribute types
+  searchAttributes: ['firstName', 'lastName', 'email'],
 
-    // isEditable(record: User): boolean {
-    //   return true;
-    // }
-    // isCreatable(): boolean {
-    //   return true;
-    // }
+  isDeletable(record: User): boolean {
+    return record.isAdmin === false;
+  },
 
-    // Hook when a user record is created.
-    async beforeCreate(data: User): Promise<object> {
-      // Hash the user's password so they can authenticate and login
-      const salt = bcrypt.genSaltSync(10);
-      data.password = bcrypt.hashSync(data.password, salt);
+  // Hook when a user record is created.
+  async beforeCreate(data: User): Promise<object> {
+    // Hash the user's password so they can authenticate and login
+    const salt = bcrypt.genSaltSync(10);
+    data.password = bcrypt.hashSync(data.password, salt);
 
-      return data;
-    },
-  });
-}
+    return data;
+  },
+});
