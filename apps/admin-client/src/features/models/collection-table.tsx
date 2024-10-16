@@ -190,22 +190,7 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
           </TableHeader>
           <TableBody>
             {paginatedResult.data.map((record) => (
-<<<<<<< HEAD
-              <TableRow
-                key={record.id}
-                // onMouseDown={() =>
-                //   navigate(
-                //     routeWithParams(MODEL_RECORD, {
-                //       modelName,
-                //       id: String(record.id),
-                //     }),
-                //   )
-                // }
-                // className="cursor-pointer"
-              >
-=======
               <TableRow key={record.id}>
->>>>>>> 1d3f28e (imperosnation clean up and polish)
                 <TableCell>{record.id}</TableCell>
                 {collectionAttributes.map((attribute) => (
                   <TableCell key={attribute}>
