@@ -26,15 +26,14 @@ model User {
   ImpersonationTokens ImpersonationToken[]
 }
 
-// New model for impersonation tokens
 model ImpersonationToken {
   id           Int      @id @default(autoincrement())
-  token        String   @unique
-  adminUserId  Int      @unique
+  token        String   @unique()
+  adminUserId  Int      @unique()
   targetUserId Int
+  user         User     @relation(fields: [targetUserId], references: [id])
   expiresAt    DateTime
   createdAt    DateTime @default(now())
-  user         User     @relation(fields: [targetUserId], references: [id])
 }
 
 model PasswordReset {

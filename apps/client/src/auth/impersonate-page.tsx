@@ -1,31 +1,28 @@
 import { useState, useEffect } from 'react';
 import { impersonate } from '@repo/auth';
+import { useSearchParams } from 'react-router-dom';
+import { ImpersonateApi } from '@/auth/impersonation-api';
+import { routeWithParams } from '@repo/utils';
+import { LOGIN } from '@/common/routes';
 
 export default function ImpersonatePage() {
+  const [searchParams] = useSearchParams();
   const [status, setStatus] = useState('Impersonating user...');
 
   useEffect(() => {
     const exchangeToken = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
-
+      const token = searchParams.get('token');
       if (!token) {
-        window.location.href = '/login?error=invalid_token';
+        window.location.href = routeWithParams(LOGIN, {
+          error: 'invalid_token',
+        });
         return;
       }
 
       try {
-        const response = await fetch('/api/auth/exchange-impersonation-token', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token }),
-        });
+        const { accessToken, refreshToken } =
+          await ImpersonateApi.exchangeToken(token);
 
-        if (!response.ok) {
-          throw new Error('Failed to exchange impersonation token');
-        }
-
-        const { accessToken, refreshToken } = await response.json();
         setStatus('Impersonation successful');
         await impersonate(accessToken, refreshToken);
 
@@ -35,12 +32,14 @@ export default function ImpersonatePage() {
       } catch (error) {
         console.error('Impersonation token exchange error:', error);
         setStatus('Impersonation failed. Redirecting to login...');
-        window.location.href = '/login?error=impersonation_failed';
+        window.location.href = routeWithParams(LOGIN, {
+          error: 'impersonation_failed',
+        });
       }
     };
 
     exchangeToken();
-  }, []);
+  }, [searchParams]);
 
   return <p>{status}</p>;
 }

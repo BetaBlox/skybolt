@@ -1,6 +1,11 @@
 import { User } from '@repo/database';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 
+interface JwtPayloadWithImpersonation extends JwtPayload {
+  isImpersonated?: boolean;
+  impersonatedBy?: string | null;
+}
+
 interface AuthProvider {
   loaded: boolean;
   isAuthenticated: boolean;
@@ -129,6 +134,8 @@ export async function signout() {
   AuthProvider.isAuthenticated = false;
   AuthProvider.email = null;
   AuthProvider.user = null;
+  AuthProvider.isImpersonated = false;
+  AuthProvider.impersonatedBy = null;
   localStorage.removeItem(AUTH_TOKENS);
 }
 
@@ -259,16 +266,12 @@ export async function changePassword(password: string): Promise<Response> {
   return response;
 }
 
-// Add this new function to the AuthProvider
 export async function impersonate(
   accessToken: string,
   refreshToken: string,
 ): Promise<void> {
-  const decodedToken = jwtDecode<JwtPayload>(accessToken);
-  console.log('Impersonating!!!');
-  console.log('decodedToken', decodedToken);
+  const decodedToken = jwtDecode<JwtPayloadWithImpersonation>(accessToken);
 
-  //@ts-expect-error
   const impersonatedBy = decodedToken.impersonatedBy;
   AuthProvider.isAuthenticated = true;
   AuthProvider.isImpersonated = true;
@@ -285,9 +288,8 @@ export async function impersonate(
 }
 
 export function checkImpersonationFromToken(accessToken: string) {
-  const decodedToken = jwtDecode<JwtPayload>(accessToken);
-  console.log('decodedToken', decodedToken);
-  //@ts-expect-error
+  const decodedToken = jwtDecode<JwtPayloadWithImpersonation>(accessToken);
+
   const impersonatedBy = decodedToken.impersonatedBy;
   if (impersonatedBy) {
     AuthProvider.isImpersonated = true;
