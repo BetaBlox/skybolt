@@ -70,8 +70,10 @@ export class AuthController {
     const adminUserId = req.user['sub'];
     this.logger.log(`Admin ${adminUserId} is impersonating user ${userId}`);
 
-    const { token, redirectUrl } =
-      await this.authService.createImpersonationToken(adminUserId, userId);
+    const { redirectUrl } = await this.authService.createImpersonationToken(
+      adminUserId,
+      userId,
+    );
 
     // Instead of setting cookies, we'll return the redirect URL with the token
     return res.json({ redirectUrl });

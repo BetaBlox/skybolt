@@ -17,22 +17,19 @@ export function ImpersonateButton({ userId }: ImpersonateButtonProps) {
       return response.data;
     },
     onSuccess: (data) => {
-      if (data && data.redirectUrl) {
-        // Open the redirect URL in a new tab
-        window.open(data.redirectUrl, '_blank');
+      if (data?.redirectUrl) {
+        window.open(data.redirectUrl, '_blank', 'noopener,noreferrer');
       } else {
-        console.error('Impersonation failed: No redirect URL received');
+        throw new Error('Impersonation failed: No redirect URL received');
       }
     },
-    onError: (error) => {
-      console.error('Impersonation error:', error);
-      alert('Failed to impersonate user. Please try again.');
+    onError: () => {
+      throw new Error('Failed to impersonate user. Please try again.');
     },
   });
 
   const handleImpersonate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    console.log('HANDLING IMPERSONATION CLICKED');
     impersonateMutation.mutate(userId);
   };
 

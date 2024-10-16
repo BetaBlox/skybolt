@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { impersonate } from '@repo/auth';
 
 export default function ImpersonatePage() {
+  const [status, setStatus] = useState('Impersonating user...');
+
   useEffect(() => {
     const exchangeToken = async () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -24,14 +26,15 @@ export default function ImpersonatePage() {
         }
 
         const { accessToken, refreshToken } = await response.json();
-        console.log('On the Impersonate Page');
+        setStatus('Impersonation successful');
         await impersonate(accessToken, refreshToken);
-        //set timeout to 2 seconds then redirect to home
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 2000);
+
+        setStatus('Redirecting to app home...');
+
+        window.location.href = '/';
       } catch (error) {
         console.error('Impersonation token exchange error:', error);
+        setStatus('Impersonation failed. Redirecting to login...');
         window.location.href = '/login?error=impersonation_failed';
       }
     };
@@ -39,10 +42,5 @@ export default function ImpersonatePage() {
     exchangeToken();
   }, []);
 
-  return (
-    <>
-      <div>Impersonating user...</div>
-      <div>Redirecting to home...</div>
-    </>
-  );
+  return <p>{status}</p>;
 }

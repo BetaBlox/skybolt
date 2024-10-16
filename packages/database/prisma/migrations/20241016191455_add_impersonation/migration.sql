@@ -13,5 +13,8 @@ CREATE TABLE "ImpersonationToken" (
 -- CreateIndex
 CREATE UNIQUE INDEX "ImpersonationToken_token_key" ON "ImpersonationToken"("token");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "ImpersonationToken_adminUserId_key" ON "ImpersonationToken"("adminUserId");
+
 -- AddForeignKey
 ALTER TABLE "ImpersonationToken" ADD CONSTRAINT "ImpersonationToken_targetUserId_fkey" FOREIGN KEY ("targetUserId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

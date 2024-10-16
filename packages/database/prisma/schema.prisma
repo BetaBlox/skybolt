@@ -11,18 +11,18 @@ datasource db {
 }
 
 model User {
-  id                 Int                  @id @default(autoincrement())
-  firstName          String
-  lastName           String
-  email              String               @unique
-  password           String
-  refreshToken       String?
-  imageUrl           String?
-  isAdmin            Boolean              @default(false)
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @default(now())
-  Posts              Post[]
-  PasswordReset      PasswordReset?
+  id                  Int                  @id @default(autoincrement())
+  firstName           String
+  lastName            String
+  email               String               @unique
+  password            String
+  refreshToken        String?
+  imageUrl            String?
+  isAdmin             Boolean              @default(false)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @default(now())
+  Posts               Post[]
+  PasswordReset       PasswordReset?
   ImpersonationTokens ImpersonationToken[]
 }
 
@@ -30,7 +30,7 @@ model User {
 model ImpersonationToken {
   id           Int      @id @default(autoincrement())
   token        String   @unique
-  adminUserId  Int
+  adminUserId  Int      @unique
   targetUserId Int
   expiresAt    DateTime
   createdAt    DateTime @default(now())
@@ -47,12 +47,12 @@ model PasswordReset {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  name        String
-  price       Int
-  stock       Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String
+  price     Int
+  stock     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model Post {

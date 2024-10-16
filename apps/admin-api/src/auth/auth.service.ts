@@ -16,13 +16,20 @@ import { Logger } from '@nestjs/common';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
+  private readonly appUrl: string;
 
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly prisma: PrismaService,
-  ) {}
+  ) {
+    this.appUrl = this.configService.get<string>('APP_URL');
+    if (!this.appUrl) {
+      throw new Error('APP_URL is not set');
+    }
+    console.log('APP_URL:', this.appUrl);
+  }
 
   async signIn(data: AuthDto) {
     // Check if user exists
@@ -90,7 +97,7 @@ export class AuthService {
       },
     });
 
-    const redirectUrl = `${this.getAppUrl()}/impersonate?token=${token}`;
+    const redirectUrl = `${this.appUrl}/impersonate?token=${token}`;
     this.logger.log(
       `Impersonation token created for admin ${adminUserId} to impersonate user ${userId}`,
     );
@@ -127,14 +134,5 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
-  }
-
-  getAppUrl(): string {
-    const appUrl = this.configService.get<string>('APP_URL');
-    if (!appUrl) {
-      throw new Error('APP_URL is not set');
-    }
-    console.log('APP_URL:', appUrl);
-    return appUrl;
   }
 }
