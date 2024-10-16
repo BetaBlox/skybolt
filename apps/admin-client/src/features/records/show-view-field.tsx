@@ -1,7 +1,9 @@
 import { MODEL_RECORD } from '@/common/routes';
+import { createLocalDate } from '@/lib/date';
 import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { AdminFieldType, AdminHasOneAttributeType } from '@repo/types';
 import { routeWithParams } from '@repo/utils';
+import { format } from 'date-fns';
 import { ExternalLinkIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -29,6 +31,8 @@ export default function ShowViewField({
     return <HasOneField record={record} attributeType={attributeType} />;
   } else if (type === AdminFieldType.URL) {
     return <UrlField value={value} />;
+  } else if (type === AdminFieldType.DATE) {
+    return <DateField value={value} />;
   } else {
     return <StringField value={value} />;
   }
@@ -44,6 +48,10 @@ const JsonField = ({ value }: { value: unknown }) => {
 
 const BooleanField = ({ value }: { value: unknown }) => {
   return value === true ? 'yes' : 'no';
+};
+
+const DateField = ({ value }: { value: unknown }) => {
+  return value ? format(createLocalDate(String(value)), 'PPP') : '';
 };
 
 const UrlField = ({ value }: { value: unknown }) => {
