@@ -23,11 +23,11 @@ import { Card, CardContent } from '@/components/card';
 import ShowViewField from '@/features/records/show-view-field';
 import DeleteRecordCard from '@/features/records/delete-record-card';
 import { PageSection } from '@/components/page-section';
-import { PageSectionHeading } from '@/components/page-section-heading';
 import CollectionHasManyTable from '@/features/records/collection-has-many-table';
 import { useState } from 'react';
 import { useToast } from '@/components/toast/use-toast';
 import { Edit, Plus, Trash2, X } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/tabs';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();
@@ -160,20 +160,37 @@ export default function RecordShowPage() {
         </Card>
       </PageSection>
 
-      {/* Display related records using CollectionTable */}
-      {hasManyAttributes.map((attributeType) => {
-        return (
-          <PageSection key={attributeType.name}>
-            <PageSectionHeading>
-              {captilalize(attributeType.name)}
-            </PageSectionHeading>
-            <CollectionHasManyTable
-              attributeType={attributeType}
-              record={record}
-            />
-          </PageSection>
-        );
-      })}
+      {hasManyAttributes.length > 0 && (
+        <PageSection>
+          <Tabs defaultValue={hasManyAttributes[0].name}>
+            <TabsList className="h-14 pl-0">
+              {hasManyAttributes.map((attributeType) => (
+                <TabsTrigger
+                  key={attributeType.name}
+                  value={attributeType.name}
+                  className="h-14 rounded-bl-none rounded-br-none text-lg data-[state=active]:border-l data-[state=active]:border-r data-[state=active]:border-t data-[state=active]:shadow-none"
+                >
+                  {captilalize(attributeType.name)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {hasManyAttributes.map((attributeType) => (
+              <TabsContent
+                key={attributeType.name}
+                value={attributeType.name}
+                className="mt-0 rounded-lg rounded-tl-none border-b border-l border-r bg-white pt-10 shadow-md"
+              >
+                <div className="">
+                  <CollectionHasManyTable
+                    attributeType={attributeType}
+                    record={record}
+                  />
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
+        </PageSection>
+      )}
 
       {isDeletable && (
         <PageSection>
