@@ -11,6 +11,7 @@ export enum AdminFieldType {
   JSON = 'json',
   RELATIONSHIP_HAS_ONE = 'relationship_has_one',
   RELATIONSHIP_HAS_MANY = 'relationship_has_many',
+  DATE = 'date',
   DATETIME = 'datetime',
 }
 
@@ -42,6 +43,7 @@ export type AdminAttributeType =
         | AdminFieldType.BOOLEAN
         | AdminFieldType.INTEGER
         | AdminFieldType.JSON
+        | AdminFieldType.DATE
         | AdminFieldType.DATETIME;
     }
   // Select type with options

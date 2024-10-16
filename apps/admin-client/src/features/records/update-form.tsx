@@ -19,6 +19,7 @@ import { RecordApi } from '@/api/RecordApi';
 import { Button } from '../../components/button';
 import { useToast } from '@/components/toast/use-toast';
 import UrlField from '@/components/fields/url-field';
+import DateField from '@/components/fields/date-field';
 
 interface Props {
   modelName: string;
@@ -137,14 +138,17 @@ export default function UpdateForm({
               {attributeType.type === AdminFieldType.STRING && (
                 <StringField {...defaultFieldProps} />
               )}
+              {attributeType.type === AdminFieldType.TEXT && (
+                <TextField {...defaultFieldProps} />
+              )}
               {attributeType.type === AdminFieldType.URL && (
                 <UrlField {...defaultFieldProps} />
               )}
               {attributeType.type === AdminFieldType.PASSWORD && (
                 <PasswordField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.TEXT && (
-                <TextField {...defaultFieldProps} />
+              {attributeType.type === AdminFieldType.DATE && (
+                <DateField {...defaultFieldProps} />
               )}
               {/* {attributeType.type === AdminFieldType.JSON && (
                 <JsonField {...defaultFieldProps} />
