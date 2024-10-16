@@ -91,19 +91,22 @@ export class AuthService {
     await this.usersService.updateRefreshToken(userId, hashedRefreshToken);
   }
 
-  async getTokens(userId: number, email: string) {
+  async getTokens(
+    userId: number,
+    email: string,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const accessToken = await this.jwtService.signAsync(
       { sub: userId, email },
       {
         secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-        expiresIn: '10m',
+        expiresIn: '10m', // TODO: pull from config or env var
       },
     );
     const refreshToken = await this.jwtService.signAsync(
       { sub: userId, email },
       {
         secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-        expiresIn: '7d',
+        expiresIn: '7d', // TODO: pull from config or env var
       },
     );
 
@@ -133,7 +136,8 @@ export class AuthService {
       include: { user: true },
     });
 
-    if (!impersonationToken || impersonationToken.expiresAt < new Date()) {
+    const isExpired = impersonationToken.expiresAt < new Date();
+    if (!impersonationToken || isExpired) {
       throw new UnauthorizedException('Invalid or expired impersonation token');
     }
 
@@ -146,11 +150,11 @@ export class AuthService {
 
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-      expiresIn: '10m',
+      expiresIn: '10m', // TODO: pull from config or env var
     });
     const refreshToken = await this.jwtService.signAsync(payload, {
       secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-      expiresIn: '7h',
+      expiresIn: '7h', // TODO: pull from config or env var
     });
 
     await this.updateRefreshToken(impersonationToken.adminUserId, refreshToken);

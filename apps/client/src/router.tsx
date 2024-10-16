@@ -8,6 +8,7 @@ import Logout from '@/auth/logout-page';
 import {
   FORGOT_PASSWORD,
   HOME,
+  IMPERSONATE_USER,
   LOGIN,
   LOGOUT,
   PASSWORD_RESET,
@@ -18,7 +19,7 @@ import UserProfilePage from '@/features/user-profile/user-profile-page';
 import ForgotPasswordPage from '@/auth/forgot-password-page';
 import PasswordResetPage from '@/auth/password-reset-page';
 import ErrorPage from '@/error-page';
-import ImpersonatePage from './auth/impersonate-page';
+import ImpersonatePage from '@/auth/impersonate-page';
 
 const router = createBrowserRouter([
   {
@@ -59,7 +60,7 @@ const router = createBrowserRouter([
     element: <PasswordResetPage />,
   },
   {
-    path: '/impersonate',
+    path: IMPERSONATE_USER,
     element: <ImpersonatePage />,
   },
 ]);

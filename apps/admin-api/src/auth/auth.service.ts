@@ -25,10 +25,6 @@ export class AuthService {
     private readonly prisma: PrismaService,
   ) {
     this.appUrl = this.configService.get<string>('APP_URL');
-    if (!this.appUrl) {
-      throw new Error('APP_URL is not set');
-    }
-    console.log('APP_URL:', this.appUrl);
   }
 
   async signIn(data: AuthDto) {
@@ -114,19 +110,22 @@ export class AuthService {
     await this.usersService.updateRefreshToken(userId, hashedRefreshToken);
   }
 
-  async getTokens(userId: number, email: string) {
+  async getTokens(
+    userId: number,
+    email: string,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const accessToken = await this.jwtService.signAsync(
       { sub: userId, email },
       {
         secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-        expiresIn: '10m',
+        expiresIn: '10m', // TODO: pull from config or env var
       },
     );
     const refreshToken = await this.jwtService.signAsync(
       { sub: userId, email },
       {
         secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-        expiresIn: '7d',
+        expiresIn: '7d', // TODO: pull from config or env var
       },
     );
 

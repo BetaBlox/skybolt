@@ -201,7 +201,7 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
                 //     }),
                 //   )
                 // }
-                className="cursor-pointer"
+                // className="cursor-pointer"
               >
                 <TableCell>{record.id}</TableCell>
                 {collectionAttributes.map((attribute) => (
