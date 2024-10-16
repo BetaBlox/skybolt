@@ -98,7 +98,7 @@ export default function CollectionHasManyTable({
   };
 
   return (
-    <div className="bg-white shadow-md sm:rounded-lg">
+    <div>
       <div className="relative overflow-x-auto">
         {paginatedResult.data.length > 0 ? (
           <Table className="min-w-[500px]">
