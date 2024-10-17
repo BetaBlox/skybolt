@@ -17,5 +17,4 @@ export interface Dashboard<T> {
   isDeletable: (record: T) => boolean;
   isEditable: (record: T) => boolean;
   isCreatable: () => boolean;
-  beforeCreate: (data: object) => object;
 }
