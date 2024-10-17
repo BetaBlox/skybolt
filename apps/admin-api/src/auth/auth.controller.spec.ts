@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { AuthService } from '@/auth/auth.service';
 import { UsersModule } from '@/users/users.module';
+import { PrismaService } from '@/prisma/prisma.service';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -18,7 +19,7 @@ describe('AuthController', () => {
         JwtModule.register({}),
       ],
       controllers: [AuthController],
-      providers: [AuthService],
+      providers: [AuthService, PrismaService],
     }).compile();
 
     controller = module.get<AuthController>(AuthController);

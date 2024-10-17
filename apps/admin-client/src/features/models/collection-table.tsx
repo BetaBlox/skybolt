@@ -3,7 +3,7 @@ import { Dashboard } from '@repo/admin-config';
 import { MODEL_RECORD, MODEL_RECORD_EDIT } from '@/common/routes';
 import CollectionViewField from '@/features/models/collection-view-field';
 import { routeWithParams, captilalize } from '@repo/utils';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import PaginationRow from '@/components/pagination-row';
 import { useEffect, useState } from 'react';
@@ -20,6 +20,7 @@ import {
 } from '@/components/table';
 import FilterForm, { Filter } from '@/features/models/filter-form';
 import { SortableTableHeader } from '@/components/sortable-table-header';
+import { ImpersonateButton } from '@/components/ImpersonateButton';
 
 interface Props {
   modelName: string;
@@ -27,7 +28,6 @@ interface Props {
 }
 
 export default function CollectionTable({ dashboard, modelName }: Props) {
-  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
   const [filters, setFilters] = useState<Filter[]>([]);
@@ -190,18 +190,7 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
           </TableHeader>
           <TableBody>
             {paginatedResult.data.map((record) => (
-              <TableRow
-                key={record.id}
-                onMouseDown={() =>
-                  navigate(
-                    routeWithParams(MODEL_RECORD, {
-                      modelName,
-                      id: String(record.id),
-                    }),
-                  )
-                }
-                className="cursor-pointer"
-              >
+              <TableRow key={record.id}>
                 <TableCell>{record.id}</TableCell>
                 {collectionAttributes.map((attribute) => (
                   <TableCell key={attribute}>
@@ -234,6 +223,9 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
                         <PencilIcon className="mr-1 h-3 w-3" /> Edit
                       </Link>
                     </Button>
+                  )}
+                  {modelName === 'User' && (
+                    <ImpersonateButton userId={String(record.id)} />
                   )}
                 </TableCell>
               </TableRow>

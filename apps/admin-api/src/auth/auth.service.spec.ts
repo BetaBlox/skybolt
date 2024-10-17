@@ -3,6 +3,7 @@ import { AuthService } from '@/auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '@/users/users.module';
+import { PrismaService } from '@/prisma/prisma.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -16,7 +17,7 @@ describe('AuthService', () => {
         UsersModule,
         JwtModule.register({}),
       ],
-      providers: [AuthService],
+      providers: [AuthService, PrismaService],
     }).compile();
 
     service = module.get<AuthService>(AuthService);

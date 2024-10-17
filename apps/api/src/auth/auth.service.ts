@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
@@ -90,19 +91,22 @@ export class AuthService {
     await this.usersService.updateRefreshToken(userId, hashedRefreshToken);
   }
 
-  async getTokens(userId: number, email: string) {
+  async getTokens(
+    userId: number,
+    email: string,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const accessToken = await this.jwtService.signAsync(
       { sub: userId, email },
       {
         secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
-        expiresIn: '10m',
+        expiresIn: '10m', // TODO: pull from config or env var
       },
     );
     const refreshToken = await this.jwtService.signAsync(
       { sub: userId, email },
       {
         secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-        expiresIn: '7d',
+        expiresIn: '7d', // TODO: pull from config or env var
       },
     );
 
@@ -122,5 +126,44 @@ export class AuthService {
         password: hash,
       },
     });
+  }
+
+  async exchangeImpersonationToken(
+    token: string,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
+    const impersonationToken = await this.prisma.impersonationToken.findUnique({
+      where: { token },
+      include: { user: true },
+    });
+
+    const isExpired = impersonationToken.expiresAt < new Date();
+    if (!impersonationToken || isExpired) {
+      throw new UnauthorizedException('Invalid or expired impersonation token');
+    }
+
+    const payload = {
+      sub: impersonationToken.user.id,
+      email: impersonationToken.user.email,
+      isImpersonated: true,
+      impersonatedBy: impersonationToken.adminUserId,
+    };
+
+    const accessToken = await this.jwtService.signAsync(payload, {
+      secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
+      expiresIn: '10m', // TODO: pull from config or env var
+    });
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
+      expiresIn: '7h', // TODO: pull from config or env var
+    });
+
+    await this.updateRefreshToken(impersonationToken.adminUserId, refreshToken);
+
+    // Delete the used token
+    await this.prisma.impersonationToken.delete({
+      where: { id: impersonationToken.id },
+    });
+
+    return { accessToken, refreshToken };
   }
 }
