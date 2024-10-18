@@ -7,6 +7,7 @@ import {
   AdminRecordPayload,
   AdminFieldType,
   AdminHasManyAttributeType,
+  AdminHasOneAttributeType,
 } from '@repo/types';
 import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { RecordApi } from '@/api/RecordApi';
@@ -30,6 +31,7 @@ import { Edit, Plus, Trash2, X } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/tabs';
 import { CustomComponentLayout } from '@/features/records/custom-component-layout';
 import { PageSectionHeading } from '@/components/page-section-heading';
+import { RecordHasOneRelationshipsCard } from '@/features/records/record-has-one-relationships-card';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();
@@ -94,6 +96,10 @@ export default function RecordShowPage() {
   const hasManyAttributes = dashboard.attributeTypes.filter(
     (attr) => attr.type === AdminFieldType.RELATIONSHIP_HAS_MANY,
   ) as AdminHasManyAttributeType[];
+
+  const hasOneAttributes = dashboard.attributeTypes.filter(
+    (attr) => attr.type === AdminFieldType.RELATIONSHIP_HAS_ONE,
+  ) as AdminHasOneAttributeType[];
 
   return (
     <div>
@@ -170,6 +176,16 @@ export default function RecordShowPage() {
           </CardContent>
         </Card>
       </PageSection>
+
+      {hasOneAttributes.length > 0 && (
+        <PageSection>
+          <PageSectionHeading>Related Records</PageSectionHeading>
+          <RecordHasOneRelationshipsCard
+            record={record}
+            attributeTypes={hasOneAttributes}
+          />
+        </PageSection>
+      )}
 
       <CustomComponentLayout
         dashboard={dashboard}
