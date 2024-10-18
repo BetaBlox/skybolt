@@ -28,6 +28,8 @@ import { useState } from 'react';
 import { useToast } from '@/components/toast/use-toast';
 import { Edit, Plus, Trash2, X } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/tabs';
+import { CustomComponentLayout } from '@/features/records/custom-component-layout';
+import { PageSectionHeading } from '@/components/page-section-heading';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();
@@ -160,8 +162,15 @@ export default function RecordShowPage() {
         </Card>
       </PageSection>
 
+      <CustomComponentLayout
+        dashboard={dashboard}
+        modelName={modelName}
+        record={record}
+      />
+
       {hasManyAttributes.length > 0 && (
         <PageSection>
+          <PageSectionHeading>Related Collections</PageSectionHeading>
           <Tabs defaultValue={hasManyAttributes[0].name}>
             <TabsList className="h-14 pl-0">
               {hasManyAttributes.map((attributeType) => (

@@ -1,4 +1,4 @@
-import { AdminAttributeType } from '@repo/types';
+import { AdminAttributeType, AdminCustomComponentLayout } from '@repo/types';
 
 export interface Dashboard<T> {
   pinnedOnHome: boolean;
@@ -17,4 +17,7 @@ export interface Dashboard<T> {
   isDeletable: (record: T) => boolean;
   isEditable: (record: T) => boolean;
   isCreatable: () => boolean;
+
+  // New field for custom component layouts on the records show page
+  showPageCustomComponents?: AdminCustomComponentLayout[]; // Optional field to define layout and custom components
 }

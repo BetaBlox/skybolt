@@ -4,12 +4,12 @@ import { useMutation } from '@tanstack/react-query';
 import { customFetch, HttpMethod } from '@/common/custom-fetcher';
 
 interface ImpersonateButtonProps {
-  userId: string;
+  userId: number;
 }
 
 export function ImpersonateButton({ userId }: ImpersonateButtonProps) {
   const impersonateMutation = useMutation({
-    mutationFn: async (userId: string) => {
+    mutationFn: async (userId: number) => {
       const response = await customFetch('/api/auth/impersonate', {
         method: HttpMethod.POST,
         body: JSON.stringify({ userId }),
@@ -37,7 +37,7 @@ export function ImpersonateButton({ userId }: ImpersonateButtonProps) {
     <Button
       onClick={handleImpersonate}
       disabled={impersonateMutation.isPending}
-      variant="outline"
+      variant={'outline'}
       size="sm"
     >
       {impersonateMutation.isPending ? 'Impersonating...' : 'Impersonate'}

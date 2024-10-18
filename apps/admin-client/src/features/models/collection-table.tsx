@@ -167,8 +167,8 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
                       </Link>
                     </Button>
                   )}
-                  {modelName === 'User' && (
-                    <ImpersonateButton userId={String(record.id)} />
+                  {modelName.toLowerCase() === 'user' && (
+                    <ImpersonateButton userId={record.id} />
                   )}
                 </TableCell>
               </TableRow>
