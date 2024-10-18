@@ -1,12 +1,11 @@
-import { AdminRecordsPayload, SortDirection, SortOrder } from '@repo/types';
+import { AdminRecordsPayload, SortDirection } from '@repo/types';
 import { Dashboard } from '@repo/admin-config';
 import { MODEL_RECORD, MODEL_RECORD_EDIT } from '@/common/routes';
 import CollectionViewField from '@/features/models/collection-view-field';
 import { routeWithParams, captilalize } from '@repo/utils';
-import { Link, useSearchParams } from 'react-router-dom';
-import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import PaginationRow from '@/components/pagination-row';
-import { useEffect, useState } from 'react';
 import { RecordApi } from '@/api/RecordApi';
 import { Button } from '@/components/button';
 import { EyeIcon, PencilIcon, XIcon } from 'lucide-react';
@@ -18,9 +17,10 @@ import {
   TableBody,
   TableCell,
 } from '@/components/table';
-import FilterForm, { Filter } from '@/features/models/filter-form';
+import FilterForm from '@/features/models/filter-form';
 import { SortableTableHeader } from '@/components/sortable-table-header';
 import { ImpersonateButton } from '@/components/ImpersonateButton';
+import { useCollectionState } from '@/hooks/use-collection-state';
 
 interface Props {
   modelName: string;
@@ -28,51 +28,24 @@ interface Props {
 }
 
 export default function CollectionTable({ dashboard, modelName }: Props) {
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
-  const [filters, setFilters] = useState<Filter[]>([]);
-  const [sortField, setSortField] = useState('id');
-  const [sortOrder, setSortOrder] = useState<SortOrder>(SortDirection.DESC);
-
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  // Sync filters from URL on initial load
-  useEffect(() => {
-    const filtersParam = searchParams.get('filters');
-    const sortFieldParam = searchParams.get('sortField');
-    const sortOrderParam = searchParams.get('sortOrder');
-
-    if (filtersParam) {
-      try {
-        setFilters(JSON.parse(filtersParam));
-      } catch (error) {
-        console.error('Invalid filter format in URL');
-      }
-    }
-
-    if (sortFieldParam) setSortField(sortFieldParam);
-    if (sortOrderParam) setSortOrder(sortOrderParam as SortOrder);
-
-    // Set initial page and perPage if available in URL
-    const pageParam = searchParams.get('page');
-    if (pageParam) setPage(parseInt(pageParam, 10));
-
-    const perPageParam = searchParams.get('perPage');
-    if (perPageParam) setPerPage(parseInt(perPageParam, 10));
-  }, []);
-
-  // Update URL whenever filters, page, perPage, sortField, or sortOrder change
-  useEffect(() => {
-    const params = {
-      filters: JSON.stringify(filters),
-      page: String(page),
-      perPage: String(perPage),
-      sortField,
-      sortOrder,
-    };
-
-    setSearchParams(params);
-  }, [filters, page, perPage, sortField, sortOrder, setSearchParams]);
+  const {
+    page,
+    perPage,
+    sortField,
+    sortOrder,
+    filters,
+    setPage,
+    setPerPage,
+    updateSort,
+    applyFilter,
+    removeFilter,
+    resetFilters,
+  } = useCollectionState({
+    defaultPage: 1,
+    defaultPerPage: 10,
+    defaultSortField: 'id',
+    defaultSortOrder: SortDirection.DESC,
+  });
 
   const modelQuery = useQuery({
     queryKey: [
@@ -104,43 +77,13 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
   const { collectionAttributes, isEditable } = dashboard;
   const { paginatedResult } = data;
 
-  const applyFilter = (filter: Filter) => {
-    setFilters([...filters, filter]);
-    setPage(1); // Reset to the first page when applying new filters
-  };
-
-  const clearFilters = () => {
-    setFilters([]);
-    setPage(1); // Reset to the first page when clearing filters
-  };
-
-  const removeFilter = (indexToRemove: number) => {
-    const newFilters = filters.filter((_, index) => index !== indexToRemove);
-    setFilters(newFilters);
-    setPage(1); // Reset to the first page when removing a filter
-  };
-
-  const handleSort = (attribute: string) => {
-    // Toggle the sort order if the same field is clicked
-    if (attribute === sortField) {
-      setSortOrder(
-        sortOrder === SortDirection.ASC
-          ? SortDirection.DESC
-          : SortDirection.ASC,
-      );
-    } else {
-      setSortField(attribute);
-      setSortOrder(SortDirection.ASC);
-    }
-  };
-
   return (
     <div className="bg-white shadow-md sm:rounded-lg">
       {dashboard.collectionFilterAttributes.length > 0 && (
         <FilterForm
           dashboard={dashboard}
           onApplyFilter={applyFilter}
-          onClearFilters={clearFilters}
+          onClearFilters={resetFilters}
         />
       )}
 
@@ -182,7 +125,7 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
                   dashboard={dashboard}
                   sortField={sortField}
                   sortOrder={sortOrder}
-                  onClick={() => handleSort(attribute)}
+                  onClick={() => updateSort(attribute)}
                 />
               ))}
               <TableHead>Actions</TableHead>
