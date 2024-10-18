@@ -15,6 +15,7 @@ import {
   SelectItem,
 } from '@/components/select';
 import { AdminHasOneAttributeType } from '@repo/types/src/Admin';
+import { Spinner } from '@/components/spinner';
 
 interface Props {
   field: AdminModelField;
@@ -38,7 +39,7 @@ export default function RelationshipHasOneField({
       RecordApi.findMany(modelName!, 1, 1000).then(({ data }) => data), // Likely need to support searching AJAX instead of just loading everything
   });
 
-  if (recordsQuery.isPending) return 'Loading...';
+  if (recordsQuery.isPending) return <Spinner />;
   if (recordsQuery.isError || !modelName) return 'Error loading data';
 
   const data = recordsQuery.data as AdminRecordsPayload;

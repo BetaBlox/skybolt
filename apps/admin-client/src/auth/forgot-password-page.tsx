@@ -3,6 +3,7 @@ import { LOGIN } from '@/common/routes';
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 import { Label } from '@/components/label';
+import { Spinner } from '@/components/spinner';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Form, Link } from 'react-router-dom';
@@ -78,7 +79,7 @@ export default function ForgotPasswordPage() {
                 disabled={sendResetMutation.isPending}
                 className="w-full"
               >
-                {sendResetMutation.isPending ? 'Sending...' : 'Send'}
+                {sendResetMutation.isPending ? <Spinner /> : 'Send'}
               </Button>
             </div>
 

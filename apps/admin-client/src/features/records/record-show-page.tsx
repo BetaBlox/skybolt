@@ -32,6 +32,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/tabs';
 import { CustomComponentLayout } from '@/features/records/custom-component-layout';
 import { PageSectionHeading } from '@/components/page-section-heading';
 import { RecordHasOneRelationshipsCard } from '@/features/records/record-has-one-relationships-card';
+import { Spinner } from '@/components/spinner';
 
 export default function RecordShowPage() {
   const { modelName, id } = useParams();
@@ -48,7 +49,7 @@ export default function RecordShowPage() {
     mutationFn: async () => RecordApi.delete(modelName!, record.id),
   });
 
-  if (recordQuery.isPending) return 'Loading...';
+  if (recordQuery.isPending) return <Spinner />;
   if (recordQuery.isError || !modelName) return 'Error loading data';
 
   const deleteRecord = async () => {

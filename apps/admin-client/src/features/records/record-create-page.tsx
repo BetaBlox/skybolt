@@ -15,6 +15,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/breadcrumb';
+import { Spinner } from '@/components/spinner';
 
 export default function RecordCreatePage() {
   const { modelName } = useParams();
@@ -23,7 +24,7 @@ export default function RecordCreatePage() {
     queryFn: async () => ModelApi.findOne(modelName!).then(({ data }) => data),
   });
 
-  if (recordQuery.isPending) return 'Loading...';
+  if (recordQuery.isPending) return <Spinner />;
   if (recordQuery.isError || !modelName) return 'Error loading data';
 
   const data = recordQuery.data as AdminRecordPayload;

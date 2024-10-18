@@ -19,6 +19,7 @@ import {
 import { PageSection } from '@/components/page-section';
 import { useState } from 'react';
 import { Input } from '@/components/input';
+import { Spinner } from '@/components/spinner';
 
 export default function DatasetsPage() {
   const [search, setSearch] = useState('');
@@ -28,7 +29,7 @@ export default function DatasetsPage() {
     queryFn: async () => ModelApi.findMany().then(({ data }) => data),
   });
 
-  if (modelsQuery.isPending) return 'Loading...';
+  if (modelsQuery.isPending) return <Spinner />;
   if (modelsQuery.isError) return 'Error loading data';
 
   const data = modelsQuery.data as AdminModelPayload[];

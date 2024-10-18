@@ -20,6 +20,7 @@ import { RecordRegistrationsChart } from '@/charts/record-registrations-chart';
 import { PageSection } from '@/components/page-section';
 import { PageSectionHeading } from '@/components/page-section-heading';
 import { PinIcon, UserIcon } from 'lucide-react';
+import { Spinner } from '@/components/spinner';
 
 export default function HomePage() {
   const modelsQuery = useQuery({
@@ -27,7 +28,7 @@ export default function HomePage() {
     queryFn: async () => ModelApi.findMany().then(({ data }) => data),
   });
 
-  if (modelsQuery.isPending) return 'Loading...';
+  if (modelsQuery.isPending) return <Spinner />;
   if (modelsQuery.isError) return 'Error loading data';
 
   const data = modelsQuery.data as AdminModelPayload[];

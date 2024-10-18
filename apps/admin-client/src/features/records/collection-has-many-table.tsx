@@ -23,6 +23,7 @@ import {
 import { cn } from '@/lib/utils';
 import { SortableTableHeader } from '@/components/sortable-table-header';
 import { useCollectionState } from '@/hooks/use-collection-state';
+import { Spinner } from '@/components/spinner';
 
 interface Props {
   record: Record<string, unknown>;
@@ -84,7 +85,7 @@ export default function CollectionHasManyTable({
     placeholderData: keepPreviousData,
   });
 
-  if (modelQuery.isPending) return 'Loading...';
+  if (modelQuery.isPending) return <Spinner />;
   if (modelQuery.isError || !modelName) return 'Error loading data';
 
   const data = modelQuery.data as AdminRecordsPayload;
