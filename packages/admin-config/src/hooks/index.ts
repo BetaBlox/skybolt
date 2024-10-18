@@ -18,11 +18,19 @@ export function getHookConfig(modelName: string): HookConfig<unknown> {
     (d) => d.modelName.toLowerCase() === modelName.toLowerCase(),
   );
 
-  const NullSafeHookConfig: HookConfig<unknown> = {
+  const defaultHookConfig: HookConfig<unknown> = {
     name: modelName,
     modelName,
     beforeCreate: async (record: unknown) => record,
+    beforeUpdate: async (record: unknown) => record,
+    beforeDelete: async (record: unknown) => record,
   };
 
-  return hookConfig ?? NullSafeHookConfig;
+  return {
+    ...defaultHookConfig,
+    ...hookConfig,
+    beforeCreate: hookConfig?.beforeCreate ?? defaultHookConfig.beforeCreate,
+    beforeUpdate: hookConfig?.beforeUpdate ?? defaultHookConfig.beforeUpdate,
+    beforeDelete: hookConfig?.beforeDelete ?? defaultHookConfig.beforeDelete,
+  };
 }
