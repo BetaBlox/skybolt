@@ -64,9 +64,7 @@ export class RecordsService {
     const include = buildIncludeClause(dashboard);
 
     const record = await this.prisma[modelName].findFirst({
-      where: {
-        id,
-      },
+      where: { id },
       include,
     });
 
@@ -115,6 +113,7 @@ export class RecordsService {
     const adapter = new PrismaAdapter();
     const fields = adapter.getFields(modelName);
     const dashboard = getDashboard(modelName);
+    const hook = getHookConfig(modelName);
 
     let record = await this.prisma[modelName].findFirstOrThrow({
       where: {
@@ -126,7 +125,9 @@ export class RecordsService {
       throw new Error('Record is not editable');
     }
 
-    const payload = filterRecordPayload(fields, data);
+    let payload = filterRecordPayload(fields, data);
+
+    payload = await hook.beforeUpdate(payload);
 
     record = await this.prisma[modelName].update({
       where: {
@@ -143,17 +144,20 @@ export class RecordsService {
   }
 
   async deleteRecord(modelName: string, id: number): Promise<boolean> {
+    const dashboard = getDashboard(modelName);
+    const hook = getHookConfig(modelName);
+
     const record = await this.prisma[modelName].findFirstOrThrow({
       where: {
         id,
       },
     });
 
-    const dashboard = getDashboard(modelName);
-
     if (dashboard.isDeletable(record) === false) {
       throw new Error('Record is not deletable');
     }
+
+    await hook.beforeDelete(record);
 
     await this.prisma[modelName].delete({
       where: {
