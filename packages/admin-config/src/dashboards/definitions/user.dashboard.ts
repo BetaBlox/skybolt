@@ -1,6 +1,5 @@
 import { User } from '@repo/database';
 import { AdminFieldType } from '@repo/types';
-import * as bcrypt from 'bcryptjs';
 import { createDashboard } from '../create-dashboard';
 
 export const UserDashboard = createDashboard<User>({
@@ -57,14 +56,5 @@ export const UserDashboard = createDashboard<User>({
 
   isDeletable(record: User): boolean {
     return record.isAdmin === false;
-  },
-
-  // Hook when a user record is created.
-  async beforeCreate(data: User): Promise<object> {
-    // Hash the user's password so they can authenticate and login
-    const salt = bcrypt.genSaltSync(10);
-    data.password = bcrypt.hashSync(data.password, salt);
-
-    return data;
   },
 });

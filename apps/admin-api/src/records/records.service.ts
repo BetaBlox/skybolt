@@ -12,7 +12,7 @@ import {
   SortDirection,
   SortOrder,
 } from '@repo/types';
-import { Dashboard, getDashboard } from '@repo/admin-config';
+import { Dashboard, getDashboard, getHookConfig } from '@repo/admin-config';
 import { paginator } from '@repo/paginator';
 import { PrismaAdapter } from '@repo/database';
 import { Filter } from '@/records/types';
@@ -86,6 +86,7 @@ export class RecordsService {
     const adapter = new PrismaAdapter();
     const fields = adapter.getFields(modelName);
     const dashboard = getDashboard(modelName);
+    const hook = getHookConfig(modelName);
 
     if (dashboard.isCreatable() === false) {
       throw new Error('Record is not creatable');
@@ -93,7 +94,7 @@ export class RecordsService {
 
     let payload = filterRecordPayload(fields, data);
 
-    payload = await dashboard.beforeCreate(payload);
+    payload = await hook.beforeCreate(payload);
 
     const record = await this.prisma[modelName].create({
       data: { ...payload },

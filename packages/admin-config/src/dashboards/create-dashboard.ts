@@ -19,7 +19,6 @@ export function createDashboard<T>(
     isDeletable: config.isDeletable || (() => true),
     isEditable: config.isEditable || (() => true),
     isCreatable: config.isCreatable || (() => true),
-    beforeCreate: config.beforeCreate || ((data: object) => data),
     ...config,
   };
 }
