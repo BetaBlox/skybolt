@@ -15,7 +15,6 @@ import { RefreshTokenGuard } from '@/common/guards/refreshToken.guard';
 import { UsersService } from '@/users/users.service';
 import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 import { Logger } from '@nestjs/common';
-import { BadRequestException } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
@@ -56,6 +55,11 @@ export class AuthController {
   async getProfile(@Req() req: Request) {
     this.logger.log(`Fetching admin profile for userId: ${req.user['sub']}`);
     const user = await this.userService.findAdminByEmail(req.user['email']);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
     const { password, refreshToken, ...data } = user;
     return data;
   }
