@@ -113,6 +113,14 @@ export interface AdminRecordPayload {
   record: any;
 }
 
+export interface AdminCustomComponentLayout {
+  type: 'row' | 'column'; // Define whether components are placed in a row or column
+  components: {
+    componentName: string; // The name of the custom component to render
+    span?: number; // Optional: Determines how much space the component takes in a 12-column grid
+  }[];
+}
+
 export interface PaginatedResult<T> {
   data: T[];
   meta: {
