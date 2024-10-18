@@ -124,6 +124,15 @@ export default function RecordShowPage() {
         <Card>
           <CardContent>
             <dl className="divide-y divide-gray-100">
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                <dt className="text-sm font-bold leading-6 text-gray-900">
+                  Id
+                </dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                  {record.id}
+                </dd>
+              </div>
+
               {showAttributes.map((attribute) => {
                 const attributeType = getAttributeType(modelName, attribute);
 
