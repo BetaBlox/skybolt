@@ -4,7 +4,6 @@ import {
   AdminHasManyAttributeType,
   AdminRecordsPayload,
   SortDirection,
-  SortOrder,
 } from '@repo/types';
 import { getDashboard } from '@repo/admin-config';
 import { MODEL_RECORD } from '@/common/routes';
@@ -13,7 +12,6 @@ import { routeWithParams } from '@repo/utils';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import PaginationRow from '@/components/pagination-row';
-import { useState } from 'react';
 import { RecordApi } from '@/api/RecordApi';
 import {
   Table,
@@ -24,6 +22,7 @@ import {
 } from '@/components/table';
 import { cn } from '@/lib/utils';
 import { SortableTableHeader } from '@/components/sortable-table-header';
+import { useCollectionState } from '@/hooks/use-collection-state';
 
 interface Props {
   record: Record<string, unknown>;
@@ -35,10 +34,20 @@ export default function CollectionHasManyTable({
   attributeType,
 }: Props) {
   const navigate = useNavigate();
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
-  const [sortField, setSortField] = useState('id');
-  const [sortOrder, setSortOrder] = useState<SortOrder>(SortDirection.DESC);
+  const {
+    page,
+    perPage,
+    sortField,
+    sortOrder,
+    setPage,
+    setPerPage,
+    updateSort,
+  } = useCollectionState({
+    defaultPage: 1,
+    defaultPerPage: 10,
+    defaultSortField: 'id',
+    defaultSortOrder: SortDirection.DESC,
+  });
 
   // Assuming the primary key is `id` for the parent model record
   const parentRecordId = record['id'];
@@ -83,20 +92,6 @@ export default function CollectionHasManyTable({
   const { collectionAttributes } = dashboard;
   const { paginatedResult } = data;
 
-  const handleSort = (attribute: string) => {
-    // Toggle the sort order if the same field is clicked
-    if (attribute === sortField) {
-      setSortOrder(
-        sortOrder === SortDirection.ASC
-          ? SortDirection.DESC
-          : SortDirection.ASC,
-      );
-    } else {
-      setSortField(attribute);
-      setSortOrder(SortDirection.ASC);
-    }
-  };
-
   return (
     <div>
       <div className="relative overflow-x-auto">
@@ -111,7 +106,7 @@ export default function CollectionHasManyTable({
                     dashboard={dashboard}
                     sortField={sortField}
                     sortOrder={sortOrder}
-                    onClick={() => handleSort(attribute)}
+                    onClick={() => updateSort(attribute)}
                   />
                 ))}
               </TableRow>
