@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { captilalize, routeWithParams } from '@repo/utils';
 import { getDashboard } from '@repo/admin-config';
-import { AdminFieldType, AdminHasOneAttributeType } from '@repo/types';
+import {
+  AdminFieldType,
+  AdminHasOneAttributeType,
+  AdminRecord,
+} from '@repo/types';
 import { MODEL_RECORD } from '@/common/routes';
-
-type AdminRecord = Record<string, unknown> & {
-  id: number;
-};
 
 interface Props {
   record: AdminRecord;

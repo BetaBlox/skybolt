@@ -1,35 +1,32 @@
 import { FormEvent, useState } from 'react';
-// import JsonField from './fields/JsonField';
 import { routeWithParams } from '@repo/utils';
-import BooleanField from '../../../components/fields/boolean-field';
-import IntegerField from '../../../components/fields/integer-field';
-import SelectField from '../../../components/fields/select-field';
-import StringField from '../../../components/fields/string-field';
-import TextField from '../../../components/fields/text-field';
-import PasswordField from '../../../components/fields/password-field';
-import RelationshipHasOneField from '../../../components/fields/has-one-field';
 import { MODEL_RECORD } from '@/common/routes';
 import { useNavigate } from 'react-router-dom';
 import {
   AdminAttributeType,
   AdminFieldType,
   AdminModelField,
+  AdminRecord,
 } from '@repo/types';
 import { RecordApi } from '@/api/RecordApi';
-import { Button } from '../../../components/button';
 import { useToast } from '@/components/toast/use-toast';
-import UrlField from '@/components/fields/url-field';
+import BooleanField from '@/components/fields/boolean-field';
 import DateField from '@/components/fields/date-field';
+import RelationshipHasOneField from '@/components/fields/has-one-field';
+import IntegerField from '@/components/fields/integer-field';
+import PasswordField from '@/components/fields/password-field';
+import SelectField from '@/components/fields/select-field';
+import StringField from '@/components/fields/string-field';
+import TextField from '@/components/fields/text-field';
+import UrlField from '@/components/fields/url-field';
+import { Button } from '@/components/button';
 
 interface Props {
   modelName: string;
   fields: AdminModelField[];
   attributeTypes: AdminAttributeType[];
   formAttributes: string[];
-  record: {
-    id: number;
-    [key: string]: any;
-  };
+  record: AdminRecord;
 }
 
 export default function UpdateForm({
@@ -97,7 +94,10 @@ export default function UpdateForm({
     }
   };
 
-  const handleChange = (key: string, value: any) => {
+  const handleChange = (
+    key: string,
+    value: string | number | boolean | null,
+  ) => {
     setData({
       ...data,
       [key]: value,

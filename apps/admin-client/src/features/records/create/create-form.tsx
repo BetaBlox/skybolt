@@ -1,13 +1,5 @@
 import { FormEvent, useState } from 'react';
-// import JsonField from './fields/JsonField';
 import { routeWithParams } from '@repo/utils';
-import BooleanField from '../../../components/fields/boolean-field';
-import IntegerField from '../../../components/fields/integer-field';
-import SelectField from '../../../components/fields/select-field';
-import StringField from '../../../components/fields/string-field';
-import TextField from '../../../components/fields/text-field';
-import PasswordField from '../../../components/fields/password-field';
-import RelationshipHasOneField from '../../../components/fields/has-one-field';
 import { useNavigate } from 'react-router-dom';
 import { MODEL_RECORD } from '@/common/routes';
 import {
@@ -16,11 +8,17 @@ import {
   AdminModelField,
 } from '@repo/types';
 import { RecordApi } from '@/api/RecordApi';
-import { Button } from '../../../components/button';
 import { useToast } from '@/components/toast/use-toast';
 import UrlField from '@/components/fields/url-field';
 import DateField from '@/components/fields/date-field';
-// import { getDashboard } from '@repo/admin-config';
+import StringField from '@/components/fields/string-field';
+import BooleanField from '@/components/fields/boolean-field';
+import RelationshipHasOneField from '@/components/fields/has-one-field';
+import IntegerField from '@/components/fields/integer-field';
+import PasswordField from '@/components/fields/password-field';
+import SelectField from '@/components/fields/select-field';
+import TextField from '@/components/fields/text-field';
+import { Button } from '@/components/button';
 
 interface Props {
   modelName: string;
