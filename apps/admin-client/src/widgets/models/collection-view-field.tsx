@@ -5,7 +5,7 @@ import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { AdminFieldType, AdminHasOneAttributeType } from '@repo/types';
 import { routeWithParams } from '@repo/utils';
 import { format } from 'date-fns';
-import { ExternalLinkIcon } from 'lucide-react';
+import { ExternalLinkIcon, MailIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 type AdminRecord = Record<string, unknown> & { id: number };
@@ -38,6 +38,8 @@ export default function CollectionViewField({
     return <DateField value={value} />;
   } else if (type === AdminFieldType.IMAGE) {
     return <ImageField value={value} />;
+  } else if (type === AdminFieldType.EMAIL) {
+    return <EmailField value={value} />;
   } else {
     return <StringField value={value} />;
   }
@@ -45,6 +47,18 @@ export default function CollectionViewField({
 
 const StringField = ({ value }: { value: unknown }) => {
   return String(value);
+};
+
+const EmailField = ({ value }: { value: unknown }) => {
+  return (
+    <a
+      href={`mailto:${String(value)}`}
+      className="flex flex-row items-center gap-x-2 underline"
+    >
+      <MailIcon className="h-4 w-4" />
+      {String(value)}
+    </a>
+  );
 };
 
 const JsonField = ({ value }: { value: unknown }) => {

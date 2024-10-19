@@ -2,8 +2,9 @@ export type SelectOption = { label: string; value: string };
 
 export enum AdminFieldType {
   STRING = 'string',
-  URL = 'url',
   TEXT = 'text',
+  URL = 'url',
+  EMAIL = 'email',
   PASSWORD = 'password',
   BOOLEAN = 'boolean',
   INTEGER = 'int',
@@ -39,6 +40,7 @@ export type AdminAttributeType =
       type:
         | AdminFieldType.STRING
         | AdminFieldType.TEXT
+        | AdminFieldType.EMAIL
         | AdminFieldType.URL
         | AdminFieldType.PASSWORD
         | AdminFieldType.BOOLEAN
