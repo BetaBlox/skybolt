@@ -13,10 +13,7 @@ interface Props {
   attributeTypes: AdminHasOneAttributeType[];
 }
 
-export const RecordHasOneRelationshipsCard = ({
-  record,
-  attributeTypes,
-}: Props) => {
+export const HasOneRelationshipsCard = ({ record, attributeTypes }: Props) => {
   const hasOneAttributes = attributeTypes.filter(
     (attr) => attr.type === AdminFieldType.RELATIONSHIP_HAS_ONE,
   ) as AdminHasOneAttributeType[];

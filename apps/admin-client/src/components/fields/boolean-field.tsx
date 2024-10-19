@@ -1,4 +1,4 @@
-import FieldLabel from '../../features/records/record-field-label';
+import FieldLabel from './record-field-label';
 import { AdminModelField } from '@repo/types';
 import { Switch } from '@/components/switch';
 
