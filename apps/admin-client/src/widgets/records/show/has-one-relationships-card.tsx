@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { captilalize, routeWithParams } from '@repo/utils';
-import { getDashboard } from '@repo/admin-config';
+import { Dashboard, getDashboard } from '@repo/admin-config';
 import {
   AdminFieldType,
   AdminHasOneAttributeType,
@@ -9,14 +9,20 @@ import {
 import { MODEL_RECORD } from '@/common/routes';
 
 interface Props {
+  dashboard: Dashboard<unknown>;
+  modelName: string;
   record: AdminRecord;
-  attributeTypes: AdminHasOneAttributeType[];
 }
 
-export const HasOneRelationshipsCard = ({ record, attributeTypes }: Props) => {
+export const HasOneRelationshipsCard = ({ dashboard, record }: Props) => {
+  const { attributeTypes } = dashboard;
   const hasOneAttributes = attributeTypes.filter(
     (attr) => attr.type === AdminFieldType.RELATIONSHIP_HAS_ONE,
   ) as AdminHasOneAttributeType[];
+
+  if (hasOneAttributes.length === 0) {
+    return null;
+  }
 
   return (
     <div>

@@ -57,21 +57,20 @@ export const UserDashboard = createDashboard<User>({
   showPageWidgets: [
     {
       type: 'row',
-      components: [
-        {
-          componentName: 'ImpersonateUserCard',
-          span: 12,
-        },
-      ],
+      components: [{ componentName: 'RecordDetailsCard', span: 12 }],
     },
     {
       type: 'row',
-      components: [
-        {
-          componentName: 'UpdatePasswordCard',
-          span: 12,
-        },
-      ],
+      heading: 'Related Collections',
+      components: [{ componentName: 'RelatedCollectionTabs', span: 12 }],
+    },
+    {
+      type: 'row',
+      components: [{ componentName: 'ImpersonateUserCard', span: 12 }],
+    },
+    {
+      type: 'row',
+      components: [{ componentName: 'UpdatePasswordCard', span: 12 }],
     },
   ],
 

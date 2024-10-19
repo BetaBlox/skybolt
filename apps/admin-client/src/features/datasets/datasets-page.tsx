@@ -1,4 +1,4 @@
-import PageHeader from '@/components/page-header';
+import PageHeader from '@/widgets/core/page-header';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { routeWithParams } from '@repo/utils';
@@ -16,7 +16,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/components/card';
-import { PageSection } from '@/components/page-section';
+import { PageSection } from '@/widgets/core/page-section';
 import { useState } from 'react';
 import { Input } from '@/components/input';
 import { Spinner } from '@/components/spinner';

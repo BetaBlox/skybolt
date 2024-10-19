@@ -7,7 +7,7 @@ import {
 } from '@repo/types';
 import { getDashboard } from '@repo/admin-config';
 import { MODEL_RECORD } from '@/common/routes';
-import CollectionViewField from '@/features/models/collection-view-field';
+import CollectionViewField from '@/widgets/models/collection-view-field';
 import { routeWithParams } from '@repo/utils';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';

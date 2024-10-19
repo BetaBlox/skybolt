@@ -1,7 +1,7 @@
 import { AdminRecordsPayload, SortDirection } from '@repo/types';
 import { Dashboard } from '@repo/admin-config';
 import { MODEL_RECORD, MODEL_RECORD_EDIT } from '@/common/routes';
-import CollectionViewField from '@/features/models/collection-view-field';
+import CollectionViewField from '@/widgets/models/collection-view-field';
 import { routeWithParams, captilalize } from '@repo/utils';
 import { Link } from 'react-router-dom';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
@@ -17,7 +17,7 @@ import {
   TableBody,
   TableCell,
 } from '@/components/table';
-import FilterForm from '@/features/models/filter-form';
+import FilterForm from '@/widgets/models/filter-form';
 import { SortableTableHeader } from '@/components/sortable-table-header';
 import { ImpersonateButton } from '@/components/ImpersonateButton';
 import { useCollectionState } from '@/hooks/use-collection-state';

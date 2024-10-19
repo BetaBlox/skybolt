@@ -1,4 +1,4 @@
-import { Filter } from '@/features/models/filter-form';
+import { Filter } from '@/widgets/models/filter-form';
 import { SortDirection, SortOrder } from '@repo/types';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';

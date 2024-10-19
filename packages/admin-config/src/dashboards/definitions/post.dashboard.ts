@@ -48,4 +48,16 @@ export const PostDashboard = createDashboard<Post>({
 
   // Text searchable attributes. Only supports String attribute types
   searchAttributes: ['title'],
+
+  showPageWidgets: [
+    {
+      type: 'row',
+      components: [{ componentName: 'RecordDetailsCard', span: 12 }],
+    },
+    {
+      type: 'row',
+      heading: 'Related Records',
+      components: [{ componentName: 'HasOneRelationshipsCard', span: 12 }],
+    },
+  ],
 });

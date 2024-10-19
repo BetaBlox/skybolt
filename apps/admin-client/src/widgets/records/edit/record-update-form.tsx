@@ -29,7 +29,7 @@ interface Props {
   record: AdminRecord;
 }
 
-export default function UpdateForm({
+export default function RecordUpdateForm({
   modelName,
   fields,
   record: defaultData,

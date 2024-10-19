@@ -19,6 +19,12 @@ export function createDashboard<T>(
     isDeletable: config.isDeletable || (() => true),
     isEditable: config.isEditable || (() => true),
     isCreatable: config.isCreatable || (() => true),
+    showPageWidgets: [
+      {
+        type: 'row',
+        components: [{ componentName: 'RecordDetailsCard', span: 12 }],
+      },
+    ],
     ...config,
   };
 }
