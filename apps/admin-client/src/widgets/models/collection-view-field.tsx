@@ -36,6 +36,8 @@ export default function CollectionViewField({
     return <UrlField value={value} />;
   } else if (type === AdminFieldType.DATE) {
     return <DateField value={value} />;
+  } else if (type === AdminFieldType.IMAGE) {
+    return <ImageField value={value} />;
   } else {
     return <StringField value={value} />;
   }
@@ -51,6 +53,10 @@ const JsonField = ({ value }: { value: unknown }) => {
 
 const BooleanField = ({ value }: { value: unknown }) => {
   return value === true ? 'yes' : 'no';
+};
+
+const ImageField = ({ value }: { value: unknown }) => {
+  return value ? <img src={String(value)} className="h-12" /> : null;
 };
 
 const DateField = ({ value }: { value: unknown }) => {

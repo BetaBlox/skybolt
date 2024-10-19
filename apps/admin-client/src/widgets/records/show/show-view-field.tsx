@@ -33,6 +33,8 @@ export default function ShowViewField({
     return <UrlField value={value} />;
   } else if (type === AdminFieldType.DATE) {
     return <DateField value={value} />;
+  } else if (type === AdminFieldType.IMAGE) {
+    return <ImageField value={value} />;
   } else {
     return <StringField value={value} />;
   }
@@ -48,6 +50,23 @@ const JsonField = ({ value }: { value: unknown }) => {
 
 const BooleanField = ({ value }: { value: unknown }) => {
   return value === true ? 'yes' : 'no';
+};
+
+const ImageField = ({ value }: { value: unknown }) => {
+  return value ? (
+    <div>
+      <img src={String(value)} className="h-12" />
+      <a
+        href={String(value)}
+        target="_blank"
+        className="mt-2 flex flex-row items-center gap-x-2 underline"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <span className="line-clamp-1">{String(value)}</span>
+        <ExternalLinkIcon className="h-4 w-4" />
+      </a>
+    </div>
+  ) : null;
 };
 
 const DateField = ({ value }: { value: unknown }) => {

@@ -15,7 +15,7 @@ export const UserDashboard = createDashboard<User>({
     { name: 'firstName', type: AdminFieldType.STRING },
     { name: 'lastName', type: AdminFieldType.STRING },
     { name: 'email', type: AdminFieldType.STRING },
-    { name: 'imageUrl', type: AdminFieldType.URL },
+    { name: 'imageUrl', type: AdminFieldType.IMAGE },
     { name: 'isAdmin', type: AdminFieldType.BOOLEAN },
     { name: 'password', type: AdminFieldType.PASSWORD },
     {
@@ -32,9 +32,15 @@ export const UserDashboard = createDashboard<User>({
     { name: 'createdAt', type: AdminFieldType.DATETIME },
     { name: 'updatedAt', type: AdminFieldType.DATETIME },
   ],
-  collectionAttributes: ['firstName', 'lastName', 'email', 'isAdmin'],
+  collectionAttributes: [
+    'imageUrl',
+    'firstName',
+    'lastName',
+    'email',
+    'isAdmin',
+  ],
   collectionFilterAttributes: ['firstName', 'lastName', 'email'],
-  showAttributes: ['firstName', 'lastName', 'email', 'imageUrl', 'isAdmin'],
+  showAttributes: ['imageUrl', 'firstName', 'lastName', 'email', 'isAdmin'],
   createFormAttributes: [
     'firstName',
     'lastName',
