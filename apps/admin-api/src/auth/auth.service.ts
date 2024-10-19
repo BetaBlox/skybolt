@@ -11,6 +11,7 @@ import { UsersService } from '@/users/users.service';
 import { PrismaService } from '@/prisma/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 import { Logger } from '@nestjs/common';
+import { UpdateProfileDto } from '@/auth/dto/update-profile.dto';
 
 @Injectable()
 export class AuthService {
@@ -74,6 +75,15 @@ export class AuthService {
   async logout(userId: number) {
     this.logger.log(`Logging out userId: ${userId}`);
     return this.usersService.updateRefreshToken(userId, null);
+  }
+
+  async updateProfile(userId: number, data: UpdateProfileDto) {
+    return this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data,
+    });
   }
 
   async createImpersonationToken(

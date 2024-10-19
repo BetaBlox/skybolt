@@ -15,6 +15,7 @@ import { RefreshTokenGuard } from '@/common/guards/refreshToken.guard';
 import { UsersService } from '@/users/users.service';
 import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 import { Logger } from '@nestjs/common';
+import { UpdateProfileDto } from '@/auth/dto/update-profile.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -62,6 +63,17 @@ export class AuthController {
 
     const { password, refreshToken, ...data } = user;
     return data;
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Post('profile')
+  async updateProfile(@Body() dto: UpdateProfileDto, @Req() req: Request) {
+    const userId = req.user['sub'];
+
+    this.logger.log(`Updating admin profile for userId: ${userId}`);
+    const { password, refreshToken, ...user } =
+      await this.authService.updateProfile(userId, dto);
+    return user;
   }
 
   @UseGuards(AccessTokenGuard)

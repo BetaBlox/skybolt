@@ -12,6 +12,7 @@ import {
   MODEL_RECORD_CREATE,
   MODEL_RECORD_EDIT,
   PASSWORD_RESET,
+  PROFILE,
 } from '@/common/routes';
 import HomePage from '@/features/home/home-page';
 import ModelPage from '@/features/models/model-page';
@@ -26,6 +27,7 @@ import PasswordResetPage from '@/auth/password-reset-page';
 import RecordCreatePage from '@/features/records/create/record-create-page';
 import RecordEditPage from '@/features/records/edit/record-edit-page';
 import DatasetsPage from '@/features/datasets/datasets-page';
+import ProfilePage from '@/features/profile/profile-page';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,11 @@ const router = createBrowserRouter([
         path: HOME,
         loader: protectedLoader,
         element: <HomePage />,
+      },
+      {
+        path: PROFILE,
+        loader: protectedLoader,
+        element: <ProfilePage />,
       },
       {
         path: DATASETS,
