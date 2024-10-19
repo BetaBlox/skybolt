@@ -1,4 +1,10 @@
 {
+  "name": "skybolt",
+  "packageManager": "npm@10.2.4",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "dotenv -- turbo run dev --concurrency 11",
     "dev:app": "dotenv -- turbo run dev --filter=api --filter=client",
@@ -41,10 +47,6 @@
     "test:types": "dotenv -e .env.test -- npm run test --workspace=@repo/types",
     "test:paginator": "dotenv -e .env.test -- npm run test --workspace=@repo/paginator"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.1.2",
@@ -62,6 +64,6 @@
   "devDependencies": {
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.11",
-    "turbo": "^1.13.2"
+    "turbo": "^2.2.1"
   }
 }
