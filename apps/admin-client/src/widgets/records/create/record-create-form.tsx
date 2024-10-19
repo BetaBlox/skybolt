@@ -19,6 +19,7 @@ import PasswordField from '@/components/fields/password-field';
 import SelectField from '@/components/fields/select-field';
 import TextField from '@/components/fields/text-field';
 import { Button } from '@/components/button';
+import EmailField from '@/components/fields/email-field';
 
 interface Props {
   modelName: string;
@@ -139,6 +140,9 @@ export default function RecordCreateForm({
               )}
               {attributeType.type === AdminFieldType.TEXT && (
                 <TextField {...defaultFieldProps} />
+              )}
+              {attributeType.type === AdminFieldType.EMAIL && (
+                <EmailField {...defaultFieldProps} />
               )}
               {attributeType.type === AdminFieldType.URL && (
                 <UrlField {...defaultFieldProps} />
