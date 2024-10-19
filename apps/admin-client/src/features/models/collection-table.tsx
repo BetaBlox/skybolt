@@ -21,6 +21,7 @@ import FilterForm from '@/features/models/filter-form';
 import { SortableTableHeader } from '@/components/sortable-table-header';
 import { ImpersonateButton } from '@/components/ImpersonateButton';
 import { useCollectionState } from '@/hooks/use-collection-state';
+import { Spinner } from '@/components/spinner';
 
 interface Props {
   modelName: string;
@@ -69,7 +70,7 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
     placeholderData: keepPreviousData,
   });
 
-  if (modelQuery.isPending) return 'Loading...';
+  if (modelQuery.isPending) return <Spinner />;
   if (modelQuery.isError || !modelName) return 'Error loading data';
 
   const data = modelQuery.data as AdminRecordsPayload;

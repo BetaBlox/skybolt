@@ -14,6 +14,7 @@ import { useMutation } from '@tanstack/react-query';
 import { customFetch, HttpMethod } from '@/common/custom-fetcher';
 import { routeWithParams } from '@repo/utils';
 import { useToast } from '@/components/toast/use-toast';
+import { Spinner } from '@/components/spinner';
 
 interface Props {
   dashboard: Dashboard<User>;
@@ -87,7 +88,7 @@ export const UpdatePasswordCard = ({ record }: Props) => {
           />
           <div className="mt-4">
             <Button type="submit" disabled={!newPassword || mutation.isPending}>
-              {mutation.isPending ? 'Updating...' : 'Update Password'}
+              {mutation.isPending ? <Spinner /> : 'Update Password'}
             </Button>
           </div>
         </form>

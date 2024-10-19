@@ -3,6 +3,7 @@ import { LOGIN } from '@/common/routes';
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 import { Label } from '@/components/label';
+import { Spinner } from '@/components/spinner';
 import { useToast } from '@/components/toast/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -112,7 +113,7 @@ export default function PasswordResetPage() {
                 disabled={resetMutation.isPending}
                 className="w-full"
               >
-                {resetMutation.isPending ? '...' : 'Reset Password'}
+                {resetMutation.isPending ? <Spinner /> : 'Reset Password'}
               </Button>
             </div>
 

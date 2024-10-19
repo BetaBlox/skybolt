@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/button';
 import { useMutation } from '@tanstack/react-query';
 import { customFetch, HttpMethod } from '@/common/custom-fetcher';
+import { Spinner } from '@/components/spinner';
 
 interface ImpersonateButtonProps {
   userId: number;
@@ -40,7 +41,7 @@ export function ImpersonateButton({ userId }: ImpersonateButtonProps) {
       variant={'outline'}
       size="sm"
     >
-      {impersonateMutation.isPending ? 'Impersonating...' : 'Impersonate'}
+      {impersonateMutation.isPending ? <Spinner /> : 'Impersonate'}
     </Button>
   );
 }

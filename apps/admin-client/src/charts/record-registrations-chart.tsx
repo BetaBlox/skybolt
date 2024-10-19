@@ -60,8 +60,8 @@ export const RecordRegistrationsChart = ({ modelName }: Props) => {
         label: `${captilalize(modelName)}`,
         data: registrationsQuery.data,
         backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: 'rgba(75,192,192,1)',
-        pointBackgroundColor: 'rgba(75,192,192,1)',
+        borderColor: 'rgba(0,0,0,0.5)',
+        pointBackgroundColor: 'rgba(0,0,0,1)',
         borderWidth: 2,
         fill: false, // Ensures that the area under the line is not filled
         tension: 0.3, // This adds a slight curve to the line

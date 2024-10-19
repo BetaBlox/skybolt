@@ -15,6 +15,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbPage,
 } from '@/components/breadcrumb';
+import { Spinner } from '@/components/spinner';
 
 export default function RecordEditPage() {
   const { modelName, id } = useParams();
@@ -25,7 +26,7 @@ export default function RecordEditPage() {
       RecordApi.findOne(modelName!, parseInt(id!)).then(({ data }) => data),
   });
 
-  if (recordQuery.isPending) return 'Loading...';
+  if (recordQuery.isPending) return <Spinner />;
   if (recordQuery.isError || !modelName) return 'Error loading data';
 
   const data = recordQuery.data as AdminRecordPayload;
