@@ -101,6 +101,10 @@ export interface AdminModelPayload {
   };
 }
 
+export type AdminRecord = Record<string, any> & {
+  id: number;
+};
+
 export interface AdminRecordsPayload {
   fields: AdminModelField[];
   modelName: string;

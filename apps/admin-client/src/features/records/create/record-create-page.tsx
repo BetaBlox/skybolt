@@ -3,7 +3,6 @@ import PageHeader from '@/components/page-header';
 import { useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
 import { HOME, MODEL } from '@/common/routes';
-import CreateForm from '@/features/records/create/create-form';
 import { getDashboard } from '@repo/admin-config';
 import { AdminRecordPayload } from '@repo/types';
 import { ModelApi } from '@/api/ModelApi';
@@ -16,6 +15,7 @@ import {
   BreadcrumbPage,
 } from '@/components/breadcrumb';
 import { Spinner } from '@/components/spinner';
+import CreateForm from '@/features/records/create/create-form';
 
 export default function RecordCreatePage() {
   const { modelName } = useParams();
