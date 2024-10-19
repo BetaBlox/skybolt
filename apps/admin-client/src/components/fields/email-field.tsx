@@ -30,6 +30,7 @@ export default function EmailField({ field, value, onChange }: Props) {
         required={field.isRequired}
         onChange={handleChange}
         onBlur={() => validateField(value || '')}
+        aria-invalid={!!error}
       />
       <FieldErrorMessage error={error} />
     </div>
