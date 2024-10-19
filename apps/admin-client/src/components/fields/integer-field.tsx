@@ -2,6 +2,8 @@ import { ChangeEvent } from 'react';
 import FieldLabel from './record-field-label';
 import { AdminModelField } from '@repo/types';
 import { Input } from '@/components/input';
+import { useFieldValidation } from '@/hooks/use-field-validation';
+import { FieldErrorMessage } from '@/components/fields/field-error-message';
 
 interface Props {
   field: AdminModelField;
@@ -9,9 +11,12 @@ interface Props {
   onChange: (key: string, value: number) => void;
 }
 export default function IntegerField({ field, value, onChange }: Props) {
+  const { error, validateField } = useFieldValidation(field, value);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.currentTarget.value, 10);
-    onChange(field.name, value);
+    const newValue = parseInt(e.currentTarget.value, 10);
+    onChange(field.name, newValue);
+    validateField(newValue);
   };
 
   return (
@@ -24,7 +29,9 @@ export default function IntegerField({ field, value, onChange }: Props) {
         value={value || ''}
         required={field.isRequired}
         onChange={handleChange}
+        onBlur={() => validateField(value || '')}
       />
+      <FieldErrorMessage error={error} />
     </div>
   );
 }
