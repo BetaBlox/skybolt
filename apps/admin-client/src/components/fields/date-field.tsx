@@ -8,7 +8,7 @@ import { Button } from '@/components/button';
 import { Calendar } from '@/components/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/popover';
 import { AdminModelField } from '@repo/types';
-import FieldLabel from '@/features/records/record-field-label';
+import FieldLabel from '@/components/fields/record-field-label';
 import { createLocalDate } from '@/lib/date';
 
 interface Props {

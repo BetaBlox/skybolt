@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import PageHeader from '@/components/page-header';
 import { useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
-import { HOME, MODEL } from '@/common/routes';
-import CreateForm from '@/features/records/create-form';
-import { getDashboard } from '@repo/admin-config';
+import { HOME, MODEL, MODEL_RECORD } from '@/common/routes';
+import UpdateForm from '@/features/records/edit/update-form';
 import { AdminRecordPayload } from '@repo/types';
-import { ModelApi } from '@/api/ModelApi';
+import { getDashboard } from '@repo/admin-config';
+import { RecordApi } from '@/api/RecordApi';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -17,11 +17,13 @@ import {
 } from '@/components/breadcrumb';
 import { Spinner } from '@/components/spinner';
 
-export default function RecordCreatePage() {
-  const { modelName } = useParams();
+export default function RecordEditPage() {
+  const { modelName, id } = useParams();
+
   const recordQuery = useQuery({
-    queryKey: ['models', modelName],
-    queryFn: async () => ModelApi.findOne(modelName!).then(({ data }) => data),
+    queryKey: [modelName, id],
+    queryFn: async () =>
+      RecordApi.findOne(modelName!, parseInt(id!)).then(({ data }) => data),
   });
 
   if (recordQuery.isPending) return <Spinner />;
@@ -29,8 +31,8 @@ export default function RecordCreatePage() {
 
   const data = recordQuery.data as AdminRecordPayload;
   const dashboard = getDashboard(modelName);
-  const { attributeTypes, createFormAttributes } = dashboard;
-  const { fields } = data;
+
+  const { record, fields } = data;
 
   return (
     <div>
@@ -51,16 +53,28 @@ export default function RecordCreatePage() {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Create</BreadcrumbPage>
+            <BreadcrumbLink
+              to={routeWithParams(MODEL_RECORD, {
+                modelName,
+                id,
+              })}
+            >
+              {dashboard.getDisplayName(record)}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Edit</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <PageHeader heading={'Create'} />
-      <CreateForm
+      <PageHeader heading={dashboard.getDisplayName(record)} />
+      <UpdateForm
         modelName={modelName}
         fields={fields}
-        attributeTypes={attributeTypes}
-        formAttributes={createFormAttributes}
+        record={record}
+        attributeTypes={dashboard.attributeTypes}
+        formAttributes={dashboard.editFormAttributes}
       />
     </div>
   );

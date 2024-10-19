@@ -54,7 +54,7 @@ export const UserDashboard = createDashboard<User>({
   // Text searchable attributes. Only supports String attribute types
   searchAttributes: ['firstName', 'lastName', 'email'],
 
-  showPageCustomComponents: [
+  showPageWidgets: [
     {
       type: 'row',
       components: [

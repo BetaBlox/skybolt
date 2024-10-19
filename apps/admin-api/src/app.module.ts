@@ -11,6 +11,7 @@ import { ModelsModule } from './models/models.module';
 import { RecordsModule } from './records/records.module';
 import { PasswordResetModule } from './password-reset/password-reset.module';
 import { SearchModule } from '@/search/search.module';
+import { UsersWidgetModule } from '@/widgets/users/users-widget.module';
 
 @Module({
   imports: [
@@ -28,6 +29,9 @@ import { SearchModule } from '@/search/search.module';
     ModelsModule,
     RecordsModule,
     SearchModule,
+
+    // Custom widgets
+    UsersWidgetModule,
   ],
   controllers: [AppController],
   providers: [AppService],

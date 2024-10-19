@@ -30,10 +30,7 @@ interface Props {
   attributeType: AdminHasManyAttributeType;
 }
 
-export default function CollectionHasManyTable({
-  record,
-  attributeType,
-}: Props) {
+export default function HasManyTable({ record, attributeType }: Props) {
   const navigate = useNavigate();
   const {
     page,

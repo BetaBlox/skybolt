@@ -21,17 +21,17 @@ import {
 } from '@/components/breadcrumb';
 import { Button } from '@/components/button';
 import { Card, CardContent } from '@/components/card';
-import ShowViewField from '@/features/records/show-view-field';
-import DeleteRecordCard from '@/features/records/delete-record-card';
+import ShowViewField from '@/features/records/show/show-view-field';
+import DeleteRecordCard from '@/features/records/show/delete-record-card';
 import { PageSection } from '@/components/page-section';
-import CollectionHasManyTable from '@/features/records/collection-has-many-table';
+import HasManyTable from '@/features/records/show/has-many-table';
 import { useState } from 'react';
 import { useToast } from '@/components/toast/use-toast';
 import { Edit, Plus, Trash2, X } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/tabs';
-import { CustomComponentLayout } from '@/features/records/custom-component-layout';
+import { WidgetLayout } from '@/features/records/show/widget-layout';
 import { PageSectionHeading } from '@/components/page-section-heading';
-import { RecordHasOneRelationshipsCard } from '@/features/records/record-has-one-relationships-card';
+import { HasOneRelationshipsCard } from '@/features/records/show/has-one-relationships-card';
 import { Spinner } from '@/components/spinner';
 
 export default function RecordShowPage() {
@@ -181,14 +181,14 @@ export default function RecordShowPage() {
       {hasOneAttributes.length > 0 && (
         <PageSection>
           <PageSectionHeading>Related Records</PageSectionHeading>
-          <RecordHasOneRelationshipsCard
+          <HasOneRelationshipsCard
             record={record}
             attributeTypes={hasOneAttributes}
           />
         </PageSection>
       )}
 
-      <CustomComponentLayout
+      <WidgetLayout
         dashboard={dashboard}
         modelName={modelName}
         record={record}
@@ -216,10 +216,7 @@ export default function RecordShowPage() {
                 className="mt-0 rounded-lg rounded-tl-none border-b border-l border-r bg-white pt-10 shadow-md"
               >
                 <div className="">
-                  <CollectionHasManyTable
-                    attributeType={attributeType}
-                    record={record}
-                  />
+                  <HasManyTable attributeType={attributeType} record={record} />
                 </div>
               </TabsContent>
             ))}

@@ -1,8 +1,8 @@
 import React from 'react';
-import { UpdatePasswordCard } from '@/features/records/component-registry/user/update-password-card';
+import { UpdatePasswordCard } from '@/widgets/users/update-password-card';
 import { Dashboard } from '@repo/admin-config';
 import { PageSection } from '@/components/page-section';
-import { ImpersonateUserCard } from '@/features/records/component-registry/user/impersonate-user-card';
+import { ImpersonateUserCard } from '@/widgets/users/impersonate-user-card';
 
 const customComponentMap: Record<string, React.ElementType> = {
   UpdatePasswordCard: UpdatePasswordCard,
@@ -18,8 +18,8 @@ interface Props {
   };
 }
 
-export function CustomComponentLayout({ dashboard, modelName, record }: Props) {
-  const layouts = dashboard?.showPageCustomComponents || [];
+export function WidgetLayout({ dashboard, modelName, record }: Props) {
+  const layouts = dashboard?.showPageWidgets || [];
 
   if (layouts.length === 0) {
     return null;

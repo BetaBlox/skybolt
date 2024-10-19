@@ -15,7 +15,7 @@ import {
 } from '@/common/routes';
 import HomePage from '@/features/home/home-page';
 import ModelPage from '@/features/models/model-page';
-import RecordShowPage from '@/features/records/record-show-page';
+import RecordShowPage from '@/features/records/show/record-show-page';
 import ErrorPage from '@/error-page';
 import ForgotPasswordPage from '@/auth/forgot-password-page';
 import loginAction from '@/auth/login-action';
@@ -23,8 +23,8 @@ import loginLoader from '@/auth/login-loader';
 import Login from '@/auth/login-page';
 import Logout from '@/auth/logout-page';
 import PasswordResetPage from '@/auth/password-reset-page';
-import RecordCreatePage from '@/features/records/record-create-page';
-import RecordEditPage from '@/features/records/record-edit-page';
+import RecordCreatePage from '@/features/records/create/record-create-page';
+import RecordEditPage from '@/features/records/edit/record-edit-page';
 import DatasetsPage from '@/features/datasets/datasets-page';
 
 const router = createBrowserRouter([

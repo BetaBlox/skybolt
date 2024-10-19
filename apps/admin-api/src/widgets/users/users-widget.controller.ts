@@ -7,17 +7,17 @@ import {
   Param,
   ParseIntPipe,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersWidgetService } from './users-widget.service';
 import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 import { Request } from 'express';
 import { Logger } from '@nestjs/common';
-import { ChangePasswordDto } from '@/users/dto/change-password.dto';
+import { ChangePasswordDto } from '@/widgets/users/dto/change-password.dto';
 
-@Controller('users')
-export class UsersController {
-  private readonly logger = new Logger(UsersController.name);
+@Controller('/widgets/users')
+export class UsersWidgetController {
+  private readonly logger = new Logger(UsersWidgetController.name);
 
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersWidgetService) {}
 
   @UseGuards(AccessTokenGuard)
   @Put('/:id/change-password')

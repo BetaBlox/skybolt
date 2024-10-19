@@ -19,5 +19,5 @@ export interface Dashboard<T> {
   isCreatable: () => boolean;
 
   // New field for custom component layouts on the records show page
-  showPageCustomComponents?: AdminCustomComponentLayout[]; // Optional field to define layout and custom components
+  showPageWidgets?: AdminCustomComponentLayout[]; // Optional field to define layout and custom components
 }

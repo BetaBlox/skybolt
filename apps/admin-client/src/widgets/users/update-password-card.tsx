@@ -28,7 +28,7 @@ export const UpdatePasswordCard = ({ record }: Props) => {
   const mutation = useMutation({
     mutationKey: ['update-password', record.id],
     mutationFn: async (password: string) => {
-      const url = routeWithParams(`/api/users/:id/change-password`, {
+      const url = routeWithParams(`/api/widgets/users/:id/change-password`, {
         id: String(record.id),
       });
       const { response, data } = await customFetch(url, {
