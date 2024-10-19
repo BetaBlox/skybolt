@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import PageHeader from '@/components/page-header';
+import PageHeader from '@/widgets/core/page-header';
 import { useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
 import { HOME, MODEL, MODEL_RECORD } from '@/common/routes';
-import UpdateForm from '@/features/records/edit/update-form';
+import RecordUpdateForm from '@/widgets/records/edit/record-update-form';
 import { AdminRecordPayload } from '@repo/types';
 import { getDashboard } from '@repo/admin-config';
 import { RecordApi } from '@/api/RecordApi';
@@ -69,7 +69,7 @@ export default function RecordEditPage() {
         </BreadcrumbList>
       </Breadcrumb>
       <PageHeader heading={dashboard.getDisplayName(record)} />
-      <UpdateForm
+      <RecordUpdateForm
         modelName={modelName}
         fields={fields}
         record={record}

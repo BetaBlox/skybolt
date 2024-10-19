@@ -27,7 +27,7 @@ interface Props {
   formAttributes: string[];
 }
 
-export default function CreateForm({
+export default function RecordCreateForm({
   modelName,
   fields,
   attributeTypes,

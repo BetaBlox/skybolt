@@ -1,15 +1,10 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { captilalize, routeWithParams } from '@repo/utils';
-import PageHeader from '@/components/page-header';
+import { routeWithParams } from '@repo/utils';
+import PageHeader from '@/widgets/core/page-header';
 import { HOME, MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
-import {
-  AdminRecordPayload,
-  AdminFieldType,
-  AdminHasManyAttributeType,
-  AdminHasOneAttributeType,
-} from '@repo/types';
-import { getAttributeType, getDashboard } from '@repo/admin-config';
+import { AdminRecordPayload } from '@repo/types';
+import { getDashboard } from '@repo/admin-config';
 import { RecordApi } from '@/api/RecordApi';
 import {
   Breadcrumb,
@@ -20,18 +15,12 @@ import {
   BreadcrumbPage,
 } from '@/components/breadcrumb';
 import { Button } from '@/components/button';
-import { Card, CardContent } from '@/components/card';
-import ShowViewField from '@/features/records/show/show-view-field';
-import DeleteRecordCard from '@/features/records/show/delete-record-card';
-import { PageSection } from '@/components/page-section';
-import HasManyTable from '@/features/records/show/has-many-table';
+import DeleteRecordCard from '@/widgets/records/show/delete-record-card';
+import { PageSection } from '@/widgets/core/page-section';
 import { useState } from 'react';
 import { useToast } from '@/components/toast/use-toast';
 import { Edit, Plus, Trash2, X } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/tabs';
 import { WidgetLayout } from '@/features/records/show/widget-layout';
-import { PageSectionHeading } from '@/components/page-section-heading';
-import { HasOneRelationshipsCard } from '@/features/records/show/has-one-relationships-card';
 import { Spinner } from '@/components/spinner';
 
 export default function RecordShowPage() {
@@ -77,7 +66,7 @@ export default function RecordShowPage() {
   const dashboard = getDashboard(data.modelName);
 
   const { record } = data;
-  const { showAttributes, getDisplayName } = dashboard;
+  const { getDisplayName } = dashboard;
   const isEditable = dashboard.isEditable(record);
   const isDeletable = dashboard.isDeletable(record);
 
@@ -93,14 +82,6 @@ export default function RecordShowPage() {
       </Link>
     </Button>
   ) : null;
-
-  const hasManyAttributes = dashboard.attributeTypes.filter(
-    (attr) => attr.type === AdminFieldType.RELATIONSHIP_HAS_MANY,
-  ) as AdminHasManyAttributeType[];
-
-  const hasOneAttributes = dashboard.attributeTypes.filter(
-    (attr) => attr.type === AdminFieldType.RELATIONSHIP_HAS_ONE,
-  ) as AdminHasOneAttributeType[];
 
   return (
     <div>
@@ -127,102 +108,15 @@ export default function RecordShowPage() {
       </Breadcrumb>
       <PageHeader heading={getDisplayName(record)} actions={actions} />
 
-      <PageSection>
-        <Card>
-          <CardContent>
-            <dl className="divide-y divide-gray-100">
-              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-bold leading-6 text-gray-900">
-                  Id
-                </dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                  {record.id}
-                </dd>
-              </div>
-
-              {showAttributes.map((attribute) => {
-                const attributeType = getAttributeType(modelName, attribute);
-
-                return (
-                  <div
-                    key={attributeType.name}
-                    className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0"
-                  >
-                    <dt className="text-sm font-bold leading-6 text-gray-900">
-                      {captilalize(attributeType.name)}
-                    </dt>
-                    {attributeType.type === AdminFieldType.JSON ? (
-                      <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                        <pre>
-                          <ShowViewField
-                            record={record}
-                            modelName={modelName}
-                            attribute={attribute}
-                          />
-                        </pre>
-                      </dd>
-                    ) : (
-                      <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                        <ShowViewField
-                          record={record}
-                          modelName={modelName}
-                          attribute={attribute}
-                        />
-                      </dd>
-                    )}
-                  </div>
-                );
-              })}
-            </dl>
-          </CardContent>
-        </Card>
-      </PageSection>
-
-      {hasOneAttributes.length > 0 && (
-        <PageSection>
-          <PageSectionHeading>Related Records</PageSectionHeading>
-          <HasOneRelationshipsCard
-            record={record}
-            attributeTypes={hasOneAttributes}
-          />
-        </PageSection>
-      )}
-
+      {/* Custom widgets from record dashboard configuration. 
+          Eventually we're planning to move all components here
+          to make the admin dashboards fully customizable
+      */}
       <WidgetLayout
         dashboard={dashboard}
         modelName={modelName}
         record={record}
       />
-
-      {hasManyAttributes.length > 0 && (
-        <PageSection>
-          <PageSectionHeading>Related Collections</PageSectionHeading>
-          <Tabs defaultValue={hasManyAttributes[0].name}>
-            <TabsList className="h-14 pl-0">
-              {hasManyAttributes.map((attributeType) => (
-                <TabsTrigger
-                  key={attributeType.name}
-                  value={attributeType.name}
-                  className="h-14 rounded-bl-none rounded-br-none text-lg data-[state=active]:border-l data-[state=active]:border-r data-[state=active]:border-t data-[state=active]:shadow-none"
-                >
-                  {captilalize(attributeType.name)}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {hasManyAttributes.map((attributeType) => (
-              <TabsContent
-                key={attributeType.name}
-                value={attributeType.name}
-                className="mt-0 rounded-lg rounded-tl-none border-b border-l border-r bg-white pt-10 shadow-md"
-              >
-                <div className="">
-                  <HasManyTable attributeType={attributeType} record={record} />
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </PageSection>
-      )}
 
       {isDeletable && (
         <PageSection>

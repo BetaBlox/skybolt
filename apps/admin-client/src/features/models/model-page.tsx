@@ -1,9 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
-import PageHeader from '@/components/page-header';
+import PageHeader from '@/widgets/core/page-header';
 import { HOME, MODEL_RECORD_CREATE } from '@/common/routes';
 import { getDashboard } from '@repo/admin-config';
-import CollectionTable from './collection-table';
+import CollectionTable from '../../widgets/models/collection-table';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -14,9 +14,9 @@ import {
 } from '@/components/breadcrumb';
 import { Button } from '@/components/button';
 import { RecordRegistrationsChart } from '@/charts/record-registrations-chart';
-import { KpiCards } from '@/features/models/kpi-cards';
-import { PageSection } from '@/components/page-section';
-import { PageSectionHeading } from '@/components/page-section-heading';
+import { KpiCards } from '@/widgets/models/kpi-cards';
+import { PageSection } from '@/widgets/core/page-section';
+import { PageSectionHeading } from '@/widgets/core/page-section-heading';
 import { useState } from 'react';
 import { FilePlus, Plus, X } from 'lucide-react';
 

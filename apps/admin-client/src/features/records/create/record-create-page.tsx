@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import PageHeader from '@/components/page-header';
+import PageHeader from '@/widgets/core/page-header';
 import { useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
 import { HOME, MODEL } from '@/common/routes';
@@ -15,7 +15,7 @@ import {
   BreadcrumbPage,
 } from '@/components/breadcrumb';
 import { Spinner } from '@/components/spinner';
-import CreateForm from '@/features/records/create/create-form';
+import RecordCreateForm from '@/widgets/records/create/record-create-form';
 
 export default function RecordCreatePage() {
   const { modelName } = useParams();
@@ -56,7 +56,7 @@ export default function RecordCreatePage() {
         </BreadcrumbList>
       </Breadcrumb>
       <PageHeader heading={'Create'} />
-      <CreateForm
+      <RecordCreateForm
         modelName={modelName}
         fields={fields}
         attributeTypes={attributeTypes}

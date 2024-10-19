@@ -1,5 +1,5 @@
 import { customFetch, HttpMethod } from '@/common/custom-fetcher';
-import { Filter } from '@/features/models/filter-form';
+import { Filter } from '@/widgets/models/filter-form';
 import { SortDirection, SortOrder } from '@repo/types';
 import { routeWithParams } from '@repo/utils';
 

@@ -1,4 +1,4 @@
-import PageHeader from '@/components/page-header';
+import PageHeader from '@/widgets/core/page-header';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { routeWithParams } from '@repo/utils';
@@ -17,8 +17,8 @@ import {
   CardFooter,
 } from '@/components/card';
 import { RecordRegistrationsChart } from '@/charts/record-registrations-chart';
-import { PageSection } from '@/components/page-section';
-import { PageSectionHeading } from '@/components/page-section-heading';
+import { PageSection } from '@/widgets/core/page-section';
+import { PageSectionHeading } from '@/widgets/core/page-section-heading';
 import { PinIcon, UserIcon } from 'lucide-react';
 import { Spinner } from '@/components/spinner';
 

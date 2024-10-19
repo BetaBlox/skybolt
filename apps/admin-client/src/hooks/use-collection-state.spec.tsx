@@ -1,4 +1,4 @@
-import { Filter } from '@/features/models/filter-form';
+import { Filter } from '@/widgets/models/filter-form';
 import {
   useCollectionState,
   UseCollectionStateReturn,

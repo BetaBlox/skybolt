@@ -1,7 +1,8 @@
 import { Dashboard } from '@repo/admin-config';
-import { PageSection } from '@/components/page-section';
+import { PageSection } from '@/widgets/core/page-section';
 import { widgets } from '@/widgets';
 import { AdminRecord } from '@repo/types';
+import { PageSectionHeading } from '@/widgets/core/page-section-heading';
 
 interface Props {
   dashboard: Dashboard<unknown>;
@@ -20,6 +21,9 @@ export function WidgetLayout({ dashboard, modelName, record }: Props) {
     <div>
       {layouts.map((row, rowIndex) => (
         <PageSection key={rowIndex}>
+          {row.heading ? (
+            <PageSectionHeading>{row.heading}</PageSectionHeading>
+          ) : null}
           <div className="grid grid-cols-12 gap-4">
             {row.components.map((comp) => {
               const Widget = widgets[comp.componentName];

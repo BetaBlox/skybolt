@@ -117,11 +117,12 @@ export interface AdminRecordPayload {
   record: any;
 }
 
-export interface AdminCustomComponentLayout {
+export interface AdminWidgetLayout {
   type: 'row' | 'column'; // Define whether components are placed in a row or column
+  heading?: string; // Optional: Heading for the row or column
   components: {
     componentName: string; // The name of the custom component to render
-    span?: number; // Optional: Determines how much space the component takes in a 12-column grid
+    span: number; // Column widget for the widget on the dashboard page
   }[];
 }
 
