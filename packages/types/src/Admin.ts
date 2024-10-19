@@ -13,6 +13,7 @@ export enum AdminFieldType {
   RELATIONSHIP_HAS_MANY = 'relationship_has_many',
   DATE = 'date',
   DATETIME = 'datetime',
+  IMAGE = 'image',
 }
 
 export enum AdminFilterType {
@@ -44,7 +45,8 @@ export type AdminAttributeType =
         | AdminFieldType.INTEGER
         | AdminFieldType.JSON
         | AdminFieldType.DATE
-        | AdminFieldType.DATETIME;
+        | AdminFieldType.DATETIME
+        | AdminFieldType.IMAGE;
     }
   // Select type with options
   | {
