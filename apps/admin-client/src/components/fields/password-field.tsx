@@ -31,6 +31,7 @@ export default function PasswordField({ field, value, onChange }: Props) {
         onChange={handleChange}
         autoComplete="none"
         onBlur={() => validateField(value || '')}
+        aria-invalid={!!error}
       />
       <FieldErrorMessage error={error} />
     </div>

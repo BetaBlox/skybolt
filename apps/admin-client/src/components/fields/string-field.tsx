@@ -29,6 +29,7 @@ export default function StringField({ field, value, onChange }: Props) {
         required={field.isRequired}
         onChange={handleChange}
         onBlur={() => validateField(value || '')}
+        aria-invalid={!!error}
       />
       {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
     </div>
