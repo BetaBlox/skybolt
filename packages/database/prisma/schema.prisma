@@ -15,6 +15,7 @@ model User {
   firstName           String
   lastName            String
   email               String               @unique
+  bio                 String?              @default("")
   password            String
   refreshToken        String?
   imageUrl            String?
@@ -55,14 +56,14 @@ model Product {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String
-  authorId  Int
-  author    User     @relation(fields: [authorId], references: [id])
-  publishDate String? 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  authorId    Int
+  author      User     @relation(fields: [authorId], references: [id])
+  publishDate String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
 
 model Color {

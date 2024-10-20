@@ -112,6 +112,7 @@ export default function RecordUpdateForm({
           const attributeType = attributeTypes.find(
             (at) => at.name === attribute,
           );
+
           const field = fields.find(
             (f) => f.name.toLowerCase() === attribute.toLowerCase(),
           );
@@ -130,6 +131,7 @@ export default function RecordUpdateForm({
 
           const defaultFieldProps = {
             field: field,
+            attributeType,
             value: data[attribute],
             onChange: handleChange,
           };

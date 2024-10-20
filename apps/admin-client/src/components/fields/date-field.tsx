@@ -7,12 +7,13 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/button';
 import { Calendar } from '@/components/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/popover';
-import { AdminModelField } from '@repo/types';
+import { AdminAttributeType, AdminModelField } from '@repo/types';
 import FieldLabel from '@/components/fields/record-field-label';
 import { createLocalDate } from '@/lib/date';
 
 interface Props {
   field: AdminModelField;
+  attributeType: AdminAttributeType;
   value: string;
   onChange: (key: string, value: string) => void;
 }
@@ -29,7 +30,7 @@ export default function DateField({ field, value, onChange }: Props) {
   return (
     <div>
       <FieldLabel field={field} />
-      <div>
+      <div className="mt-2">
         <Popover>
           <PopoverTrigger asChild>
             <Button
