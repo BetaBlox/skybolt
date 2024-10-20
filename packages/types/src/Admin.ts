@@ -38,8 +38,6 @@ export type AdminAttributeType =
   | {
       name: string;
       type:
-        | AdminFieldType.STRING
-        | AdminFieldType.TEXT
         | AdminFieldType.EMAIL
         | AdminFieldType.URL
         | AdminFieldType.PASSWORD
@@ -49,6 +47,21 @@ export type AdminAttributeType =
         | AdminFieldType.DATE
         | AdminFieldType.DATETIME
         | AdminFieldType.IMAGE;
+    }
+  // String type with min and max length
+  | {
+      name: string;
+      type: AdminFieldType.STRING;
+      minLength?: number;
+      maxLength?: number;
+    }
+  // Text type with min and max length
+  | {
+      name: string;
+      type: AdminFieldType.TEXT;
+      minLength?: number;
+      maxLength?: number;
+      rows?: number;
     }
   // Select type with options
   | {

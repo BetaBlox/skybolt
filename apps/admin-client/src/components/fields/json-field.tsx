@@ -7,6 +7,7 @@
 
 // interface Props {
 //   field: AdminModelField;
+//   attributeType: AdminAttributeType;
 //   value: string;
 //   onChange: (key: string, value: any) => void;
 // }

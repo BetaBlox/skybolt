@@ -129,6 +129,7 @@ export default function RecordCreateForm({
 
           const defaultFieldProps = {
             field: field,
+            attributeType,
             value: data[attribute],
             onChange: handleChange,
           };

@@ -54,26 +54,28 @@ export default function RelationshipHasOneField({
   return (
     <div>
       <FieldLabel field={field} />
-      <Select
-        // id={field.name}
-        name={field.name}
-        value={value}
-        required={field.isRequired}
-        onValueChange={(value: string) =>
-          onChange(attributeType.sourceKey!, parseInt(value, 10))
-        }
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="Select one" />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="mt-2">
+        <Select
+          // id={field.name}
+          name={field.name}
+          value={value}
+          required={field.isRequired}
+          onValueChange={(value: string) =>
+            onChange(attributeType.sourceKey!, parseInt(value, 10))
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select one" />
+          </SelectTrigger>
+          <SelectContent>
+            {options.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 }
