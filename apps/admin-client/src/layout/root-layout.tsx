@@ -35,7 +35,7 @@ export default function RootLayout() {
     location.pathname === navItem.href;
 
   const { user } = AuthProvider;
-  const imageUrl = user?.imageUrl || undefined;
+  const imageUrl = undefined; // user?.imageUrl || undefined;
   const fullName = `${user?.firstName} ${user?.lastName}`;
   const initials = `${user?.firstName[0]}${user?.lastName[0]}`;
 
