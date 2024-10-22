@@ -7,7 +7,7 @@ import {
   AdminFieldType,
   AdminModelField,
 } from '@repo/types';
-import { RecordApi } from '@/api/RecordApi';
+import { RecordApi, RecordCreatePayload } from '@/api/RecordApi';
 import { useToast } from '@/components/toast/use-toast';
 import UrlField from '@/components/fields/url-field';
 import DateField from '@/components/fields/date-field';
@@ -20,6 +20,9 @@ import SelectField from '@/components/fields/select-field';
 import TextField from '@/components/fields/text-field';
 import { Button } from '@/components/button';
 import EmailField from '@/components/fields/email-field';
+import ImageField from '@/components/fields/image-field';
+import { Spinner } from '@/components/spinner';
+import { Dashboard, getDashboard } from '@repo/admin-config';
 
 interface Props {
   modelName: string;
@@ -34,51 +37,30 @@ export default function RecordCreateForm({
   attributeTypes,
   formAttributes,
 }: Props) {
+  const dashboard = getDashboard(modelName);
   const navigate = useNavigate();
   const { toast } = useToast();
   const [data, setData] = useState({});
   const [saving, setSaving] = useState(false);
 
-  // const dashboard = getDashboard(modelName);
-
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setSaving(true);
     e.preventDefault();
 
-    const payload = {};
-
-    // Filter out non supported parameters for submit
-    Object.keys(data)
-      .filter(
-        (key) =>
-          formAttributes.includes(key) ||
-          formAttributes.includes(key.replace('Id', '')), // Hack to still support relationship fields like authorId -> author
-      )
-      .forEach((key) => (payload[key] = data[key]));
+    const payload = filterPayload(data, dashboard);
 
     try {
-      const { response, data: json } = await RecordApi.create(
-        modelName,
-        payload,
-      );
+      const createdRecordPayload = await RecordApi.create(modelName, payload);
 
-      if (response.ok) {
-        toast({
-          title: 'Record created.',
-          description: 'Your data has been saved.',
-        });
-        const showUrl = routeWithParams(MODEL_RECORD, {
-          modelName,
-          id: json.record.id,
-        });
-        navigate(showUrl);
-      } else {
-        toast({
-          title: 'Uh oh! Something went wrong.',
-          description: 'There was a problem with your request.',
-          variant: 'destructive',
-        });
-      }
+      toast({
+        title: 'Record created.',
+        description: 'Your data has been saved.',
+      });
+      const showUrl = routeWithParams(MODEL_RECORD, {
+        modelName,
+        id: createdRecordPayload.record.id,
+      });
+      navigate(showUrl);
     } catch (error) {
       console.error(error);
       toast({
@@ -93,7 +75,7 @@ export default function RecordCreateForm({
 
   const handleChange = (
     key: string,
-    value: string | number | boolean | null,
+    value: string | number | boolean | File | null,
   ) => {
     const newData = {
       ...data,
@@ -169,6 +151,9 @@ export default function RecordCreateForm({
               {attributeType.type === AdminFieldType.BOOLEAN && (
                 <BooleanField {...defaultFieldProps} />
               )}
+              {attributeType.type === AdminFieldType.IMAGE && (
+                <ImageField {...defaultFieldProps} asset={null} />
+              )}
               {attributeType.type === AdminFieldType.RELATIONSHIP_HAS_ONE && (
                 <RelationshipHasOneField
                   {...defaultFieldProps}
@@ -184,10 +169,46 @@ export default function RecordCreateForm({
         })}
         <hr className="my-10" />
         <Button type="submit" disabled={saving}>
-          Submit
+          {saving ? <Spinner /> : 'Submit'}
         </Button>
         {/* {error && <FormError error={error} />} */}
       </div>
     </form>
   );
 }
+
+const filterPayload = (
+  data: object,
+  dashboard: Dashboard<unknown>,
+): RecordCreatePayload => {
+  const result = {};
+  const keys = Object.keys(data);
+
+  keys
+    .filter((key) => {
+      // Include and directly creatable fields from our create form defintion
+      if (dashboard.createFormAttributes.includes(key)) {
+        return true;
+      }
+
+      // Hack to make hasOne relationships still work. Really we need to rework the definition type
+      const hasOneAttr = dashboard.attributeTypes.find(
+        (attributeType: AdminAttributeType) =>
+          attributeType.name === key.replace('Id', ''),
+      );
+      // Include include related source keys to any hasOne relationships
+      if (
+        hasOneAttr?.type === AdminFieldType.RELATIONSHIP_HAS_ONE &&
+        hasOneAttr.sourceKey === key
+      ) {
+        return true;
+      }
+
+      return false;
+    })
+    .forEach((key) => {
+      result[key] = data[key];
+    });
+
+  return result;
+};

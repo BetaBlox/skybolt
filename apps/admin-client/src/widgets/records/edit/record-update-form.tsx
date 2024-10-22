@@ -21,6 +21,18 @@ import TextField from '@/components/fields/text-field';
 import UrlField from '@/components/fields/url-field';
 import { Button } from '@/components/button';
 import EmailField from '@/components/fields/email-field';
+import ImageField from '@/components/fields/image-field';
+import { Spinner } from '@/components/spinner';
+import { Dashboard, getDashboard } from '@repo/admin-config';
+import { Asset } from '@repo/database';
+
+type AdminRecordAssets = {
+  [key: string]: {
+    asset: Asset | null;
+    action: 'create' | 'delete' | 'none';
+    file: File | null;
+  };
+};
 
 interface Props {
   modelName: string;
@@ -33,56 +45,42 @@ interface Props {
 export default function RecordUpdateForm({
   modelName,
   fields,
-  record: defaultData,
+  record,
   attributeTypes,
   formAttributes,
 }: Props) {
+  const dashboard = getDashboard(modelName);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [data, setData] = useState(defaultData);
+  const [jsonData, setJsonData] = useState(
+    getDefaultData(record, dashboard).json,
+  );
+  const [assetData, setAssetData] = useState<AdminRecordAssets>(
+    getDefaultData(record, dashboard).assets,
+  );
   const [saving, setSaving] = useState(false);
-
-  // const dashboard = getDashboard(modelName);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setSaving(true);
     e.preventDefault();
 
-    const payload = {};
-
-    // Filter out non supported parameters for submit
-    Object.keys(data)
-      .filter(
-        (key) =>
-          formAttributes.includes(key) ||
-          formAttributes.includes(key.replace('Id', '')), // Hack to still support relationship fields like authorId -> author
-      )
-      .forEach((key) => (payload[key] = data[key]));
-
     try {
-      const { response, data: json } = await RecordApi.update(
+      const updatedRecordPayload = await RecordApi.update(
         modelName,
-        data.id,
-        payload,
+        record,
+        jsonData,
+        assetData,
       );
 
-      if (response.ok) {
-        toast({
-          title: 'Record updated.',
-          description: 'Your data has been saved.',
-        });
-        const showUrl = routeWithParams(MODEL_RECORD, {
-          modelName,
-          id: json.record.id,
-        });
-        navigate(showUrl);
-      } else {
-        toast({
-          title: 'Uh oh! Something went wrong.',
-          description: 'There was a problem with your request.',
-          variant: 'destructive',
-        });
-      }
+      toast({
+        title: 'Record updated.',
+        description: 'Your data has been saved.',
+      });
+      const showUrl = routeWithParams(MODEL_RECORD, {
+        modelName,
+        id: updatedRecordPayload.record.id,
+      });
+      navigate(showUrl);
     } catch (error) {
       console.error(error);
       toast({
@@ -97,13 +95,45 @@ export default function RecordUpdateForm({
 
   const handleChange = (
     key: string,
-    value: string | number | boolean | null,
+    value: string | number | boolean | File | null,
   ) => {
-    setData({
-      ...data,
-      [key]: value,
-    });
+    const isJsonField = !!jsonData[key];
+    const isAssetField = !!assetData[key];
+
+    if (!isJsonField && !isAssetField) {
+      throw new Error(
+        `Field ${key} is not found in the json or asset data object.`,
+      );
+    }
+
+    if (isAssetField && value === null) {
+      setAssetData({
+        ...assetData,
+        [key]: {
+          ...assetData[key],
+          action: 'delete',
+          file: null,
+        },
+      });
+    } else if (isAssetField && value instanceof File) {
+      setAssetData({
+        ...assetData,
+        [key]: {
+          ...assetData[key],
+          action: 'create',
+          file: value,
+        },
+      });
+    } else if (isJsonField) {
+      setJsonData({
+        ...jsonData,
+        [key]: value,
+      });
+    }
   };
+
+  console.log('jsonData', jsonData);
+  console.log('assetData', assetData);
 
   return (
     <form onSubmit={onSubmit}>
@@ -132,7 +162,7 @@ export default function RecordUpdateForm({
           const defaultFieldProps = {
             field: field,
             attributeType,
-            value: data[attribute],
+            value: jsonData[attribute],
             onChange: handleChange,
           };
 
@@ -171,10 +201,16 @@ export default function RecordUpdateForm({
               {attributeType.type === AdminFieldType.BOOLEAN && (
                 <BooleanField {...defaultFieldProps} />
               )}
+              {attributeType.type === AdminFieldType.IMAGE && (
+                <ImageField
+                  {...defaultFieldProps}
+                  asset={assetData[attribute].asset}
+                />
+              )}
               {attributeType.type === AdminFieldType.RELATIONSHIP_HAS_ONE && (
                 <RelationshipHasOneField
                   {...defaultFieldProps}
-                  value={data[attributeType.sourceKey as string]}
+                  value={jsonData[attributeType.sourceKey as string]}
                   modelName={modelName}
                   attribute={attribute}
                   attributeType={attributeType}
@@ -186,10 +222,73 @@ export default function RecordUpdateForm({
         })}
         <hr className="my-10" />
         <Button type="submit" disabled={saving}>
-          Submit
+          {saving ? <Spinner /> : 'Submit'}
         </Button>
         {/* {error && <FormError error={error} />} */}
       </div>
     </form>
   );
+}
+
+function getDefaultData(
+  data: AdminRecord,
+  dashboard: Dashboard<unknown>,
+): {
+  json: AdminRecord;
+  assets: AdminRecordAssets;
+} {
+  const json: AdminRecord = {
+    id: data.id,
+  };
+  const assets: AdminRecordAssets = {};
+  const editableKeys = Object.keys(data).filter((key) => {
+    const attrType = dashboard.attributeTypes.find(
+      (attributeType: AdminAttributeType) => attributeType.name === key,
+    );
+
+    // Include and directly editable fields from our edit form defintion
+    if (dashboard.editFormAttributes.includes(key)) {
+      return true;
+    }
+
+    // Include include related source keys to any hasOne relationships
+    if (
+      attrType?.type === AdminFieldType.RELATIONSHIP_HAS_ONE &&
+      attrType.sourceKey === key
+    ) {
+      return true;
+    }
+
+    return false;
+  });
+
+  // Separate json data from file asset data
+  editableKeys.forEach((key) => {
+    const value = data[key];
+    const attributeType = dashboard.attributeTypes.find(
+      (attributeType: AdminAttributeType) => attributeType.name === key,
+    );
+
+    if (!attributeType) {
+      throw new Error(`Attribute ${key} not found in the dashboard.`);
+    }
+
+    const isFileAttribute = attributeType.type === AdminFieldType.IMAGE;
+    const isJsonData = !isFileAttribute;
+
+    if (isFileAttribute) {
+      assets[key] = {
+        asset: value,
+        action: 'none',
+        file: null,
+      };
+    } else if (isJsonData) {
+      json[key] = value;
+    }
+  });
+
+  return {
+    json,
+    assets,
+  };
 }
