@@ -1,6 +1,7 @@
 import { MODEL_RECORD } from '@/common/routes';
 import { createLocalDate } from '@/lib/date';
 import { getAttributeType, getDashboard } from '@repo/admin-config';
+import { Asset } from '@repo/database';
 import { AdminFieldType, AdminHasOneAttributeType } from '@repo/types';
 import { routeWithParams } from '@repo/utils';
 import { format } from 'date-fns';
@@ -34,7 +35,8 @@ export default function ShowViewField({
   } else if (type === AdminFieldType.DATE) {
     return <DateField value={value} />;
   } else if (type === AdminFieldType.IMAGE) {
-    return <ImageField value={value} />;
+    const asset = value as Asset;
+    return <ImageField asset={asset} />;
   } else if (type === AdminFieldType.EMAIL) {
     return <EmailField value={value} />;
   } else {
@@ -66,17 +68,23 @@ const BooleanField = ({ value }: { value: unknown }) => {
   return value === true ? 'yes' : 'no';
 };
 
-const ImageField = ({ value }: { value: unknown }) => {
-  return value ? (
+const ImageField = ({ asset }: { asset: Asset }) => {
+  return asset ? (
     <div>
-      <img src={String(value)} className="h-12" />
+      <div className="mb-4">
+        <img
+          src={String(asset.fileUrl)}
+          alt={asset.fileName}
+          className="h-24 rounded border object-cover"
+        />
+      </div>
       <a
-        href={String(value)}
+        href={String(asset.fileUrl)}
         target="_blank"
         className="mt-2 flex flex-row items-center gap-x-2 underline"
         onClick={(e) => e.stopPropagation()}
       >
-        <span className="line-clamp-1">{String(value)}</span>
+        <span className="line-clamp-1">Full preview</span>
         <ExternalLinkIcon className="h-4 w-4" />
       </a>
     </div>

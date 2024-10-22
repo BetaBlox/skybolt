@@ -18,7 +18,8 @@ model User {
   bio                 String?              @default("")
   password            String
   refreshToken        String?
-  imageUrl            String?
+  imageId        Int? // Optional reference to an image asset
+  image          Asset?               @relation(fields: [imageId], references: [id]) // Optional relation to the Asset model
   isAdmin             Boolean              @default(false)
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @default(now())
@@ -44,6 +45,21 @@ model PasswordReset {
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+}
+
+model Asset {
+  id        Int      @id @default(autoincrement())
+  fileName  String
+  fileType  String
+  fileUrl   String
+  size      Int
+  modelName String // Name of the model this asset is associated with (e.g., "User", "Project")
+  recordId  Int // ID of the specific record in the model (e.g., userId, projectId)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+
+  @@index([modelName, recordId]) // Index to optimize querying assets for a specific model/record
 }
 
 model Product {

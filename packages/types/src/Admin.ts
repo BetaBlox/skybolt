@@ -45,8 +45,7 @@ export type AdminAttributeType =
         | AdminFieldType.INTEGER
         | AdminFieldType.JSON
         | AdminFieldType.DATE
-        | AdminFieldType.DATETIME
-        | AdminFieldType.IMAGE;
+        | AdminFieldType.DATETIME;
     }
   // String type with min and max length
   | {
@@ -69,12 +68,18 @@ export type AdminAttributeType =
       type: AdminFieldType.SELECT;
       options: SelectOption[]; // Required for the SELECT type
     }
+  | {
+      name: string;
+      type: AdminFieldType.IMAGE;
+      modelName: string; // The related model's name
+      sourceKey: string; // The foreign key id field on this model
+    }
   // Has One relationship
   | {
       name: string;
       type: AdminFieldType.RELATIONSHIP_HAS_ONE;
       modelName: string; // The related model's name
-      sourceKey: string; // The field in the related model
+      sourceKey: string; // The foreign key id field on this model
       relatedAttributes?: RelatedAttribute[];
     }
   // Has Many relationship

@@ -418,7 +418,10 @@ function buildWhereClause(filters: Filter[], currentModelName: string) {
 function buildIncludeClause(dashboard: Dashboard<unknown>) {
   const include = {};
   dashboard.attributeTypes.forEach((at) => {
-    if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
+    if (
+      at.type === AdminFieldType.RELATIONSHIP_HAS_ONE ||
+      at.type === AdminFieldType.IMAGE
+    ) {
       include[at.name] = true;
     }
   });
