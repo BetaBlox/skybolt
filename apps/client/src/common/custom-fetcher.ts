@@ -10,7 +10,7 @@ import { HOME } from './routes';
 export const ContentType = {
   JSON: 'application/json',
   FORM: 'application/x-www-form-urlencoded',
-  MULTIPART: 'multipart/form-data',
+  MULTIPART_FORM: 'multipart/form-data',
   PDF: 'application/pdf',
 };
 export const ResponseType = {
@@ -107,6 +107,11 @@ export const customFetch = async (
     ...defaultHeaders,
     ...headerOverrides,
   });
+
+  // Hack to handle FormData defaultg in the browser
+  if (config.headers['Content-Type'] === ContentType.MULTIPART_FORM) {
+    delete config.headers['Content-Type']; // Remove Content-Type for FormData
+  }
 
   console.debug(`fetching data - start [url: ${url}]`);
   const { response, data } = await originalRequest(url, config);
