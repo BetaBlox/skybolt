@@ -12,6 +12,7 @@ import { RecordsModule } from './records/records.module';
 import { PasswordResetModule } from './password-reset/password-reset.module';
 import { SearchModule } from '@/search/search.module';
 import { UsersWidgetModule } from '@/widgets/users/users-widget.module';
+import { AssetModule } from '@/asset/asset.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UsersWidgetModule } from '@/widgets/users/users-widget.module';
     ModelsModule,
     RecordsModule,
     SearchModule,
+    AssetModule,
 
     // Custom widgets
     UsersWidgetModule,
