@@ -9,6 +9,7 @@ export function createDashboard<T>(
 ): Dashboard<T> {
   return {
     pinnedOnHome: config.pinnedOnHome || false,
+    showOnDatasets: config.showOnDatasets || false,
     attributeTypes: config.attributeTypes || [],
     collectionAttributes: config.collectionAttributes || [],
     collectionFilterAttributes: config.collectionFilterAttributes || [],

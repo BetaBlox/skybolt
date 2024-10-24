@@ -7,6 +7,7 @@ export const ProductDashboard = createDashboard<Product>({
   modelName: 'Product',
 
   pinnedOnHome: true,
+  showOnDatasets: true,
 
   getDisplayName: (record: Product): string => record.name,
 

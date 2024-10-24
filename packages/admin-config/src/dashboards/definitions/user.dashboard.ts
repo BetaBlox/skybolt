@@ -7,6 +7,7 @@ export const UserDashboard = createDashboard<User>({
   modelName: 'User',
 
   pinnedOnHome: true,
+  showOnDatasets: true,
 
   getDisplayName: (record: User): string =>
     `${record.firstName} ${record.lastName} (${record.email})`,

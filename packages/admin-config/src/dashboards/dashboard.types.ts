@@ -2,6 +2,7 @@ import { AdminAttributeType, AdminWidgetLayout } from '@repo/types';
 
 export interface Dashboard<T> {
   pinnedOnHome: boolean;
+  showOnDatasets: boolean;
   name: string;
   modelName: string;
   attributeTypes: AdminAttributeType[];

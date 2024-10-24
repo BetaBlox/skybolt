@@ -36,9 +36,13 @@ export default function DatasetsPage() {
   const sortedDatasets = data.sort((a, b) =>
     a.modelName.localeCompare(b.modelName),
   );
-  const filteredDatasets = sortedDatasets.filter((dataset) =>
-    dataset.modelName.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filteredDatasets = sortedDatasets.filter((dataset) => {
+    const dashboard = getDashboard(dataset.modelName);
+    return (
+      dashboard.showOnDatasets &&
+      dataset.modelName.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   const actions = (
     <div className="flex flex-row gap-x-4">

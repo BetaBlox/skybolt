@@ -6,6 +6,8 @@ export const PostDashboard = createDashboard<Post>({
   name: 'Post',
   modelName: 'Post',
 
+  showOnDatasets: true,
+
   getDisplayName: (record: Post): string => record.title,
 
   attributeTypes: [
