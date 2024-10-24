@@ -1,5 +1,5 @@
-import { Link, Outlet } from 'react-router-dom';
-import { Fragment } from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Fragment, useEffect } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import {
   Bars3Icon,
@@ -41,6 +41,7 @@ export default function RootLayout() {
 
   return (
     <div>
+      <ScrollToTop />
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
@@ -171,4 +172,14 @@ export default function RootLayout() {
       </div>
     </div>
   );
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
 }
