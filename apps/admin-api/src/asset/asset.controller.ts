@@ -15,7 +15,7 @@ import { AssetService } from './asset.service';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from '@/asset/constants';
 import { SupabaseService } from '@/supabase/supabase.service';
 import { getDashboard } from '@repo/admin-config';
-import { AdminFieldType } from '@repo/types/admin';
+import { FieldType } from '@repo/types/admin';
 
 @Controller('assets')
 export class AssetController {
@@ -50,7 +50,7 @@ export class AssetController {
 
     const dashboard = getDashboard(modelName);
     const assetAttribute = dashboard.attributeTypes.find(
-      (attr) => attr.name === assetField && attr.type === AdminFieldType.IMAGE,
+      (attr) => attr.name === assetField && attr.type === FieldType.IMAGE,
     );
 
     if (!assetAttribute) {
