@@ -6,6 +6,7 @@
   "exports": {
     "./admin": "./src/Admin.ts",
     "./app": "./src/App.ts",
+    "./pagination": "./src/pagination.ts",
     "./sort": "./src/sort.ts"
   },
   "scripts": {
