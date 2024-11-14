@@ -273,9 +273,12 @@ export async function impersonate(
   const decodedToken = jwtDecode<JwtPayloadWithImpersonation>(accessToken);
 
   const impersonatedBy = decodedToken.impersonatedBy;
+  if (impersonatedBy) {
+    AuthProvider.isImpersonated = true;
+    AuthProvider.impersonatedBy = impersonatedBy;
+  }
+
   AuthProvider.isAuthenticated = true;
-  AuthProvider.isImpersonated = true;
-  AuthProvider.impersonatedBy = impersonatedBy;
   localStorage.setItem(
     AUTH_TOKENS,
     JSON.stringify({
@@ -287,7 +290,13 @@ export async function impersonate(
   await loadUserProfile();
 }
 
-export function checkImpersonationFromToken(accessToken: string) {
+export function checkImpersonationFromToken(accessToken: string | null) {
+  if (!accessToken) {
+    AuthProvider.isImpersonated = false;
+    AuthProvider.impersonatedBy = null;
+    return;
+  }
+
   const decodedToken = jwtDecode<JwtPayloadWithImpersonation>(accessToken);
 
   const impersonatedBy = decodedToken.impersonatedBy;
