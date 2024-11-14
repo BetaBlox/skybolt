@@ -1,5 +1,5 @@
 import { User } from '@repo/database';
-import { AdminFieldType } from '@repo/types';
+import { FieldType } from '@repo/types/admin';
 import { createDashboard } from '../create-dashboard';
 
 export const UserDashboard = createDashboard<User>({
@@ -13,32 +13,32 @@ export const UserDashboard = createDashboard<User>({
     `${record.firstName} ${record.lastName} (${record.email})`,
 
   attributeTypes: [
-    { name: 'firstName', type: AdminFieldType.STRING },
-    { name: 'lastName', type: AdminFieldType.STRING },
-    { name: 'email', type: AdminFieldType.EMAIL },
-    { name: 'bio', type: AdminFieldType.TEXT, maxLength: 500, rows: 8 },
+    { name: 'firstName', type: FieldType.STRING },
+    { name: 'lastName', type: FieldType.STRING },
+    { name: 'email', type: FieldType.EMAIL },
+    { name: 'bio', type: FieldType.TEXT, maxLength: 500, rows: 8 },
     {
       name: 'image',
-      type: AdminFieldType.IMAGE,
+      type: FieldType.IMAGE,
       sourceKey: 'imageId',
       modelName: 'asset',
     },
-    { name: 'imageId', type: AdminFieldType.INTEGER },
-    { name: 'isAdmin', type: AdminFieldType.BOOLEAN },
-    { name: 'password', type: AdminFieldType.PASSWORD },
+    { name: 'imageId', type: FieldType.INTEGER },
+    { name: 'isAdmin', type: FieldType.BOOLEAN },
+    { name: 'password', type: FieldType.PASSWORD },
     {
       name: 'Posts',
-      type: AdminFieldType.RELATIONSHIP_HAS_MANY,
+      type: FieldType.RELATIONSHIP_HAS_MANY,
       modelName: 'Post',
       relationField: 'authorId',
       relatedAttributes: [
-        { name: 'firstName', type: AdminFieldType.STRING },
-        { name: 'lastName', type: AdminFieldType.STRING },
-        { name: 'email', type: AdminFieldType.STRING },
+        { name: 'firstName', type: FieldType.STRING },
+        { name: 'lastName', type: FieldType.STRING },
+        { name: 'email', type: FieldType.STRING },
       ],
     },
-    { name: 'createdAt', type: AdminFieldType.DATETIME },
-    { name: 'updatedAt', type: AdminFieldType.DATETIME },
+    { name: 'createdAt', type: FieldType.DATETIME },
+    { name: 'updatedAt', type: FieldType.DATETIME },
   ],
   collectionAttributes: [
     // 'imageUrl',

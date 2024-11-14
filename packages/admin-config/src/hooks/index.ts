@@ -8,7 +8,7 @@
 import { HookConfig } from './hook.types';
 import { UserHooks } from './definitions/user.hooks';
 
-export function getHookConfigs(): HookConfig<unknown>[] {
+export function getHookConfigs(): HookConfig<any>[] {
   return [UserHooks];
 }
 

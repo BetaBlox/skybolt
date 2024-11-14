@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { AdminFieldType, AdminModelPayload, SortDirection } from '@repo/types';
+import {
+  AdminFieldType,
+  AdminModelPayload,
+  SortDirection,
+} from '@repo/types/sort';
 import { Dashboard, getDashboard, getDashboards } from '@repo/admin-config';
 import { PrismaAdapter } from '@repo/database';
 

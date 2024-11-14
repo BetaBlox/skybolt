@@ -1,5 +1,5 @@
 import { Product } from '@repo/database';
-import { AdminFieldType } from '@repo/types';
+import { FieldType } from '@repo/types/admin';
 import { createDashboard } from '../create-dashboard';
 
 export const ProductDashboard = createDashboard<Product>({
@@ -12,9 +12,9 @@ export const ProductDashboard = createDashboard<Product>({
   getDisplayName: (record: Product): string => record.name,
 
   attributeTypes: [
-    { name: 'name', type: AdminFieldType.STRING },
-    { name: 'price', type: AdminFieldType.INTEGER },
-    { name: 'stock', type: AdminFieldType.INTEGER },
+    { name: 'name', type: FieldType.STRING },
+    { name: 'price', type: FieldType.INTEGER },
+    { name: 'stock', type: FieldType.INTEGER },
   ],
   collectionAttributes: ['name', 'price', 'stock'],
   collectionFilterAttributes: ['name', 'price', 'stock'],

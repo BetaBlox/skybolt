@@ -1,23 +1,22 @@
 {
   "name": "@repo/types",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "version": "1.0.0",
+  "private": true,
+  "types": "./src/index.ts",
+  "exports": {
+    "./admin": "./src/Admin.ts",
+    "./app": "./src/App.ts",
+    "./sort": "./src/sort.ts"
+  },
   "scripts": {
-    "dev": "npm run build -- --watch",
-    "build": "tsup src/index.ts --format cjs,esm --dts",
-    "test": "echo 'No tests specificed'"
+    "build": "tsc --declaration --emitDeclarationOnly",
+    "dev": "tsc --watch --declaration --emitDeclarationOnly",
+    "test": "echo 'No tests specified'"
   },
   "dependencies": {
-    "database": "*",
-    "tsup": "^8.0.1",
-    "typescript": "5.3.2",
-    "utils": "*"
+    "typescript": "5.3.2"
   },
   "devDependencies": {
-    "@swc/core": "^1.4.11",
-    "@types/jest": "^29.5.10",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.1.1"
+    "@types/jest": "^29.5.10"
   }
 }

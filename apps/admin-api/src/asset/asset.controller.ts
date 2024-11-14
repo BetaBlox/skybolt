@@ -13,10 +13,9 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AssetService } from './asset.service';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from '@/asset/constants';
-import { UploadAssetDto } from '@/asset/dto/upload-asset.dto';
 import { SupabaseService } from '@/supabase/supabase.service';
 import { getDashboard } from '@repo/admin-config';
-import { AdminFieldType } from '@repo/types';
+import { AdminFieldType } from '@repo/types/admin';
 
 @Controller('assets')
 export class AssetController {
