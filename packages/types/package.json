@@ -4,8 +4,8 @@
   "private": true,
   "types": "./src/index.ts",
   "exports": {
-    "./admin": "./src/Admin.ts",
-    "./app": "./src/App.ts",
+    "./admin": "./src/admin.ts",
+    "./app": "./src/app.ts",
     "./pagination": "./src/pagination.ts",
     "./sort": "./src/sort.ts"
   },
