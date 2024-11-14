@@ -2,19 +2,19 @@
   "compilerOptions": {
     "target": "ES2021",
     "module": "Node16",
-    "moduleResolution": "node16", // Supports Node.js, Vite, and NestJS
+    "moduleResolution": "node16",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@repo/*": ["packages/*/src"]
-    },
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "./dist"
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@repo/*": ["packages/*/src"]
+    }
   },
   "include": ["packages/**/*", "apps/**/*"]
 }
