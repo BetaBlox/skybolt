@@ -1,6 +1,6 @@
-import { isString } from "./is-string";
+import { isString } from './is-string';
 
-describe("isString", () => {
+describe('isString', () => {
   test.each([
     [{}, false],
     [{ a: 1, b: 2 }, false],
@@ -10,9 +10,9 @@ describe("isString", () => {
     [true, false],
     [null, false],
     [undefined, false],
-    ["", true],
-    ["string", true],
-  ])("should verify if %s is a string", (value, expected) => {
+    ['', true],
+    ['string', true],
+  ])('should verify if %s is a string', (value, expected) => {
     expect(isString(value)).toEqual(expected);
   });
 });
