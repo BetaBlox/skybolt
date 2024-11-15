@@ -2,22 +2,34 @@
   "name": "@repo/types",
   "version": "1.0.0",
   "private": true,
-  "types": "./src/index.ts",
+  "types": "./dist",
   "exports": {
-    "./admin": "./src/admin.ts",
-    "./app": "./src/app.ts",
-    "./pagination": "./src/pagination.ts",
-    "./sort": "./src/sort.ts"
+    "./admin": {
+      "import": "./dist/admin.mjs",
+      "require": "./dist/admin.js"
+    },
+    "./app": {
+      "import": "./dist/app.mjs",
+      "require": "./dist/app.js"
+    },
+    "./pagination": {
+      "import": "./dist/pagination.mjs",
+      "require": "./dist/pagination.js"
+    },
+    "./sort": {
+      "import": "./dist/sort.mjs",
+      "require": "./dist/sort.js"
+    }
   },
   "scripts": {
-    "build": "tsc --declaration --emitDeclarationOnly",
-    "dev": "tsc --watch --declaration --emitDeclarationOnly",
+    "build": "tsup src/**/*.ts --format cjs,esm --dts",
+    "dev": "tsup src/**/*.ts --format cjs,esm --dts --watch",
     "test": "echo 'No tests specified'"
   },
   "dependencies": {
     "typescript": "5.3.2"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.10"
+    "tsup": "^8.0.1"
   }
 }

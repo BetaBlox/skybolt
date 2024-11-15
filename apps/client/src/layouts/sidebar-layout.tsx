@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   Bars3Icon,
@@ -40,6 +40,7 @@ export default function SidebarLayout() {
 
   return (
     <>
+      <ScrollToTop />
       <ImpersonationBanner />
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -316,4 +317,14 @@ export default function SidebarLayout() {
       </div>
     </>
   );
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
 }
