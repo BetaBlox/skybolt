@@ -1,10 +1,10 @@
 import FieldLabel from './record-field-label';
-import { AdminAttributeType, AdminModelField } from '@repo/types';
+import { AttributeType, ModelField } from '@repo/types/admin';
 import { Switch } from '@/components/switch';
 
 interface Props {
-  field: AdminModelField;
-  attributeType: AdminAttributeType;
+  field: ModelField;
+  attributeType: AttributeType;
   value: boolean;
   onChange: (key: string, value: boolean) => void;
 }

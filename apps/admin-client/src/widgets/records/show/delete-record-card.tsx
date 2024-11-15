@@ -19,12 +19,12 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/components/alert-dialog';
-import { AdminRecordPayload } from '@repo/types';
+import { RecordPayload } from '@repo/types/admin';
 import { getDashboard } from '@repo/admin-config';
 
 interface Props {
   modelName: string;
-  record: AdminRecordPayload['record'];
+  record: RecordPayload['record'];
   onDelete: () => void;
   disabled: boolean;
 }

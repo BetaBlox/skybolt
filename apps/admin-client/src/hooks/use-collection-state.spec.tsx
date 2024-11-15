@@ -3,11 +3,8 @@ import {
   useCollectionState,
   UseCollectionStateReturn,
 } from '@/hooks/use-collection-state';
-import {
-  AdminFieldType,
-  AdminFilterOperator,
-  SortDirection,
-} from '@repo/types';
+import { FieldType, FilterOperator } from '@repo/types/admin';
+import { SortDirection } from '@repo/types/sort';
 import { render, act } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -105,9 +102,9 @@ describe('useCollectionState Hook', () => {
 
       const newFilter: Filter = {
         modelName: 'User',
-        type: AdminFieldType.STRING,
+        type: FieldType.STRING,
         field: 'status',
-        operator: AdminFilterOperator.EQUALS,
+        operator: FilterOperator.EQUALS,
         value: 'active',
       };
 
@@ -131,9 +128,9 @@ describe('useCollectionState Hook', () => {
       act(() => {
         const filter: Filter = {
           modelName: 'User',
-          type: AdminFieldType.STRING,
+          type: FieldType.STRING,
           field: 'status',
-          operator: AdminFilterOperator.EQUALS,
+          operator: FilterOperator.EQUALS,
           value: 'active',
         };
         result.applyFilter(filter);
@@ -151,9 +148,9 @@ describe('useCollectionState Hook', () => {
       act(() => {
         const filter: Filter = {
           modelName: 'User',
-          type: AdminFieldType.STRING,
+          type: FieldType.STRING,
           field: 'status',
-          operator: AdminFilterOperator.EQUALS,
+          operator: FilterOperator.EQUALS,
           value: 'active',
         };
         result.applyFilter(filter);

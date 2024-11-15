@@ -6,7 +6,7 @@
  * Each dashboard is a centralized configuration object for a specific model, offering control over how the model is
  * managed and displayed in the admin panel.
  */
-import { AdminAttributeType } from '@repo/types';
+import { AttributeType } from '@repo/types/admin';
 import { Dashboard } from './dashboard.types';
 import { UserDashboard } from './definitions/user.dashboard';
 import { ColorDashboard } from './definitions/color.dashboard';
@@ -15,7 +15,7 @@ import { ProductDashboard } from './definitions/product.dashboard';
 
 export { Dashboard };
 
-export function getDashboards(): Dashboard<unknown>[] {
+export function getDashboards(): Dashboard<any>[] {
   return [UserDashboard, ProductDashboard, PostDashboard, ColorDashboard];
 }
 
@@ -35,7 +35,7 @@ export function getDashboard(modelName: string): Dashboard<unknown> {
 export function getAttributeType(
   modelName: string,
   attribute: string,
-): AdminAttributeType {
+): AttributeType {
   const dashboard = getDashboard(modelName);
   const { attributeTypes } = dashboard;
 

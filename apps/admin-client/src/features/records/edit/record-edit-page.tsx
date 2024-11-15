@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
 import { HOME, MODEL, MODEL_RECORD } from '@/common/routes';
 import RecordUpdateForm from '@/widgets/records/edit/record-update-form';
-import { AdminRecordPayload } from '@repo/types';
+import { RecordPayload } from '@repo/types/admin';
 import { getDashboard } from '@repo/admin-config';
 import { RecordApi } from '@/api/RecordApi';
 import {
@@ -29,7 +29,7 @@ export default function RecordEditPage() {
   if (recordQuery.isPending) return <Spinner />;
   if (recordQuery.isError || !modelName) return 'Error loading data';
 
-  const data = recordQuery.data as AdminRecordPayload;
+  const data = recordQuery.data as RecordPayload;
   const dashboard = getDashboard(modelName);
 
   const { record, fields } = data;

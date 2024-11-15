@@ -1,7 +1,7 @@
 import { Dashboard } from '@repo/admin-config';
 import { PageSection } from '@/widgets/core/page-section';
 import { widgets } from '@/widgets';
-import { AdminRecord } from '@repo/types';
+import { AdminRecord } from '@repo/types/admin';
 import { PageSectionHeading } from '@/widgets/core/page-section-heading';
 
 interface Props {

@@ -1,4 +1,4 @@
-import { PaginateFunction, PaginateOptions } from '@repo/types';
+import { PaginateFunction, PaginateOptions } from '@repo/types/pagination';
 
 export const defaultPerPage = 20;
 

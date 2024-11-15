@@ -1,4 +1,4 @@
-import { Day, Month } from "./constants";
+import { Day, Month } from './constants';
 
 export function now() {
   return new Date();
@@ -36,7 +36,7 @@ export function isAfter(date1: Date, date2: Date) {
   return date1.getTime() > date2.getTime();
 }
 
-export function dayIndexToName(index: number): Day {
+export function dayIndexToName(index: number): Day | null {
   switch (index) {
     case 0:
       return Day.Sunday;
@@ -52,10 +52,12 @@ export function dayIndexToName(index: number): Day {
       return Day.Friday;
     case 6:
       return Day.Saturday;
+    default:
+      return null;
   }
 }
 
-export function monthIndexToName(index: number): Month {
+export function monthIndexToName(index: number): Month | null {
   switch (index) {
     case 0:
       return Month.January;
@@ -81,9 +83,11 @@ export function monthIndexToName(index: number): Month {
       return Month.November;
     case 11:
       return Month.December;
+    default:
+      return null;
   }
 }
 
-export function monthName(date: Date): Month {
+export function monthName(date: Date): Month | null {
   return monthIndexToName(date.getMonth());
 }

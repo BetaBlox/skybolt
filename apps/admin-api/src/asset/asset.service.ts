@@ -6,7 +6,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { SupabaseService } from '@/supabase/supabase.service';
 import { Asset } from '@repo/database';
-import { AdminFieldType, AdminRecord } from '@repo/types';
+import { FieldType } from '@repo/types/admin';
 import { getDashboard } from '@repo/admin-config';
 
 @Injectable()
@@ -44,10 +44,10 @@ export class AssetService {
   ): Promise<unknown> {
     const dashboard = getDashboard(modelName);
     const attrType = dashboard.attributeTypes.find(
-      (attr) => attr.name === assetField && attr.type === AdminFieldType.IMAGE,
+      (attr) => attr.name === assetField && attr.type === FieldType.IMAGE,
     );
 
-    if (attrType.type !== AdminFieldType.IMAGE) {
+    if (attrType.type !== FieldType.IMAGE) {
       throw new BadRequestException(`No asset field found for ${assetField}`);
     }
 

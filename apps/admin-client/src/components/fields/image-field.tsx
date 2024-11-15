@@ -1,12 +1,12 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { AdminModelField } from '@repo/types';
+import { ModelField } from '@repo/types/admin';
 import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 import FieldLabel from '@/components/fields/record-field-label';
 import { Asset } from '@repo/database';
 
 interface Props {
-  field: AdminModelField;
+  field: ModelField;
   asset?: Asset | null;
   onChange: (key: string, value: File | null) => void;
 }

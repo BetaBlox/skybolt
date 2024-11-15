@@ -10,11 +10,7 @@ import {
 } from '@/components/select';
 import { SelectGroup } from '@radix-ui/react-select';
 import { Dashboard } from '@repo/admin-config';
-import {
-  AdminFieldType,
-  AdminFilterOperator,
-  AdminFilterType,
-} from '@repo/types';
+import { FieldType, FilterOperator, FilterType } from '@repo/types/admin';
 import { captilalize } from '@repo/utils';
 import { ChangeEvent, useState } from 'react';
 
@@ -45,17 +41,17 @@ export interface OperatorOptions {
 
 const operatorOptions: OperatorOptions = {
   text: [
-    AdminFilterOperator.CONTAINS,
-    AdminFilterOperator.EQUALS,
-    AdminFilterOperator.STARTS_WITH,
-    AdminFilterOperator.ENDS_WITH,
+    FilterOperator.CONTAINS,
+    FilterOperator.EQUALS,
+    FilterOperator.STARTS_WITH,
+    FilterOperator.ENDS_WITH,
   ],
   date: [
-    AdminFilterOperator.EQUALS,
-    AdminFilterOperator.GREATER_THAN,
-    AdminFilterOperator.LESS_THAN,
+    FilterOperator.EQUALS,
+    FilterOperator.GREATER_THAN,
+    FilterOperator.LESS_THAN,
   ],
-  boolean: [AdminFilterOperator.EQUALS],
+  boolean: [FilterOperator.EQUALS],
 };
 
 interface Props {
@@ -206,7 +202,7 @@ const getFilterOptions = (dashboard: Dashboard<unknown>): FilterOption[] => {
     // Ensure that the attribute exists in attributeTypes
     if (attribute) {
       if (
-        attribute.type === AdminFieldType.RELATIONSHIP_HAS_ONE &&
+        attribute.type === FieldType.RELATIONSHIP_HAS_ONE &&
         attribute.relatedAttributes
       ) {
         // Add related fields from related models
@@ -219,7 +215,7 @@ const getFilterOptions = (dashboard: Dashboard<unknown>): FilterOption[] => {
             modelName: attribute.name,
             field: relatedAttr.name,
             label: captilalize(relatedAttr.name),
-            type: adminFieldTypeToFilterType(relatedAttr.type),
+            type: FieldTypeToFilterType(relatedAttr.type),
           });
         });
       } else {
@@ -229,7 +225,7 @@ const getFilterOptions = (dashboard: Dashboard<unknown>): FilterOption[] => {
           modelName: dashboard.modelName, // The model name this field belongs to
           field: attribute.name, // Direct attribute name
           label: captilalize(attribute.name),
-          type: adminFieldTypeToFilterType(attribute.type),
+          type: FieldTypeToFilterType(attribute.type),
         });
       }
     }
@@ -238,19 +234,19 @@ const getFilterOptions = (dashboard: Dashboard<unknown>): FilterOption[] => {
   return options;
 };
 
-const adminFieldTypeToFilterType = (fieldType: AdminFieldType): string => {
+const FieldTypeToFilterType = (fieldType: FieldType): string => {
   switch (fieldType) {
-    case AdminFieldType.STRING:
-    case AdminFieldType.TEXT:
-      return AdminFilterType.TEXT;
-    case AdminFieldType.BOOLEAN:
-      return AdminFilterType.BOOLEAN;
-    case AdminFieldType.DATETIME:
-      return AdminFilterType.DATE;
-    case AdminFieldType.INTEGER:
-      return AdminFilterType.NUMBER;
+    case FieldType.STRING:
+    case FieldType.TEXT:
+      return FilterType.TEXT;
+    case FieldType.BOOLEAN:
+      return FilterType.BOOLEAN;
+    case FieldType.DATETIME:
+      return FilterType.DATE;
+    case FieldType.INTEGER:
+      return FilterType.NUMBER;
     default:
-      return AdminFilterType.TEXT;
+      return FilterType.TEXT;
   }
 };
 

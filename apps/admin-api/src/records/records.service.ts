@@ -1,22 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import {
-  AdminFieldType,
-  AdminFilterOperator,
-  AdminFilterType,
-  AdminModelField,
-  AdminRecordPayload,
-  AdminRecordsPayload,
-  PaginateFunction,
-  PaginatedResult,
-  SortDirection,
-  SortOrder,
-} from '@repo/types';
 import { Dashboard, getDashboard, getHookConfig } from '@repo/admin-config';
 import { paginator } from '@repo/paginator';
 import { PrismaAdapter } from '@repo/database';
 import { Filter } from '@/records/types';
 import { snakeCase } from '@repo/utils';
+import { PaginatedResult, PaginateFunction } from '@repo/types/pagination';
+import { SortDirection, SortOrder } from '@repo/types/sort';
+import {
+  FieldType,
+  FilterOperator,
+  FilterType,
+  ModelField,
+  RecordPayload,
+  RecordsPayload,
+} from '@repo/types/admin';
 
 const paginate: PaginateFunction = paginator();
 
@@ -31,7 +29,7 @@ export class RecordsService {
     filters: Filter[] = [],
     sortField: string = 'id',
     sortOrder: SortOrder = SortDirection.DESC,
-  ): Promise<AdminRecordsPayload> {
+  ): Promise<RecordsPayload> {
     const dashboard = getDashboard(modelName);
     const where = buildWhereClause(filters, modelName);
     const include = buildIncludeClause(dashboard);
@@ -59,7 +57,7 @@ export class RecordsService {
     };
   }
 
-  async getRecord(modelName: string, id: number): Promise<AdminRecordPayload> {
+  async getRecord(modelName: string, id: number): Promise<RecordPayload> {
     const dashboard = getDashboard(modelName);
     const include = buildIncludeClause(dashboard);
 
@@ -77,10 +75,7 @@ export class RecordsService {
     };
   }
 
-  async createRecord(
-    modelName: string,
-    data: object,
-  ): Promise<AdminRecordPayload> {
+  async createRecord(modelName: string, data: object): Promise<RecordPayload> {
     const adapter = new PrismaAdapter();
     const fields = adapter.getFields(modelName);
     const dashboard = getDashboard(modelName);
@@ -109,7 +104,7 @@ export class RecordsService {
     modelName: string,
     id: number,
     data: object,
-  ): Promise<AdminRecordPayload> {
+  ): Promise<RecordPayload> {
     const adapter = new PrismaAdapter();
     const fields = adapter.getFields(modelName);
     const dashboard = getDashboard(modelName);
@@ -319,7 +314,7 @@ export class RecordsService {
  * Filters a record payload and strips out data that is not supported by your model's attributes types.
  * This helps prevent unwanted data from being created/updated on the backend
  */
-function filterRecordPayload(fields: AdminModelField[], data: object): object {
+function filterRecordPayload(fields: ModelField[], data: object): object {
   const filtered = {};
 
   Object.keys(data).forEach((key) => {
@@ -360,38 +355,38 @@ function buildWhereClause(filters: Filter[], currentModelName: string) {
     let formattedValue: unknown;
 
     // Handle the date filter type
-    if (type === AdminFilterType.DATE && value) {
+    if (type === FilterType.DATE && value) {
       const dateValue = new Date(value);
-      if (operator === AdminFilterOperator.EQUALS) {
+      if (operator === FilterOperator.EQUALS) {
         formattedValue = dateValue;
-      } else if (operator === AdminFilterOperator.GREATER_THAN) {
+      } else if (operator === FilterOperator.GREATER_THAN) {
         formattedValue = { gt: dateValue };
-      } else if (operator === AdminFilterOperator.LESS_THAN) {
+      } else if (operator === FilterOperator.LESS_THAN) {
         formattedValue = { lt: dateValue };
       }
-    } else if (type === AdminFilterType.BOOLEAN) {
+    } else if (type === FilterType.BOOLEAN) {
       formattedValue = value === 'true';
-    } else if (type === AdminFilterType.NUMBER) {
-      if (operator === AdminFilterOperator.EQUALS) {
+    } else if (type === FilterType.NUMBER) {
+      if (operator === FilterOperator.EQUALS) {
         formattedValue = parseFloat(value);
-      } else if (operator === AdminFilterOperator.GREATER_THAN) {
+      } else if (operator === FilterOperator.GREATER_THAN) {
         formattedValue = { gt: parseFloat(value) };
-      } else if (operator === AdminFilterOperator.LESS_THAN) {
+      } else if (operator === FilterOperator.LESS_THAN) {
         formattedValue = { lt: parseFloat(value) };
       }
     } else {
       // Handle other types and operators
       switch (operator) {
-        case AdminFilterOperator.CONTAINS:
+        case FilterOperator.CONTAINS:
           formattedValue = { contains: value, mode: 'insensitive' };
           break;
-        case AdminFilterOperator.STARTS_WITH:
+        case FilterOperator.STARTS_WITH:
           formattedValue = { startsWith: value, mode: 'insensitive' };
           break;
-        case AdminFilterOperator.ENDS_WITH:
+        case FilterOperator.ENDS_WITH:
           formattedValue = { endsWith: value, mode: 'insensitive' };
           break;
-        case AdminFilterOperator.EQUALS:
+        case FilterOperator.EQUALS:
           formattedValue = value;
           break;
         default:
@@ -419,8 +414,8 @@ function buildIncludeClause(dashboard: Dashboard<unknown>) {
   const include = {};
   dashboard.attributeTypes.forEach((at) => {
     if (
-      at.type === AdminFieldType.RELATIONSHIP_HAS_ONE ||
-      at.type === AdminFieldType.IMAGE
+      at.type === FieldType.RELATIONSHIP_HAS_ONE ||
+      at.type === FieldType.IMAGE
     ) {
       include[at.name] = true;
     }

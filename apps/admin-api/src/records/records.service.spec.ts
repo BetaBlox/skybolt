@@ -1,11 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '@/prisma/prisma.service';
 import { RecordsService } from '@/records/records.service';
-import {
-  AdminFilterOperator,
-  AdminFilterType,
-  SortDirection,
-} from '@repo/types';
+import { FilterOperator, FilterType } from '@repo/types/admin';
+import { SortDirection } from '@repo/types/sort';
 
 describe('RecordsService - Integration Test with Filter Types', () => {
   let service: RecordsService;
@@ -86,9 +83,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'user',
           field: 'firstName',
-          operator: AdminFilterOperator.CONTAINS,
+          operator: FilterOperator.CONTAINS,
           value: 'Jo',
-          type: AdminFilterType.TEXT,
+          type: FilterType.TEXT,
         },
       ],
       expectedResults: [
@@ -107,9 +104,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'user',
           field: 'firstName',
-          operator: AdminFilterOperator.EQUALS,
+          operator: FilterOperator.EQUALS,
           value: 'Jane',
-          type: AdminFilterType.TEXT,
+          type: FilterType.TEXT,
         },
       ],
       expectedResults: [
@@ -128,9 +125,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'user',
           field: 'firstName',
-          operator: AdminFilterOperator.STARTS_WITH,
+          operator: FilterOperator.STARTS_WITH,
           value: 'Ja',
-          type: AdminFilterType.TEXT,
+          type: FilterType.TEXT,
         },
       ],
       expectedResults: [
@@ -149,9 +146,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'user',
           field: 'lastName',
-          operator: AdminFilterOperator.ENDS_WITH,
+          operator: FilterOperator.ENDS_WITH,
           value: 'ith',
-          type: AdminFilterType.TEXT,
+          type: FilterType.TEXT,
         },
       ],
       expectedResults: [
@@ -173,9 +170,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'user',
           field: 'isAdmin',
-          operator: AdminFilterOperator.EQUALS,
+          operator: FilterOperator.EQUALS,
           value: 'true',
-          type: AdminFilterType.BOOLEAN,
+          type: FilterType.BOOLEAN,
         },
       ],
       expectedResults: [
@@ -197,9 +194,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'user',
           field: 'createdAt',
-          operator: AdminFilterOperator.EQUALS,
+          operator: FilterOperator.EQUALS,
           value: '2023-03-15',
-          type: AdminFilterType.DATE,
+          type: FilterType.DATE,
         },
       ],
       expectedResults: [
@@ -218,9 +215,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'user',
           field: 'createdAt',
-          operator: AdminFilterOperator.GREATER_THAN,
+          operator: FilterOperator.GREATER_THAN,
           value: '2023-01-01',
-          type: AdminFilterType.DATE,
+          type: FilterType.DATE,
         },
       ],
       expectedResults: [
@@ -245,9 +242,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'user',
           field: 'createdAt',
-          operator: AdminFilterOperator.LESS_THAN,
+          operator: FilterOperator.LESS_THAN,
           value: '2023-06-01',
-          type: AdminFilterType.DATE,
+          type: FilterType.DATE,
         },
       ],
       expectedResults: [
@@ -308,9 +305,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'product',
           field: 'price',
-          operator: AdminFilterOperator.EQUALS,
+          operator: FilterOperator.EQUALS,
           value: '100',
-          type: AdminFilterType.NUMBER,
+          type: FilterType.NUMBER,
         },
       ],
       expectedResults: [{ name: 'Product B', price: 100, stock: 20 }],
@@ -322,9 +319,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'product',
           field: 'price',
-          operator: AdminFilterOperator.GREATER_THAN,
+          operator: FilterOperator.GREATER_THAN,
           value: '50',
-          type: AdminFilterType.NUMBER,
+          type: FilterType.NUMBER,
         },
       ],
       expectedResults: [
@@ -339,9 +336,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'product',
           field: 'price',
-          operator: AdminFilterOperator.LESS_THAN,
+          operator: FilterOperator.LESS_THAN,
           value: '150',
-          type: AdminFilterType.NUMBER,
+          type: FilterType.NUMBER,
         },
       ],
       expectedResults: [
@@ -454,9 +451,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'author', // must match the related model name from schema/dashboard
           field: 'firstName',
-          operator: AdminFilterOperator.EQUALS,
+          operator: FilterOperator.EQUALS,
           value: 'John',
-          type: AdminFilterType.TEXT,
+          type: FilterType.TEXT,
         },
       ],
       expectedResults: [
@@ -472,9 +469,9 @@ describe('RecordsService - Integration Test with Filter Types', () => {
         {
           modelName: 'author', // must match the related model name from schema/dashboard
           field: 'lastName',
-          operator: AdminFilterOperator.CONTAINS,
+          operator: FilterOperator.CONTAINS,
           value: 'Smith',
-          type: AdminFilterType.TEXT,
+          type: FilterType.TEXT,
         },
       ],
       expectedResults: [{ title: 'Post by Jane', content: 'Content C' }],

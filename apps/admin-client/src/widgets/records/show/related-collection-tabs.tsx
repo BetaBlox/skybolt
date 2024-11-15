@@ -2,10 +2,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/tabs';
 import HasManyTable from '@/widgets/records/show/has-many-table';
 import { Dashboard } from '@repo/admin-config';
 import {
-  AdminFieldType,
-  AdminHasManyAttributeType,
+  FieldType,
+  HasManyAttributeType,
   AdminRecord,
-} from '@repo/types';
+} from '@repo/types/admin';
 import { captilalize } from '@repo/utils';
 
 interface Props {
@@ -15,8 +15,8 @@ interface Props {
 }
 export default function RelatedCollectionTabs({ dashboard, record }: Props) {
   const hasManyAttributes = dashboard.attributeTypes.filter(
-    (attr) => attr.type === AdminFieldType.RELATIONSHIP_HAS_MANY,
-  ) as AdminHasManyAttributeType[];
+    (attr) => attr.type === FieldType.RELATIONSHIP_HAS_MANY,
+  ) as HasManyAttributeType[];
 
   if (hasManyAttributes.length === 0) {
     return null;

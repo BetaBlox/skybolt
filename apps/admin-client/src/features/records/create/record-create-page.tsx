@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { routeWithParams } from '@repo/utils';
 import { HOME, MODEL } from '@/common/routes';
 import { getDashboard } from '@repo/admin-config';
-import { AdminRecordPayload } from '@repo/types';
+import { RecordPayload } from '@repo/types/admin';
 import { ModelApi } from '@/api/ModelApi';
 import {
   Breadcrumb,
@@ -27,7 +27,7 @@ export default function RecordCreatePage() {
   if (recordQuery.isPending) return <Spinner />;
   if (recordQuery.isError || !modelName) return 'Error loading data';
 
-  const data = recordQuery.data as AdminRecordPayload;
+  const data = recordQuery.data as RecordPayload;
   const dashboard = getDashboard(modelName);
   const { attributeTypes, createFormAttributes } = dashboard;
   const { fields } = data;

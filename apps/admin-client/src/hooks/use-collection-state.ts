@@ -1,5 +1,5 @@
 import { Filter } from '@/widgets/models/filter-form';
-import { SortDirection, SortOrder } from '@repo/types';
+import { SortDirection, SortOrder } from '@repo/types/sort';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 

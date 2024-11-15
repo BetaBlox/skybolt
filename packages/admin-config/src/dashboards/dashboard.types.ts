@@ -1,11 +1,11 @@
-import { AdminAttributeType, AdminWidgetLayout } from '@repo/types';
+import { AttributeType, WidgetLayout } from '@repo/types/admin';
 
 export interface Dashboard<T> {
   pinnedOnHome: boolean;
   showOnDatasets: boolean;
   name: string;
   modelName: string;
-  attributeTypes: AdminAttributeType[];
+  attributeTypes: AttributeType[];
   collectionAttributes: string[];
   collectionFilterAttributes: string[];
   showAttributes: string[];
@@ -20,5 +20,5 @@ export interface Dashboard<T> {
   isCreatable: () => boolean;
 
   // New field for custom component layouts on the records show page
-  showPageWidgets?: AdminWidgetLayout[]; // Optional field to define layout and custom components
+  showPageWidgets?: WidgetLayout[]; // Optional field to define layout and custom components
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { AdminFieldType, AdminModelPayload, SortDirection } from '@repo/types';
+import { FieldType, ModelPayload } from '@repo/types/admin';
+import { SortDirection } from '@repo/types/sort';
 import { Dashboard, getDashboard, getDashboards } from '@repo/admin-config';
 import { PrismaAdapter } from '@repo/database';
 
@@ -8,7 +9,7 @@ import { PrismaAdapter } from '@repo/database';
 export class ModelsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getModels(): Promise<AdminModelPayload[]> {
+  async getModels(): Promise<ModelPayload[]> {
     const modelNames = getDashboards().map((d) => d.modelName);
     const promises = modelNames.map((modelName) => {
       return this.getModel(modelName);
@@ -16,7 +17,7 @@ export class ModelsService {
     return Promise.all(promises);
   }
 
-  async getModel(modelName: string): Promise<AdminModelPayload> {
+  async getModel(modelName: string): Promise<ModelPayload> {
     const dashboard = getDashboard(modelName);
     const include = buildIncludeClause(dashboard);
 
@@ -48,7 +49,7 @@ export class ModelsService {
 function buildIncludeClause(dashboard: Dashboard<unknown>) {
   const include = {};
   dashboard.attributeTypes.forEach((at) => {
-    if (at.type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
+    if (at.type === FieldType.RELATIONSHIP_HAS_ONE) {
       include[at.name] = true;
     }
   });

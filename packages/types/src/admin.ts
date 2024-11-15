@@ -1,6 +1,8 @@
+import { PaginatedResult } from './pagination';
+
 export type SelectOption = { label: string; value: string };
 
-export enum AdminFieldType {
+export enum FieldType {
   STRING = 'string',
   TEXT = 'text',
   URL = 'url',
@@ -17,14 +19,14 @@ export enum AdminFieldType {
   IMAGE = 'image',
 }
 
-export enum AdminFilterType {
+export enum FilterType {
   TEXT = 'text',
   NUMBER = 'number',
   BOOLEAN = 'boolean',
   DATE = 'date',
 }
 
-export enum AdminFilterOperator {
+export enum FilterOperator {
   EQUALS = 'equals',
   CONTAINS = 'contains',
   STARTS_WITH = 'startsWith',
@@ -33,31 +35,31 @@ export enum AdminFilterOperator {
   LESS_THAN = 'lessThan',
 }
 
-export type AdminAttributeType =
+export type AttributeType =
   // Basic types with no additional properties
   | {
       name: string;
       type:
-        | AdminFieldType.EMAIL
-        | AdminFieldType.URL
-        | AdminFieldType.PASSWORD
-        | AdminFieldType.BOOLEAN
-        | AdminFieldType.INTEGER
-        | AdminFieldType.JSON
-        | AdminFieldType.DATE
-        | AdminFieldType.DATETIME;
+        | FieldType.EMAIL
+        | FieldType.URL
+        | FieldType.PASSWORD
+        | FieldType.BOOLEAN
+        | FieldType.INTEGER
+        | FieldType.JSON
+        | FieldType.DATE
+        | FieldType.DATETIME;
     }
   // String type with min and max length
   | {
       name: string;
-      type: AdminFieldType.STRING;
+      type: FieldType.STRING;
       minLength?: number;
       maxLength?: number;
     }
   // Text type with min and max length
   | {
       name: string;
-      type: AdminFieldType.TEXT;
+      type: FieldType.TEXT;
       minLength?: number;
       maxLength?: number;
       rows?: number;
@@ -65,19 +67,19 @@ export type AdminAttributeType =
   // Select type with options
   | {
       name: string;
-      type: AdminFieldType.SELECT;
+      type: FieldType.SELECT;
       options: SelectOption[]; // Required for the SELECT type
     }
   | {
       name: string;
-      type: AdminFieldType.IMAGE;
+      type: FieldType.IMAGE;
       modelName: string; // The related model's name
       sourceKey: string; // The foreign key id field on this model
     }
   // Has One relationship
   | {
       name: string;
-      type: AdminFieldType.RELATIONSHIP_HAS_ONE;
+      type: FieldType.RELATIONSHIP_HAS_ONE;
       modelName: string; // The related model's name
       sourceKey: string; // The foreign key id field on this model
       relatedAttributes?: RelatedAttribute[];
@@ -85,37 +87,37 @@ export type AdminAttributeType =
   // Has Many relationship
   | {
       name: string;
-      type: AdminFieldType.RELATIONSHIP_HAS_MANY;
+      type: FieldType.RELATIONSHIP_HAS_MANY;
       modelName: string; // The related model's name
       relationField: string; // The field in the related model
       relatedAttributes?: RelatedAttribute[];
     };
 
-export type AdminHasOneAttributeType = Extract<
-  AdminAttributeType,
-  { type: AdminFieldType.RELATIONSHIP_HAS_ONE }
+export type HasOneAttributeType = Extract<
+  AttributeType,
+  { type: FieldType.RELATIONSHIP_HAS_ONE }
 >;
 
-export type AdminHasManyAttributeType = Extract<
-  AdminAttributeType,
-  { type: AdminFieldType.RELATIONSHIP_HAS_MANY }
+export type HasManyAttributeType = Extract<
+  AttributeType,
+  { type: FieldType.RELATIONSHIP_HAS_MANY }
 >;
 
 // Declaration of RelatedAttribute type
 export type RelatedAttribute = {
   name: string; // Field name of the related attribute
-  type: AdminFieldType; // Data type of the related attribute
+  type: FieldType; // Data type of the related attribute
 };
 
-export type AdminModelField = {
+export type ModelField = {
   name: string;
   isRequired: boolean;
   relationName?: string | null;
 };
 
-export interface AdminModelPayload {
+export interface ModelPayload {
   modelName: string;
-  fields: AdminModelField[];
+  fields: ModelField[];
   count: number;
   // TODO: probably shouldn't mutate the raw data. Maybe a separate displayName lookup hash?
   recentRecords: any[] & {
@@ -127,19 +129,19 @@ export type AdminRecord = Record<string, any> & {
   id: number;
 };
 
-export interface AdminRecordsPayload {
-  fields: AdminModelField[];
+export interface RecordsPayload {
+  fields: ModelField[];
   modelName: string;
   paginatedResult: PaginatedResult<any>;
 }
 
-export interface AdminRecordPayload {
-  fields: AdminModelField[];
+export interface RecordPayload {
+  fields: ModelField[];
   modelName: string;
   record: any;
 }
 
-export interface AdminWidgetLayout {
+export interface WidgetLayout {
   type: 'row' | 'column'; // Define whether components are placed in a row or column
   heading?: string; // Optional: Heading for the row or column
   components: {
@@ -147,25 +149,3 @@ export interface AdminWidgetLayout {
     span: number; // Column widget for the widget on the dashboard page
   }[];
 }
-
-export interface PaginatedResult<T> {
-  data: T[];
-  meta: {
-    total: number;
-    lastPage: number;
-    currentPage: number;
-    perPage: number;
-    prev: number | null;
-    next: number | null;
-  };
-}
-
-export type PaginateOptions = {
-  page?: number | string;
-  perPage?: number | string;
-};
-export type PaginateFunction = <T, K>(
-  model: any,
-  args?: K,
-  options?: PaginateOptions,
-) => Promise<PaginatedResult<T>>;

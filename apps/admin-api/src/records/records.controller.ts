@@ -12,7 +12,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { RecordsService } from './records.service';
-import { AdminRecordPayload, SortDirection, SortOrder } from '@repo/types';
+import { RecordPayload } from '@repo/types/admin';
+import { SortDirection, SortOrder } from '@repo/types/sort';
 import { AccessTokenGuard } from '@/common/guards/accessToken.guard';
 import { defaultPerPage } from '@repo/paginator';
 
@@ -61,7 +62,7 @@ export class RecordsController {
   async findOne(
     @Param('modelName') modelName: string,
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<AdminRecordPayload> {
+  ): Promise<RecordPayload> {
     return this.recordsService.getRecord(modelName, id);
   }
 
@@ -70,7 +71,7 @@ export class RecordsController {
   async create(
     @Param('modelName') modelName: string,
     @Body() data: object,
-  ): Promise<AdminRecordPayload> {
+  ): Promise<RecordPayload> {
     return this.recordsService.createRecord(modelName, data);
   }
 
@@ -80,7 +81,7 @@ export class RecordsController {
     @Param('modelName') modelName: string,
     @Param('id', ParseIntPipe) id: number,
     @Body() data: object,
-  ): Promise<AdminRecordPayload> {
+  ): Promise<RecordPayload> {
     return this.recordsService.updateRecord(modelName, id, data);
   }
 

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { routeWithParams } from '@repo/utils';
 import { MODEL, MODEL_RECORD } from '@/common/routes';
 import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
-import { AdminModelPayload } from '@repo/types';
+import { ModelPayload } from '@repo/types/admin';
 import { getDashboard } from '@repo/admin-config';
 import { ModelApi } from '@/api/ModelApi';
 import { Button } from '@/components/button';
@@ -31,7 +31,7 @@ export default function HomePage() {
   if (modelsQuery.isPending) return <Spinner />;
   if (modelsQuery.isError) return 'Error loading data';
 
-  const data = modelsQuery.data as AdminModelPayload[];
+  const data = modelsQuery.data as ModelPayload[];
   const pinnedDatasets = data.filter((dataset) => {
     const dashboard = getDashboard(dataset.modelName);
     return dashboard.pinnedOnHome;

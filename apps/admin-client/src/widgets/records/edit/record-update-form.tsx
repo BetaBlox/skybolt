@@ -3,11 +3,11 @@ import { routeWithParams } from '@repo/utils';
 import { MODEL_RECORD } from '@/common/routes';
 import { useNavigate } from 'react-router-dom';
 import {
-  AdminAttributeType,
-  AdminFieldType,
-  AdminModelField,
+  AttributeType,
+  FieldType,
+  ModelField,
   AdminRecord,
-} from '@repo/types';
+} from '@repo/types/admin';
 import { RecordApi } from '@/api/RecordApi';
 import { useToast } from '@/components/toast/use-toast';
 import BooleanField from '@/components/fields/boolean-field';
@@ -36,8 +36,8 @@ type AdminRecordAssets = {
 
 interface Props {
   modelName: string;
-  fields: AdminModelField[];
-  attributeTypes: AdminAttributeType[];
+  fields: ModelField[];
+  attributeTypes: AttributeType[];
   formAttributes: string[];
   record: AdminRecord;
 }
@@ -168,46 +168,46 @@ export default function RecordUpdateForm({
 
           return (
             <div key={attributeType.name} className="mb-4">
-              {attributeType.type === AdminFieldType.STRING && (
+              {attributeType.type === FieldType.STRING && (
                 <StringField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.TEXT && (
+              {attributeType.type === FieldType.TEXT && (
                 <TextField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.EMAIL && (
+              {attributeType.type === FieldType.EMAIL && (
                 <EmailField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.URL && (
+              {attributeType.type === FieldType.URL && (
                 <UrlField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.PASSWORD && (
+              {attributeType.type === FieldType.PASSWORD && (
                 <PasswordField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.DATE && (
+              {attributeType.type === FieldType.DATE && (
                 <DateField {...defaultFieldProps} />
               )}
-              {/* {attributeType.type === AdminFieldType.JSON && (
+              {/* {attributeType.type === FieldType.JSON && (
                 <JsonField {...defaultFieldProps} />
               )} */}
-              {attributeType.type === AdminFieldType.SELECT && (
+              {attributeType.type === FieldType.SELECT && (
                 <SelectField
                   {...defaultFieldProps}
                   options={attributeType.options || []}
                 />
               )}
-              {attributeType.type === AdminFieldType.INTEGER && (
+              {attributeType.type === FieldType.INTEGER && (
                 <IntegerField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.BOOLEAN && (
+              {attributeType.type === FieldType.BOOLEAN && (
                 <BooleanField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.IMAGE && (
+              {attributeType.type === FieldType.IMAGE && (
                 <ImageField
                   {...defaultFieldProps}
                   asset={assetData[attribute].asset}
                 />
               )}
-              {attributeType.type === AdminFieldType.RELATIONSHIP_HAS_ONE && (
+              {attributeType.type === FieldType.RELATIONSHIP_HAS_ONE && (
                 <RelationshipHasOneField
                   {...defaultFieldProps}
                   value={jsonData[attributeType.sourceKey as string]}
@@ -243,7 +243,7 @@ function getDefaultData(
   const assets: AdminRecordAssets = {};
   const editableKeys = Object.keys(data).filter((key) => {
     const attrType = dashboard.attributeTypes.find(
-      (attributeType: AdminAttributeType) => attributeType.name === key,
+      (attributeType: AttributeType) => attributeType.name === key,
     );
 
     // Include and directly editable fields from our edit form defintion
@@ -253,7 +253,7 @@ function getDefaultData(
 
     // Include include related source keys to any hasOne relationships
     if (
-      attrType?.type === AdminFieldType.RELATIONSHIP_HAS_ONE &&
+      attrType?.type === FieldType.RELATIONSHIP_HAS_ONE &&
       attrType.sourceKey === key
     ) {
       return true;
@@ -266,14 +266,14 @@ function getDefaultData(
   editableKeys.forEach((key) => {
     const value = data[key];
     const attributeType = dashboard.attributeTypes.find(
-      (attributeType: AdminAttributeType) => attributeType.name === key,
+      (attributeType: AttributeType) => attributeType.name === key,
     );
 
     if (!attributeType) {
       throw new Error(`Attribute ${key} not found in the dashboard.`);
     }
 
-    const isFileAttribute = attributeType.type === AdminFieldType.IMAGE;
+    const isFileAttribute = attributeType.type === FieldType.IMAGE;
     const isJsonData = !isFileAttribute;
 
     if (isFileAttribute) {

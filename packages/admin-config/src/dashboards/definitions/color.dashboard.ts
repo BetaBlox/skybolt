@@ -1,5 +1,5 @@
 import { Color } from '@repo/database';
-import { AdminFieldType } from '@repo/types';
+import { FieldType } from '@repo/types/admin';
 import { createDashboard } from '../create-dashboard';
 
 export const ColorDashboard = createDashboard<Color>({
@@ -9,10 +9,10 @@ export const ColorDashboard = createDashboard<Color>({
   getDisplayName: (record: Color) => record.label,
 
   attributeTypes: [
-    { name: 'label', type: AdminFieldType.STRING },
-    { name: 'hex', type: AdminFieldType.STRING },
-    { name: 'createdAt', type: AdminFieldType.DATETIME },
-    { name: 'updatedAt', type: AdminFieldType.DATETIME },
+    { name: 'label', type: FieldType.STRING },
+    { name: 'hex', type: FieldType.STRING },
+    { name: 'createdAt', type: FieldType.DATETIME },
+    { name: 'updatedAt', type: FieldType.DATETIME },
   ],
 
   collectionAttributes: ['label', 'hex', 'createdAt', 'updatedAt'],

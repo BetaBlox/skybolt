@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
-import {
-  AdminAttributeType,
-  AdminFieldType,
-  AdminModelField,
-} from '@repo/types';
+import { AttributeType, FieldType, ModelField } from '@repo/types/admin';
 
 export function useFieldValidation(
-  field: AdminModelField,
-  attributeType: AdminAttributeType,
+  field: ModelField,
+  attributeType: AttributeType,
   value: string,
 ) {
   const [error, setError] = useState<string | null>(null);
@@ -26,8 +22,8 @@ export function useFieldValidation(
 
     // MinLength validation for string fields
     if (
-      (attributeType.type === AdminFieldType.STRING ||
-        attributeType.type === AdminFieldType.TEXT) &&
+      (attributeType.type === FieldType.STRING ||
+        attributeType.type === FieldType.TEXT) &&
       attributeType.minLength &&
       length < attributeType.minLength
     ) {
@@ -36,8 +32,8 @@ export function useFieldValidation(
 
     // MaxLength validation for string fields
     if (
-      (attributeType.type === AdminFieldType.STRING ||
-        attributeType.type === AdminFieldType.TEXT) &&
+      (attributeType.type === FieldType.STRING ||
+        attributeType.type === FieldType.TEXT) &&
       attributeType.maxLength &&
       length > attributeType.maxLength
     ) {
@@ -45,7 +41,7 @@ export function useFieldValidation(
     }
 
     // Email validation logic
-    if (attributeType.type === AdminFieldType.EMAIL && trimmedVal) {
+    if (attributeType.type === FieldType.EMAIL && trimmedVal) {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailPattern.test(trimmedVal)) {
         errorMessage = 'Please enter a valid email address.';
@@ -53,7 +49,7 @@ export function useFieldValidation(
     }
 
     // URL validation logic
-    if (attributeType.type === AdminFieldType.URL && trimmedVal) {
+    if (attributeType.type === FieldType.URL && trimmedVal) {
       const urlPattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
       if (!urlPattern.test(trimmedVal)) {
         errorMessage = 'Please enter a valid URL.';

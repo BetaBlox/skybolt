@@ -1,5 +1,5 @@
 import { captilalize } from '@repo/utils';
-import { AdminFieldType, AdminRecord } from '@repo/types';
+import { FieldType, AdminRecord } from '@repo/types/admin';
 import { Dashboard, getAttributeType } from '@repo/admin-config';
 import { Card, CardContent } from '@/components/card';
 import ShowViewField from '@/widgets/records/show/show-view-field';
@@ -38,7 +38,7 @@ export default function RecordDetailsCard({
                 <dt className="text-sm font-bold leading-6 text-gray-900">
                   {captilalize(attributeType.name)}
                 </dt>
-                {attributeType.type === AdminFieldType.JSON ? (
+                {attributeType.type === FieldType.JSON ? (
                   <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     <pre>
                       <ShowViewField

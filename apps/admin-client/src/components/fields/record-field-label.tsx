@@ -1,9 +1,9 @@
 import { Label } from '@/components/label';
-import { AdminModelField } from '@repo/types';
+import { ModelField } from '@repo/types/admin';
 import { captilalize } from '@repo/utils';
 
 interface Props {
-  field: AdminModelField;
+  field: ModelField;
   required?: boolean;
 }
 export default function FieldLabel({ field, required }: Props) {

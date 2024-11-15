@@ -1,12 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RecordsController } from './records.controller';
 import { RecordsService } from './records.service';
-import {
-  AdminFilterOperator,
-  AdminFilterType,
-  AdminRecordsPayload,
-  SortDirection,
-} from '@repo/types';
+import { FilterOperator, FilterType, RecordsPayload } from '@repo/types/admin';
+import { SortDirection } from '@repo/types/sort';
 
 describe('RecordsController - Unit Test with Filter Types', () => {
   let controller: RecordsController;
@@ -29,7 +25,7 @@ describe('RecordsController - Unit Test with Filter Types', () => {
     service = module.get<RecordsService>(RecordsService);
   });
 
-  const baseMockResult: AdminRecordsPayload = {
+  const baseMockResult: RecordsPayload = {
     fields: [],
     modelName: 'User',
     paginatedResult: {
@@ -61,9 +57,9 @@ describe('RecordsController - Unit Test with Filter Types', () => {
       modelName: 'user',
       filter: {
         field: 'firstName',
-        operator: AdminFilterOperator.CONTAINS,
+        operator: FilterOperator.CONTAINS,
         value: 'John',
-        type: AdminFilterType.TEXT,
+        type: FilterType.TEXT,
       },
     },
     {
@@ -71,9 +67,9 @@ describe('RecordsController - Unit Test with Filter Types', () => {
       modelName: 'user',
       filter: {
         field: 'firstName',
-        operator: AdminFilterOperator.EQUALS,
+        operator: FilterOperator.EQUALS,
         value: 'John',
-        type: AdminFilterType.TEXT,
+        type: FilterType.TEXT,
       },
     },
     {
@@ -81,9 +77,9 @@ describe('RecordsController - Unit Test with Filter Types', () => {
       modelName: 'user',
       filter: {
         field: 'firstName',
-        operator: AdminFilterOperator.STARTS_WITH,
+        operator: FilterOperator.STARTS_WITH,
         value: 'Jo',
-        type: AdminFilterType.TEXT,
+        type: FilterType.TEXT,
       },
     },
     {
@@ -91,9 +87,9 @@ describe('RecordsController - Unit Test with Filter Types', () => {
       modelName: 'user',
       filter: {
         field: 'firstName',
-        operator: AdminFilterOperator.ENDS_WITH,
+        operator: FilterOperator.ENDS_WITH,
         value: 'hn',
-        type: AdminFilterType.TEXT,
+        type: FilterType.TEXT,
       },
     },
     {
@@ -101,9 +97,9 @@ describe('RecordsController - Unit Test with Filter Types', () => {
       modelName: 'user',
       filter: {
         field: 'isAdmin',
-        operator: AdminFilterOperator.EQUALS,
+        operator: FilterOperator.EQUALS,
         value: 'false',
-        type: AdminFilterType.BOOLEAN,
+        type: FilterType.BOOLEAN,
       },
     },
     {
@@ -111,9 +107,9 @@ describe('RecordsController - Unit Test with Filter Types', () => {
       modelName: 'user',
       filter: {
         field: 'createdAt',
-        operator: AdminFilterOperator.EQUALS,
+        operator: FilterOperator.EQUALS,
         value: '2023-09-30',
-        type: AdminFilterType.DATE,
+        type: FilterType.DATE,
       },
     },
     {
@@ -121,9 +117,9 @@ describe('RecordsController - Unit Test with Filter Types', () => {
       modelName: 'user',
       filter: {
         field: 'createdAt',
-        operator: AdminFilterOperator.GREATER_THAN,
+        operator: FilterOperator.GREATER_THAN,
         value: '2023-01-01',
-        type: AdminFilterType.DATE,
+        type: FilterType.DATE,
       },
     },
     {
@@ -131,9 +127,9 @@ describe('RecordsController - Unit Test with Filter Types', () => {
       modelName: 'user',
       filter: {
         field: 'createdAt',
-        operator: AdminFilterOperator.LESS_THAN,
+        operator: FilterOperator.LESS_THAN,
         value: '2024-01-01',
-        type: AdminFilterType.DATE,
+        type: FilterType.DATE,
       },
     },
   ];
@@ -178,7 +174,7 @@ describe('RecordsController - Unit Test with Filter Types', () => {
     const sortOrder = SortDirection.ASC;
     const filters = [];
 
-    const mockResult: AdminRecordsPayload = {
+    const mockResult: RecordsPayload = {
       modelName: 'User',
       fields: [],
       paginatedResult: {
@@ -249,7 +245,7 @@ describe('RecordsController - Unit Test with Filter Types', () => {
     const sortOrder = 'asc'; // Custom sortOrder
     const filters = [];
 
-    const mockResult: AdminRecordsPayload = {
+    const mockResult: RecordsPayload = {
       modelName: 'User',
       fields: [],
       paginatedResult: {

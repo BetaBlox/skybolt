@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { routeWithParams } from '@repo/utils';
 import PageHeader from '@/widgets/core/page-header';
 import { HOME, MODEL, MODEL_RECORD_EDIT } from '@/common/routes';
-import { AdminRecordPayload } from '@repo/types';
+import { RecordPayload } from '@repo/types/admin';
 import { getDashboard } from '@repo/admin-config';
 import { RecordApi } from '@/api/RecordApi';
 import {
@@ -62,7 +62,7 @@ export default function RecordShowPage() {
     }
   };
 
-  const data = recordQuery.data as AdminRecordPayload;
+  const data = recordQuery.data as RecordPayload;
   const dashboard = getDashboard(data.modelName);
 
   const { record } = data;

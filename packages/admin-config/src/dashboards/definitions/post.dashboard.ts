@@ -1,5 +1,5 @@
 import { Post } from '@repo/database';
-import { AdminFieldType } from '@repo/types';
+import { FieldType } from '@repo/types/admin';
 import { createDashboard } from '../create-dashboard';
 
 export const PostDashboard = createDashboard<Post>({
@@ -11,23 +11,23 @@ export const PostDashboard = createDashboard<Post>({
   getDisplayName: (record: Post): string => record.title,
 
   attributeTypes: [
-    { name: 'title', type: AdminFieldType.STRING },
-    { name: 'content', type: AdminFieldType.TEXT },
+    { name: 'title', type: FieldType.STRING },
+    { name: 'content', type: FieldType.TEXT },
     {
       name: 'author',
-      type: AdminFieldType.RELATIONSHIP_HAS_ONE,
+      type: FieldType.RELATIONSHIP_HAS_ONE,
       sourceKey: 'authorId',
       modelName: 'user',
       relatedAttributes: [
-        { name: 'firstName', type: AdminFieldType.STRING },
-        { name: 'lastName', type: AdminFieldType.STRING },
-        { name: 'email', type: AdminFieldType.STRING },
+        { name: 'firstName', type: FieldType.STRING },
+        { name: 'lastName', type: FieldType.STRING },
+        { name: 'email', type: FieldType.STRING },
       ],
     },
-    { name: 'authorId', type: AdminFieldType.INTEGER },
-    { name: 'publishDate', type: AdminFieldType.DATE },
-    { name: 'createdAt', type: AdminFieldType.DATETIME },
-    { name: 'updatedAt', type: AdminFieldType.DATETIME },
+    { name: 'authorId', type: FieldType.INTEGER },
+    { name: 'publishDate', type: FieldType.DATE },
+    { name: 'createdAt', type: FieldType.DATETIME },
+    { name: 'updatedAt', type: FieldType.DATETIME },
   ],
   collectionAttributes: [
     'title',
