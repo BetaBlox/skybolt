@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '@/prisma/prisma.service';
 import { RecordsService } from '@/records/records.service';
-import { FilterOperator, FilterType, SortDirection } from '@repo/types';
+import { FilterOperator, FilterType } from '@repo/types/admin';
+import { SortDirection } from '@repo/types/sort';
 
 describe('RecordsService - Integration Test with Filter Types', () => {
   let service: RecordsService;

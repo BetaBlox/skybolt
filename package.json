@@ -37,6 +37,7 @@
     "migrate:status": "dotenv -- npm run migrate:status --workspace=@repo/database",
     "migrate:diff": "dotenv -- npm run migrate:diff --workspace=@repo/database",
     "pretest:api": "dotenv -e .env.test -- npm run migrate:deploy --workspace=@repo/database",
+    "test": "turbo run test",
     "test:client": "dotenv -e .env.test -- npm run test --workspace=client",
     "test:api": "dotenv -e .env.test -- npm run test --workspace=api",
     "test:admin-client": "npm run test --workspace=admin-client",

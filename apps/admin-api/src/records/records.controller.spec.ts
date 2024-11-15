@@ -1,12 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RecordsController } from './records.controller';
 import { RecordsService } from './records.service';
-import {
-  FilterOperator,
-  FilterType,
-  AdminRecordsPayload,
-  SortDirection,
-} from '@repo/types';
+import { FilterOperator, FilterType, RecordsPayload } from '@repo/types/admin';
+import { SortDirection } from '@repo/types/sort';
 
 describe('RecordsController - Unit Test with Filter Types', () => {
   let controller: RecordsController;
@@ -29,7 +25,7 @@ describe('RecordsController - Unit Test with Filter Types', () => {
     service = module.get<RecordsService>(RecordsService);
   });
 
-  const baseMockResult: AdminRecordsPayload = {
+  const baseMockResult: RecordsPayload = {
     fields: [],
     modelName: 'User',
     paginatedResult: {
@@ -178,7 +174,7 @@ describe('RecordsController - Unit Test with Filter Types', () => {
     const sortOrder = SortDirection.ASC;
     const filters = [];
 
-    const mockResult: AdminRecordsPayload = {
+    const mockResult: RecordsPayload = {
       modelName: 'User',
       fields: [],
       paginatedResult: {
@@ -249,7 +245,7 @@ describe('RecordsController - Unit Test with Filter Types', () => {
     const sortOrder = 'asc'; // Custom sortOrder
     const filters = [];
 
-    const mockResult: AdminRecordsPayload = {
+    const mockResult: RecordsPayload = {
       modelName: 'User',
       fields: [],
       paginatedResult: {

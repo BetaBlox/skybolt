@@ -1,30 +1,36 @@
-import { EncodedQuery, objectToSearchString } from "serialize-query-params";
+import { EncodedQuery, objectToSearchString } from 'serialize-query-params';
 
 export function toSearchString(params: EncodedQuery) {
   return objectToSearchString(params);
 }
 
-export function routeWithParams(path: string, params: EncodedQuery = {}) {
+export function routeWithParams(
+  path: string | null | undefined,
+  params: EncodedQuery = {},
+) {
   if (!path) {
-    return "";
+    return '';
   }
+
+  // Assert that path is a string from this point forward
+  let finalPath = path as string;
 
   const keys = Object.keys(params);
 
   keys.map((key) => {
     const pathKey = `:${key}`;
-    const pathHasKey = path.includes(pathKey);
+    const pathHasKey = finalPath.includes(pathKey);
 
     if (pathHasKey) {
       const value = params[key] as string;
-      path = path.replace(`:${key}`, value);
+      finalPath = finalPath.replace(`:${key}`, value);
       delete params[key];
     }
   });
 
   if (Object.keys(params).length > 0) {
-    return `${path}?${toSearchString(params)}`;
+    return `${finalPath}?${toSearchString(params)}`;
   } else {
-    return path;
+    return finalPath;
   }
 }

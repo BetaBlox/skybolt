@@ -93,11 +93,19 @@ export class AuthService {
     const token = uuidv4();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
 
-    await this.prisma.impersonationToken.delete({
+    const existingToken = await this.prisma.impersonationToken.findFirst({
       where: {
         adminUserId,
       },
     });
+
+    if (existingToken) {
+      await this.prisma.impersonationToken.delete({
+        where: {
+          adminUserId,
+        },
+      });
+    }
 
     await this.prisma.impersonationToken.create({
       data: {

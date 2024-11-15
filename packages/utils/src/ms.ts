@@ -12,37 +12,37 @@ const w = d * 7;
 const y = d * 365.25;
 
 type Unit =
-  | "Years"
-  | "Year"
-  | "Yrs"
-  | "Yr"
-  | "Y"
-  | "Weeks"
-  | "Week"
-  | "W"
-  | "Days"
-  | "Day"
-  | "D"
-  | "Hours"
-  | "Hour"
-  | "Hrs"
-  | "Hr"
-  | "H"
-  | "Minutes"
-  | "Minute"
-  | "Mins"
-  | "Min"
-  | "M"
-  | "Seconds"
-  | "Second"
-  | "Secs"
-  | "Sec"
-  | "s"
-  | "Milliseconds"
-  | "Millisecond"
-  | "Msecs"
-  | "Msec"
-  | "Ms";
+  | 'Years'
+  | 'Year'
+  | 'Yrs'
+  | 'Yr'
+  | 'Y'
+  | 'Weeks'
+  | 'Week'
+  | 'W'
+  | 'Days'
+  | 'Day'
+  | 'D'
+  | 'Hours'
+  | 'Hour'
+  | 'Hrs'
+  | 'Hr'
+  | 'H'
+  | 'Minutes'
+  | 'Minute'
+  | 'Mins'
+  | 'Min'
+  | 'M'
+  | 'Seconds'
+  | 'Second'
+  | 'Secs'
+  | 'Sec'
+  | 's'
+  | 'Milliseconds'
+  | 'Millisecond'
+  | 'Msecs'
+  | 'Msec'
+  | 'Ms';
 
 type UnitAnyCase = Unit | Uppercase<Unit> | Lowercase<Unit>;
 
@@ -65,23 +65,26 @@ interface Options {
  * @param options - Options for the conversion
  * @throws Error if `value` is not a non-empty string or a number
  */
-export function ms(value: StringValue, options?: Options): number;
+export function ms(
+  value: StringValue | null | undefined,
+  options?: Options,
+): number;
 export function ms(value: number, options?: Options): string;
 export function ms(
-  value: StringValue | number,
+  value: StringValue | number | null | undefined,
   options?: Options,
 ): number | string {
   try {
-    if (typeof value === "string" && value.length > 0) {
+    if (typeof value === 'string' && value.length > 0) {
       return parse(value);
-    } else if (typeof value === "number" && isFinite(value)) {
+    } else if (typeof value === 'number' && isFinite(value)) {
       return options?.long ? fmtLong(value) : fmtShort(value);
     }
-    throw new Error("Value is not a string or number.");
+    throw new Error('Value is not a string or number.');
   } catch (error) {
     const message = isError(error)
       ? `${error.message}. value=${JSON.stringify(value)}`
-      : "An unknown error has occurred.";
+      : 'An unknown error has occurred.';
     throw new Error(message);
   }
 }
@@ -95,7 +98,7 @@ export function ms(
  */
 function parse(str: string): number {
   if (str.length > 100) {
-    throw new Error("Value exceeds the maximum length of 100 characters.");
+    throw new Error('Value exceeds the maximum length of 100 characters.');
   }
   const match =
     /^(?<value>-?(?:\d+)?\.?\d+) *(?<type>milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
@@ -108,45 +111,45 @@ function parse(str: string): number {
     return NaN;
   }
   const n = parseFloat(groups.value);
-  const type = (groups.type || "ms").toLowerCase() as Lowercase<Unit>;
+  const type = (groups.type || 'ms').toLowerCase() as Lowercase<Unit>;
   switch (type) {
-    case "years":
-    case "year":
-    case "yrs":
-    case "yr":
-    case "y":
+    case 'years':
+    case 'year':
+    case 'yrs':
+    case 'yr':
+    case 'y':
       return n * y;
-    case "weeks":
-    case "week":
-    case "w":
+    case 'weeks':
+    case 'week':
+    case 'w':
       return n * w;
-    case "days":
-    case "day":
-    case "d":
+    case 'days':
+    case 'day':
+    case 'd':
       return n * d;
-    case "hours":
-    case "hour":
-    case "hrs":
-    case "hr":
-    case "h":
+    case 'hours':
+    case 'hour':
+    case 'hrs':
+    case 'hr':
+    case 'h':
       return n * h;
-    case "minutes":
-    case "minute":
-    case "mins":
-    case "min":
-    case "m":
+    case 'minutes':
+    case 'minute':
+    case 'mins':
+    case 'min':
+    case 'm':
       return n * m;
-    case "seconds":
-    case "second":
-    case "secs":
-    case "sec":
-    case "s":
+    case 'seconds':
+    case 'second':
+    case 'secs':
+    case 'sec':
+    case 's':
       return n * s;
-    case "milliseconds":
-    case "millisecond":
-    case "msecs":
-    case "msec":
-    case "ms":
+    case 'milliseconds':
+    case 'millisecond':
+    case 'msecs':
+    case 'msec':
+    case 'ms':
       return n;
     default:
       // This should never occur.
@@ -182,16 +185,16 @@ function fmtShort(ms: number): StringValue {
 function fmtLong(ms: number): StringValue {
   const msAbs = Math.abs(ms);
   if (msAbs >= d) {
-    return plural(ms, msAbs, d, "day");
+    return plural(ms, msAbs, d, 'day');
   }
   if (msAbs >= h) {
-    return plural(ms, msAbs, h, "hour");
+    return plural(ms, msAbs, h, 'hour');
   }
   if (msAbs >= m) {
-    return plural(ms, msAbs, m, "minute");
+    return plural(ms, msAbs, m, 'minute');
   }
   if (msAbs >= s) {
-    return plural(ms, msAbs, s, "second");
+    return plural(ms, msAbs, s, 'second');
   }
   return `${ms} ms`;
 }
@@ -206,7 +209,7 @@ function plural(
   name: string,
 ): StringValue {
   const isPlural = msAbs >= n * 1.5;
-  return `${Math.round(ms / n)} ${name}${isPlural ? "s" : ""}` as StringValue;
+  return `${Math.round(ms / n)} ${name}${isPlural ? 's' : ''}` as StringValue;
 }
 
 /**
@@ -216,5 +219,5 @@ function plural(
  * @returns A boolean `true` if the provided value is an Error-like object
  */
 function isError(value: unknown): value is Error {
-  return typeof value === "object" && value !== null && "message" in value;
+  return typeof value === 'object' && value !== null && 'message' in value;
 }

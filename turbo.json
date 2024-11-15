@@ -2,22 +2,18 @@
   "$schema": "https://turborepo.org/schema.json",
   "tasks": {
     "dev": {
-      "dependsOn": [
-        "^db:generate"
-      ],
+      "dependsOn": ["^db:generate"],
       "cache": false,
       "persistent": true
     },
     "build": {
-      "dependsOn": [
-        "^build",
-        "^db:generate"
-      ],
-      "outputs": [
-        "dist/**"
-      ]
+      "dependsOn": ["^build", "^db:generate"],
+      "outputs": ["dist/**"]
     },
     "db:generate": {
+      "cache": false
+    },
+    "test": {
       "cache": false
     }
   }
