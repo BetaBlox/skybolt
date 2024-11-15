@@ -1,4 +1,4 @@
-import { Sort } from "./constants";
+import { Sort } from './constants';
 
 export function sortByKey(
   collection: Array<any>,
