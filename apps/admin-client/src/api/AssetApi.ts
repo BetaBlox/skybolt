@@ -1,6 +1,6 @@
 import { ContentType, customFetch, HttpMethod } from '@/common/custom-fetcher';
 import { Asset } from '@repo/database';
-import { AdminRecord } from '@repo/types';
+import { AdminRecord } from '@repo/types/admin';
 import { routeWithParams } from '@repo/utils';
 
 export const AssetApi = {

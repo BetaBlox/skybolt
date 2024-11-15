@@ -2,11 +2,7 @@ import { FormEvent, useState } from 'react';
 import { routeWithParams } from '@repo/utils';
 import { useNavigate } from 'react-router-dom';
 import { MODEL_RECORD } from '@/common/routes';
-import {
-  AdminAttributeType,
-  AdminFieldType,
-  AdminModelField,
-} from '@repo/types';
+import { AttributeType, FieldType, ModelField } from '@repo/types/admin';
 import { RecordApi, RecordCreatePayload } from '@/api/RecordApi';
 import { useToast } from '@/components/toast/use-toast';
 import UrlField from '@/components/fields/url-field';
@@ -26,8 +22,8 @@ import { Dashboard, getDashboard } from '@repo/admin-config';
 
 interface Props {
   modelName: string;
-  fields: AdminModelField[];
-  attributeTypes: AdminAttributeType[];
+  fields: ModelField[];
+  attributeTypes: AttributeType[];
   formAttributes: string[];
 }
 
@@ -118,43 +114,43 @@ export default function RecordCreateForm({
 
           return (
             <div key={attributeType.name} className="mb-4">
-              {attributeType.type === AdminFieldType.STRING && (
+              {attributeType.type === FieldType.STRING && (
                 <StringField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.TEXT && (
+              {attributeType.type === FieldType.TEXT && (
                 <TextField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.EMAIL && (
+              {attributeType.type === FieldType.EMAIL && (
                 <EmailField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.URL && (
+              {attributeType.type === FieldType.URL && (
                 <UrlField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.PASSWORD && (
+              {attributeType.type === FieldType.PASSWORD && (
                 <PasswordField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.DATE && (
+              {attributeType.type === FieldType.DATE && (
                 <DateField {...defaultFieldProps} />
               )}
-              {/* {attributeType.type === AdminFieldType.JSON && (
+              {/* {attributeType.type === FieldType.JSON && (
                 <JsonField {...defaultFieldProps} />
               )} */}
-              {attributeType.type === AdminFieldType.SELECT && (
+              {attributeType.type === FieldType.SELECT && (
                 <SelectField
                   {...defaultFieldProps}
                   options={attributeType.options || []}
                 />
               )}
-              {attributeType.type === AdminFieldType.INTEGER && (
+              {attributeType.type === FieldType.INTEGER && (
                 <IntegerField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.BOOLEAN && (
+              {attributeType.type === FieldType.BOOLEAN && (
                 <BooleanField {...defaultFieldProps} />
               )}
-              {attributeType.type === AdminFieldType.IMAGE && (
+              {attributeType.type === FieldType.IMAGE && (
                 <ImageField {...defaultFieldProps} asset={null} />
               )}
-              {attributeType.type === AdminFieldType.RELATIONSHIP_HAS_ONE && (
+              {attributeType.type === FieldType.RELATIONSHIP_HAS_ONE && (
                 <RelationshipHasOneField
                   {...defaultFieldProps}
                   value={data[attributeType.sourceKey as string]}
@@ -193,12 +189,12 @@ const filterPayload = (
 
       // Hack to make hasOne relationships still work. Really we need to rework the definition type
       const hasOneAttr = dashboard.attributeTypes.find(
-        (attributeType: AdminAttributeType) =>
+        (attributeType: AttributeType) =>
           attributeType.name === key.replace('Id', ''),
       );
       // Include include related source keys to any hasOne relationships
       if (
-        hasOneAttr?.type === AdminFieldType.RELATIONSHIP_HAS_ONE &&
+        hasOneAttr?.type === FieldType.RELATIONSHIP_HAS_ONE &&
         hasOneAttr.sourceKey === key
       ) {
         return true;

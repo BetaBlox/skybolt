@@ -1,13 +1,13 @@
 import { ChangeEvent } from 'react';
-import { AdminAttributeType, AdminModelField } from '@repo/types';
+import { AttributeType, ModelField } from '@repo/types/admin';
 import FieldLabel from '@/components/fields/record-field-label';
 import { Input } from '@/components/input';
 import { useFieldValidation } from '@/hooks/use-field-validation';
 import { FieldErrorMessage } from '@/components/fields/field-error-message';
 
 interface Props {
-  field: AdminModelField;
-  attributeType: AdminAttributeType;
+  field: ModelField;
+  attributeType: AttributeType;
   value: string;
   onChange: (key: string, value: string) => void;
 }

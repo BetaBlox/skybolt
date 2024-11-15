@@ -6,8 +6,8 @@
 // import FieldLabel from '../FieldLabel';
 
 // interface Props {
-//   field: AdminModelField;
-//   attributeType: AdminAttributeType;
+//   field: ModelField;
+//   attributeType: AttributeType;
 //   value: string;
 //   onChange: (key: string, value: any) => void;
 // }

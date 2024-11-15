@@ -2,7 +2,7 @@ import { MODEL_RECORD } from '@/common/routes';
 import { createLocalDate } from '@/lib/date';
 import { getAttributeType, getDashboard } from '@repo/admin-config';
 import { Asset } from '@repo/database';
-import { AdminFieldType, AdminHasOneAttributeType } from '@repo/types';
+import { FieldType, HasOneAttributeType } from '@repo/types/admin';
 import { routeWithParams } from '@repo/utils';
 import { format } from 'date-fns';
 import { ExternalLinkIcon, MailIcon } from 'lucide-react';
@@ -24,20 +24,20 @@ export default function ShowViewField({
   const { type } = attributeType;
   const value = record[attributeType.name];
 
-  if (type === AdminFieldType.JSON) {
+  if (type === FieldType.JSON) {
     return <JsonField value={value} />;
-  } else if (type === AdminFieldType.BOOLEAN) {
+  } else if (type === FieldType.BOOLEAN) {
     return <BooleanField value={value} />;
-  } else if (type === AdminFieldType.RELATIONSHIP_HAS_ONE) {
+  } else if (type === FieldType.RELATIONSHIP_HAS_ONE) {
     return <HasOneField record={record} attributeType={attributeType} />;
-  } else if (type === AdminFieldType.URL) {
+  } else if (type === FieldType.URL) {
     return <UrlField value={value} />;
-  } else if (type === AdminFieldType.DATE) {
+  } else if (type === FieldType.DATE) {
     return <DateField value={value} />;
-  } else if (type === AdminFieldType.IMAGE) {
+  } else if (type === FieldType.IMAGE) {
     const asset = value as Asset;
     return <ImageField asset={asset} />;
-  } else if (type === AdminFieldType.EMAIL) {
+  } else if (type === FieldType.EMAIL) {
     return <EmailField value={value} />;
   } else {
     return <StringField value={value} />;
@@ -115,7 +115,7 @@ const HasOneField = ({
   attributeType,
 }: {
   record: AdminRecord;
-  attributeType: AdminHasOneAttributeType;
+  attributeType: HasOneAttributeType;
 }) => {
   // Should we even be using modelName here? Shouldn't we simply use the attributeType.name
   const relationshipModelName = attributeType.modelName;

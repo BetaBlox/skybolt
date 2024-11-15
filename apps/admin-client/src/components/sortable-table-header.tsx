@@ -1,7 +1,7 @@
 import { attrIsSortable } from '@/common/admin-attr-is-sortable';
 import { TableHead } from '@/components/table';
 import { Dashboard } from '@repo/admin-config';
-import { SortDirection, SortOrder } from '@repo/types';
+import { SortDirection, SortOrder } from '@repo/types/sort';
 import { captilalize } from '@repo/utils';
 import { SortAscIcon, SortDescIcon } from 'lucide-react';
 

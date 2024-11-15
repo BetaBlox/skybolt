@@ -1,17 +1,13 @@
 import { ChangeEvent, useState } from 'react';
-import {
-  AdminAttributeType,
-  AdminFieldType,
-  AdminModelField,
-} from '@repo/types';
+import { AttributeType, FieldType, ModelField } from '@repo/types/admin';
 import FieldLabel from '@/components/fields/record-field-label';
 import { Textarea } from '@/components/textarea';
 import { useFieldValidation } from '@/hooks/use-field-validation';
 import { FieldErrorMessage } from '@/components/fields/field-error-message';
 
 interface Props {
-  field: AdminModelField;
-  attributeType: AdminAttributeType;
+  field: ModelField;
+  attributeType: AttributeType;
   value: string;
   onChange: (key: string, value: string) => void;
 }
@@ -21,7 +17,7 @@ export default function TextField({
   value = '',
   onChange,
 }: Props) {
-  if (attributeType.type !== AdminFieldType.TEXT) {
+  if (attributeType.type !== FieldType.TEXT) {
     throw new Error('Invalid attribute type');
   }
 

@@ -1,4 +1,5 @@
-import { AdminRecordsPayload, SortDirection } from '@repo/types';
+import { RecordsPayload } from '@repo/types/admin';
+import { SortDirection } from '@repo/types/sort';
 import { Dashboard } from '@repo/admin-config';
 import { MODEL_RECORD, MODEL_RECORD_EDIT } from '@/common/routes';
 import CollectionViewField from '@/widgets/models/collection-view-field';
@@ -73,7 +74,7 @@ export default function CollectionTable({ dashboard, modelName }: Props) {
   if (modelQuery.isPending) return <Spinner />;
   if (modelQuery.isError || !modelName) return 'Error loading data';
 
-  const data = modelQuery.data as AdminRecordsPayload;
+  const data = modelQuery.data as RecordsPayload;
 
   const { collectionAttributes, isEditable } = dashboard;
   const { paginatedResult } = data;

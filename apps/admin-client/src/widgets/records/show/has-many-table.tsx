@@ -1,10 +1,10 @@
 import {
-  AdminFilterOperator,
-  AdminFilterType,
-  AdminHasManyAttributeType,
-  AdminRecordsPayload,
-  SortDirection,
-} from '@repo/types';
+  FilterOperator,
+  FilterType,
+  HasManyAttributeType,
+  RecordsPayload,
+} from '@repo/types/admin';
+import { SortDirection } from '@repo/types/sort';
 import { getDashboard } from '@repo/admin-config';
 import { MODEL_RECORD } from '@/common/routes';
 import CollectionViewField from '@/widgets/models/collection-view-field';
@@ -27,7 +27,7 @@ import { Spinner } from '@/components/spinner';
 
 interface Props {
   record: Record<string, unknown>;
-  attributeType: AdminHasManyAttributeType;
+  attributeType: HasManyAttributeType;
 }
 
 export default function HasManyTable({ record, attributeType }: Props) {
@@ -71,9 +71,9 @@ export default function HasManyTable({ record, attributeType }: Props) {
           {
             modelName: modelName,
             field: relationField,
-            operator: AdminFilterOperator.EQUALS,
+            operator: FilterOperator.EQUALS,
             value: String(parentRecordId),
-            type: AdminFilterType.NUMBER,
+            type: FilterType.NUMBER,
           },
         ],
         sortField,
@@ -85,7 +85,7 @@ export default function HasManyTable({ record, attributeType }: Props) {
   if (modelQuery.isPending) return <Spinner />;
   if (modelQuery.isError || !modelName) return 'Error loading data';
 
-  const data = modelQuery.data as AdminRecordsPayload;
+  const data = modelQuery.data as RecordsPayload;
 
   const { collectionAttributes } = dashboard;
   const { paginatedResult } = data;

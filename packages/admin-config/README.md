@@ -61,7 +61,7 @@ Here is an example of a basic **dashboard configuration** for a `Product` model:
 
 import { Dashboard } from './dashboard.types';
 import { Product } from '@repo/types';
-import { AdminFieldType } from '@repo/types';
+import { FieldType } from '@repo/types';
 
 export const ProductDashboard: Dashboard<Product> = {
   name: 'Product',
@@ -69,9 +69,9 @@ export const ProductDashboard: Dashboard<Product> = {
 
   // Define which fields are in the database model
   attributeTypes: [
-    { name: 'name', type: AdminFieldType.STRING },
-    { name: 'price', type: AdminFieldType.INTEGER },
-    { name: 'stock', type: AdminFieldType.INTEGER },
+    { name: 'name', type: FieldType.STRING },
+    { name: 'price', type: FieldType.INTEGER },
+    { name: 'stock', type: FieldType.INTEGER },
   ],
 
   // Define which fields are shown in the collection (list) view

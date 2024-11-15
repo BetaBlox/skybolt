@@ -1,5 +1,5 @@
 import { Dashboard } from '@repo/admin-config';
-import { AdminFieldType } from '@repo/types';
+import { FieldType } from '@repo/types/admin';
 
 export const attrIsSortable = (
   attribute: string,
@@ -17,8 +17,8 @@ export const attrIsSortable = (
 
   // Do not sort if the attribute is a relationship. We can only sort by the fields of the current model
   if (
-    attrType?.type === AdminFieldType.RELATIONSHIP_HAS_ONE ||
-    attrType?.type === AdminFieldType.RELATIONSHIP_HAS_MANY
+    attrType?.type === FieldType.RELATIONSHIP_HAS_ONE ||
+    attrType?.type === FieldType.RELATIONSHIP_HAS_MANY
   ) {
     return false;
   }

@@ -7,13 +7,13 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/button';
 import { Calendar } from '@/components/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/popover';
-import { AdminAttributeType, AdminModelField } from '@repo/types';
+import { AttributeType, ModelField } from '@repo/types/admin';
 import FieldLabel from '@/components/fields/record-field-label';
 import { createLocalDate } from '@/lib/date';
 
 interface Props {
-  field: AdminModelField;
-  attributeType: AdminAttributeType;
+  field: ModelField;
+  attributeType: AttributeType;
   value: string;
   onChange: (key: string, value: string) => void;
 }

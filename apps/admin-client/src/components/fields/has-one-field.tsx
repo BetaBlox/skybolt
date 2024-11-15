@@ -1,10 +1,11 @@
 import FieldLabel from './record-field-label';
 import { useQuery } from '@tanstack/react-query';
 import {
-  AdminModelField,
-  AdminRecordsPayload,
+  ModelField,
+  RecordsPayload,
+  HasOneAttributeType,
   SelectOption,
-} from '@repo/types';
+} from '@repo/types/admin';
 import { getDashboard } from '@repo/admin-config';
 import { RecordApi } from '@/api/RecordApi';
 import {
@@ -14,14 +15,13 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/select';
-import { AdminHasOneAttributeType } from '@repo/types/src/Admin';
 import { Spinner } from '@/components/spinner';
 
 interface Props {
-  field: AdminModelField;
+  field: ModelField;
   modelName: string;
   attribute: string;
-  attributeType: AdminHasOneAttributeType;
+  attributeType: HasOneAttributeType;
   value: string;
   onChange: (key: string, value: string | number) => void;
 }
@@ -42,7 +42,7 @@ export default function RelationshipHasOneField({
   if (recordsQuery.isPending) return <Spinner />;
   if (recordsQuery.isError || !modelName) return 'Error loading data';
 
-  const data = recordsQuery.data as AdminRecordsPayload;
+  const data = recordsQuery.data as RecordsPayload;
   const relatedDashboard = getDashboard(data.modelName);
 
   // TODO: paginated results are limited to 20, probably an issue

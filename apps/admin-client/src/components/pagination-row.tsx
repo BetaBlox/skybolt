@@ -1,4 +1,4 @@
-import { PaginatedResult } from '@repo/types';
+import { PaginatedResult } from '@repo/types/pagination';
 import { classNames } from '@repo/utils';
 
 interface Props {

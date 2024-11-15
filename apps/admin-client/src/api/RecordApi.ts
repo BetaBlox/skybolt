@@ -3,13 +3,8 @@ import { customFetch, HttpMethod } from '@/common/custom-fetcher';
 import { Filter } from '@/widgets/models/filter-form';
 import { getDashboard } from '@repo/admin-config';
 import { Asset } from '@repo/database';
-import {
-  AdminFieldType,
-  AdminRecord,
-  AdminRecordPayload,
-  SortDirection,
-  SortOrder,
-} from '@repo/types';
+import { FieldType, AdminRecord, RecordPayload } from '@repo/types/admin';
+import { SortDirection, SortOrder } from '@repo/types/sort';
 import { routeWithParams } from '@repo/utils';
 
 export type RecordCreatePayload = {
@@ -56,7 +51,7 @@ export const RecordApi = {
   create: async (
     modelName: string,
     data: RecordCreatePayload,
-  ): Promise<AdminRecordPayload> => {
+  ): Promise<RecordPayload> => {
     const dashboard = getDashboard(modelName);
 
     // Initialize objects for JSON and file attributes
@@ -76,7 +71,7 @@ export const RecordApi = {
         throw new Error(`Attribute ${key} not found in the dashboard.`);
       }
 
-      const isFileAttribute = attributeType.type === AdminFieldType.IMAGE;
+      const isFileAttribute = attributeType.type === FieldType.IMAGE;
       const isJsonData = !isFileAttribute;
 
       if (isFileAttribute && value instanceof File) {
@@ -92,20 +87,17 @@ export const RecordApi = {
     const createUrl = routeWithParams('/api/records/:modelName', {
       modelName,
     });
-    const { response, data: adminRecordPayload } = await customFetch(
-      createUrl,
-      {
-        method: HttpMethod.POST,
-        body: JSON.stringify(jsonPayload),
-      },
-    );
+    const { response, data: RecordPayload } = await customFetch(createUrl, {
+      method: HttpMethod.POST,
+      body: JSON.stringify(jsonPayload),
+    });
 
     // Check if the record creation was successful before proceeding
     if (!response.ok) {
       throw new Error('Failed to create the record.');
     }
 
-    const createPayload = adminRecordPayload as AdminRecordPayload;
+    const createPayload = RecordPayload as RecordPayload;
 
     // If there are no files to upload, return the created record directly
     if (assetsToCreate.length === 0) {
@@ -132,7 +124,7 @@ export const RecordApi = {
         file: File | null;
       };
     },
-  ): Promise<AdminRecordPayload> => {
+  ): Promise<RecordPayload> => {
     // 1. Process regular form data (JSON)
     const url = routeWithParams('/api/records/:modelName/:id', {
       modelName,

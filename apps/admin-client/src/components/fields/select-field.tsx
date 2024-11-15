@@ -1,5 +1,5 @@
 import FieldLabel from './record-field-label';
-import { AdminAttributeType, AdminModelField, SelectOption } from '@repo/types';
+import { AttributeType, ModelField, SelectOption } from '@repo/types/admin';
 import {
   Select,
   SelectContent,
@@ -9,8 +9,8 @@ import {
 } from '@/components/select';
 
 interface Props {
-  field: AdminModelField;
-  attributeType: AdminAttributeType;
+  field: ModelField;
+  attributeType: AttributeType;
   value: string;
   options: SelectOption[];
   onChange: (key: string, value: string) => void;
