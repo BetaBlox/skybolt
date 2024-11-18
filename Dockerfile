@@ -32,6 +32,7 @@ RUN NODE_ENV=development npm install
 COPY . .
 
 ARG DATABASE_URL
+ARG DATABASE_DIRECT_URL
 
 # Generate prisma runtime 
 RUN npm run db:generate
