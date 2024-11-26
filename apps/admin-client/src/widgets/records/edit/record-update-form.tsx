@@ -132,9 +132,6 @@ export default function RecordUpdateForm({
     }
   };
 
-  console.log('jsonData', jsonData);
-  console.log('assetData', assetData);
-
   return (
     <form onSubmit={onSubmit}>
       <div className="mt-6 border-t border-gray-100 bg-white p-6 shadow-md sm:rounded-lg">
