@@ -97,8 +97,8 @@ export default function RecordUpdateForm({
     key: string,
     value: string | number | boolean | File | null,
   ) => {
-    const isJsonField = !!jsonData[key];
-    const isAssetField = !!assetData[key];
+    const isJsonField = Object.keys(jsonData).includes(key) === true;
+    const isAssetField = Object.keys(assetData).includes(key) === true;
 
     if (!isJsonField && !isAssetField) {
       throw new Error(
