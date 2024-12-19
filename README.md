@@ -125,6 +125,60 @@ If your project needs a production ready database, we recommend looking at [Supa
 
 [Learn more about Supabase](https://supabase.com/docs)
 
+When using Supabase with Railway, proper configuration is crucial for database connections to work correctly, especially for migrations.
+
+### Setting Up Supabase Connection
+
+1. From your Supabase project dashboard, go to Project Settings > Database to find your connection information
+2. Supabase will provide two types of connection strings:
+
+```env
+# Connection pooling URL (for general database queries)
+DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-us-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require"
+# Direct connection URL (for migrations and schema changes)
+DATABASE_DIRECT_URL="postgresql://postgres.[ref]:[password]@aws-0-us-west-1.pooler.supabase.com:5432/postgres?sslmode=require&connection_limit=1"
+```
+
+### Important Configuration Notes
+
+1. **Port Numbers**: 
+   - Use port `6543` for the pooled connection (`DATABASE_URL`)
+   - Use port `5432` for direct connection (`DATABASE_DIRECT_URL`)
+
+2. **SSL Mode**: 
+   - Always include `sslmode=require` in both connection strings
+   - Required for both staging and production environments
+
+3. **Connection Pooling**:
+   - Add `pgbouncer=true` to the pooled connection string
+   - Add `connection_limit=1` to the direct connection string for reliable migrations
+
+4. **Environment Variables**:
+   In Railway, you'll need to set both:
+   - `DATABASE_URL` - For general database queries
+   - `DATABASE_DIRECT_URL` - For Prisma migrations and schema changes
+
+### Prisma Configuration
+
+Your Prisma schema should be configured to use both connection strings:
+
+```prisma
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_DIRECT_URL")
+}
+```
+
+### Troubleshooting
+
+If you encounter database connection issues:
+1. Verify both environment variables are set correctly in Railway
+2. Ensure SSL mode is enabled (`sslmode=require`)
+3. Confirm you're using the correct ports (6543 for pooled, 5432 for direct)
+4. Check that `connection_limit=1` is set on the direct URL
+5. Verify your IP address is allowlisted in Supabase if required
+
 ## Making Improvements
 
 As you build your project out from this template, please remember to pay it forward and improve the template. Even a seemingly simple change such as a new util method is helpful.
