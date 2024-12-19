@@ -141,15 +141,18 @@ DATABASE_DIRECT_URL="postgresql://postgres.[ref]:[password]@aws-0-us-west-1.pool
 
 ### Important Configuration Notes
 
-1. **Port Numbers**: 
+1. **Port Numbers**:
+
    - Use port `6543` for the pooled connection (`DATABASE_URL`)
    - Use port `5432` for direct connection (`DATABASE_DIRECT_URL`)
 
-2. **SSL Mode**: 
+2. **SSL Mode**:
+
    - Always include `sslmode=require` in both connection strings
    - Required for both staging and production environments
 
 3. **Connection Pooling**:
+
    - Add `pgbouncer=true` to the pooled connection string
    - Add `connection_limit=1` to the direct connection string for reliable migrations
 
@@ -173,6 +176,7 @@ datasource db {
 ### Troubleshooting
 
 If you encounter database connection issues:
+
 1. Verify both environment variables are set correctly in Railway
 2. Ensure SSL mode is enabled (`sslmode=require`)
 3. Confirm you're using the correct ports (6543 for pooled, 5432 for direct)
